@@ -1,0 +1,42 @@
+#separator:tab
+#html:true
+Dear Mr./Mrs. [surname] (formal opening)	Beste meneer/mevrouw [ACHTERNAAM]
+Hello [first name] (informal opening)	Hallo [VOORNAAM]
+I am writing to you because... (formal)	Ik schrijf u omdat...
+Unfortunately I cannot... (informal)	Ik kan helaas niet...
+Would it be possible to...? (formal)	Zou het mogelijk zijn om...?
+Can we...? (informal suggestion)	Kunnen we...?
+I look forward to hearing from you (formal)	Ik hoor graag van u
+Will you let me know? (informal)	Laat je het me weten?
+With kind regards (formal closing)	Met vriendelijke groet
+Greetings (informal closing)	Groetjes
+My apologies for the inconvenience (formal)	Mijn excuses voor het ongemak
+I'm sorry! (informal)	Het spijt me!
+I have an appointment at/with... (formal)	Ik heb een afspraak bij/om...
+Can you do three things today?	Kun je vandaag drie dingen doen?
+Do you want to...? (task assignment)	Wil je...?
+Don't forget to... (reminder)	Vergeet niet om...
+Thanks in advance! (work note)	Alvast bedankt!
+I like to... (newsletter)	Ik ... graag
+This is nice/cozy (newsletter)	Dit is gezellig
+This is relaxing (newsletter)	Dit is ontspannend
+Because... (giving reason)	Omdat...
+Next week (time)	Volgende week
+Tomorrow (time)	Morgen
+Today (time)	Vandaag
+At 10:00 (time)	Om 10:00 uur
+On Friday (day)	Op vrijdag
+In the weekend (time)	In het weekend
+Usually (frequency)	Meestal
+Always (frequency)	Altijd
+Every week (frequency)	Elke week
+To you (formal)	U
+To you (informal)	Je / Jij
+Can you (formal)	Kunt u
+Can you (informal)	Kun je
+Do you want (formal)	Wilt u
+Do you want (informal)	Wil je
+I cannot come	Ik kan niet komen
+I must go to... (obligation)	Ik moet naar...
+The appointment lasts approximately...	De afspraak duurt ongeveer...
+With friends / With my wife/husband	Met vrienden / Met mijn vrouw/man

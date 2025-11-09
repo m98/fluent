@@ -1,0 +1,8 @@
+#separator:tab
+#html:true
+#tags column:3
+I hope you're doing well	Ik hoop dat het goed met u gaat	
+I would like that day off because it’s my birthday	Ik wil die dag graag vrij, omdat ik jarig ben.	
+Thank you (polite)	Dank u wel	
+Best regards (formal Dutch email closing)	Met vriendelijke groet	
+Could you please give me a day off?	Kunt u mij alstublieft een dag vrij geven?	

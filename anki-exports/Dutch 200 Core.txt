@@ -1,0 +1,1423 @@
+#separator:tab
+#html:true
+"<b>ik. </b>
+<div style=""color: gold;"">
+  Ik woon in Nederland.
+</div> [sound:googletts-d30396fd-6549ab31-f450f8a2-19681d87-b22b547a.mp3]"	"<b>I. </b>
+<div style=""color: gold;"">
+  I live in the Netherlands.
+</div> [sound:googletts-9ae9e28e-da883f36-cc560828-9ba1b24a-7f4cc7ec.mp3]"
+"<b>jij / je. </b>
+<div style=""color: gold;"">
+  Jij bent mijn vriend.
+</div> [sound:googletts-8f4d59d1-3f11c667-2a3270df-2676b785-c8a6ce9c.mp3]"	"<b>you. </b>
+<div style=""color: gold;"">
+  You are my friend.
+</div> [sound:googletts-27cd4a67-5751218e-09f0a3ac-96fdbf92-90e1d260.mp3]"
+"<b>hij. </b>
+<div style=""color: gold;"">
+  Hij werkt hier.
+</div> [sound:googletts-c184ce3c-2e061d9b-dadecf55-2e6d27b0-6ddf408e.mp3]"	"<b>he. </b>
+<div style=""color: gold;"">
+  He works here.
+</div> [sound:googletts-ba4a122e-cabb8951-1197bf26-0230288a-c34c053a.mp3]"
+"<b>zij / ze. </b>
+<div style=""color: gold;"">
+  Zij is mijn zus.
+</div> [sound:googletts-5e28d518-b006b5dc-e03e910b-28d8a7ec-78398cdd.mp3]"	"<b>she / they. </b>
+<div style=""color: gold;"">
+  She is my sister.
+</div> [sound:googletts-9f58fd61-774a6578-707e0c98-361108a6-0627d37e.mp3]"
+"<b>wij / we. </b>
+<div style=""color: gold;"">
+  We gaan naar school.
+</div> [sound:googletts-b27d58ff-9e732a6b-0716a92e-d6020471-ca9d374d.mp3]"	"<b>we. </b>
+<div style=""color: gold;"">
+  We go to school.
+</div> [sound:googletts-85d2276b-2fc37bd9-240835cd-e668f0a8-7f519d43.mp3]"
+"<b>u. </b>
+<div style=""color: gold;"">
+  Wat wilt u drinken?
+</div> [sound:googletts-d7855883-c2e0105b-2f0584b1-1331cab5-9e65bab6.mp3]"	"<b>you (formal). </b>
+<div style=""color: gold;"">
+  What would you like to drink?
+</div> [sound:googletts-913ed20d-33690267-1d49b179-1aba7713-c235efd4.mp3]"
+"<b>jullie. </b>
+<div style=""color: gold;"">
+  Jullie zijn laat.
+</div> [sound:googletts-e776715e-115d3c0e-4c1c1df5-c0a3d41a-36ba4b51.mp3]"	"<b>you (plural). </b>
+<div style=""color: gold;"">
+  You are late.
+</div> [sound:googletts-d7c67e80-871c68eb-cba49f85-225ec15d-eee70dac.mp3]"
+"<b>mij / me. </b>
+<div style=""color: gold;"">
+  Geef het aan mij.
+</div> [sound:googletts-b600ebbb-3df259bb-5041fa10-e6b0dae9-2986eb22.mp3]"	"<b>me. </b>
+<div style=""color: gold;"">
+  Give it to me.
+</div> [sound:googletts-43d2b741-64408d22-d115c30e-7fee7181-f95552f7.mp3]"
+"<b>hem. </b>
+<div style=""color: gold;"">
+  Ik zie hem niet.
+</div> [sound:googletts-342cbfd6-4fc614be-ccc51e1b-a9347e02-49c1f5ef.mp3]"	"<b>him. </b>
+<div style=""color: gold;"">
+  I don't see him.
+</div> [sound:googletts-eadd9558-0b687a2f-fae112b7-425be450-c0b3686d.mp3]"
+"<b>haar. </b>
+<div style=""color: gold;"">
+  Ik help haar.
+</div> [sound:googletts-d5564040-5351448c-ac273c6b-77c937b0-5ecff31d.mp3]"	"<b>her. </b>
+<div style=""color: gold;"">
+  I help her.
+</div> [sound:googletts-402e2181-26845d3c-3805bd88-2225ad23-bad619f8.mp3]"
+"<b>ons. </b>
+<div style=""color: gold;"">
+  Hij belt ons morgen.
+</div> [sound:googletts-ef97257a-f0f8e26d-68db578c-8aa7fcaf-4fbc29f8.mp3]"	"<b>us. </b>
+<div style=""color: gold;"">
+  He calls us tomorrow.
+</div> [sound:googletts-374cc19a-224a7d3c-2449c515-0976b5cc-30e943b1.mp3]"
+"<b>hun. </b>
+<div style=""color: gold;"">
+  Dat is hun huis.
+</div> [sound:googletts-d3dbb1c4-6980f832-8dddbd5a-fc91a046-ba782779.mp3]"	"<b>their. </b>
+<div style=""color: gold;"">
+  That is their house.
+</div> [sound:googletts-b48bc8e4-5254012f-a639752a-a5b869bb-8e4548cd.mp3]"
+"<b>mijn. </b>
+<div style=""color: gold;"">
+  Dit is mijn boek.
+</div> [sound:googletts-c4788ba0-a5c6885a-fbda54c1-e0f83c07-550a76f3.mp3]"	"<b>my. </b>
+<div style=""color: gold;"">
+  This is my book.
+</div> [sound:googletts-a37a4f32-500f6f60-126138f4-42f8eff4-08267848.mp3]"
+"<b>jouw. </b>
+<div style=""color: gold;"">
+  Is dit jouw tas?
+</div> [sound:googletts-a16c08ec-992bc294-804f66a1-b61a651b-1bf45f71.mp3]"	"<b>your. </b>
+<div style=""color: gold;"">
+  Is this your bag?
+</div> [sound:googletts-eec1795d-e8f71a36-85264023-9881a837-c1a6472b.mp3]"
+"<b>zijn. </b>
+<div style=""color: gold;"">
+  Dat is zijn fiets.
+</div> [sound:googletts-24a94a9d-f9da1683-11ddfe80-7430ee45-338df85e.mp3]"	"<b>his. </b>
+<div style=""color: gold;"">
+  That is his bike.
+</div> [sound:googletts-eac3ed3a-00e7cc4b-20e75261-89512572-a77f2c4d.mp3]"
+"<b>wie. </b>
+<div style=""color: gold;"">
+  Wie komt er?
+</div> [sound:googletts-f387fb8b-2a306e17-dcaaf440-e3e74321-23bf1a1a.mp3]"	"<b>who. </b>
+<div style=""color: gold;"">
+  Who is coming?
+</div> [sound:googletts-3cb5e94e-df3c6447-0c451467-15253b50-5badae67.mp3]"
+"<b>wat. </b>
+<div style=""color: gold;"">
+  Wat is dat?
+</div> [sound:googletts-f458b723-f97198a3-70e551b6-2e94f1a1-d2c2d121.mp3]"	"<b>what. </b>
+<div style=""color: gold;"">
+  What is that?
+</div> [sound:googletts-a69b2300-4ee3a04a-f9d30235-73bdd13f-ec4e524c.mp3]"
+"<b>alles. </b>
+<div style=""color: gold;"">
+  Ik weet alles.
+</div> [sound:googletts-c9ade4c7-d90806ac-4d1800ea-a743155e-091ff244.mp3]"	"<b>everything. </b>
+<div style=""color: gold;"">
+  I know everything.
+</div> [sound:googletts-c228300d-76199e33-98079268-24a513a2-493e3410.mp3]"
+"<b>niets. </b>
+<div style=""color: gold;"">
+  Ik heb niets.
+</div> [sound:googletts-d5d66afc-f3963056-500475ad-be6317a8-a0cef0c3.mp3]"	"<b>nothing. </b>
+<div style=""color: gold;"">
+  I have nothing.
+</div> [sound:googletts-c288a957-d2556401-37e3812a-e1736132-205fe2e7.mp3]"
+"<b>iets. </b>
+<div style=""color: gold;"">
+  Ik wil iets eten.
+</div> [sound:googletts-4ba5511b-bd3ff6d1-6d9c817c-ef4368e7-ef217729.mp3]"	"<b>something. </b>
+<div style=""color: gold;"">
+  I want to eat something.
+</div> [sound:googletts-a9fc4710-0b64ddc7-7e50b66c-46efd1cb-a3558f01.mp3]"
+"<b>iemand. </b>
+<div style=""color: gold;"">
+  Is er iemand thuis?
+</div> [sound:googletts-542a3b1c-d0276549-68b3d113-b7f68107-4f01e128.mp3]"	"<b>someone. </b>
+<div style=""color: gold;"">
+  Is someone home?
+</div> [sound:googletts-43564a82-3f4bc121-698d6b43-bce1f230-d1080da1.mp3]"
+"<b>niemand. </b>
+<div style=""color: gold;"">
+  Er is niemand hier.
+</div> [sound:googletts-40ab972b-ea5aa0e7-2f0bf1c3-22917fc6-595795bf.mp3]"	"<b>no one. </b>
+<div style=""color: gold;"">
+  There is no one here.
+</div> [sound:googletts-b19d3a2a-372c79fb-9bc05a0c-5ce8619e-22217867.mp3]"
+"<b>mens / mensen. </b>
+<div style=""color: gold;"">
+  Veel mensen wonen hier.
+</div> [sound:googletts-aba1d225-cb5b4f33-9e5efa85-515431fc-2f3de5c2.mp3]"	"<b>person / people. </b>
+<div style=""color: gold;"">
+  Many people live here.
+</div> [sound:googletts-c1d0f5b4-b10b791d-21f5b65b-7bcb1a38-1e9d076d.mp3]"
+"<b>man. </b>
+<div style=""color: gold;"">
+  De man loopt snel.
+</div> [sound:googletts-97a832d0-8c97791a-86978ccb-e6d67e8b-462b4564.mp3]"	"<b>man. </b>
+<div style=""color: gold;"">
+  The man walks fast.
+</div> [sound:googletts-a830dc97-13ea8489-e15ba892-d3ae0110-97d5123c.mp3]"
+"<b>vrouw. </b>
+<div style=""color: gold;"">
+  De vrouw leest een boek.
+</div> [sound:googletts-44a36bc9-1d4add21-b5c64059-69678321-892c7a32.mp3]"	"<b>woman. </b>
+<div style=""color: gold;"">
+  The woman reads a book.
+</div> [sound:googletts-63514a05-ca20c25e-b81f60f7-48d2a06f-866f5765.mp3]"
+"<b>kind. </b>
+<div style=""color: gold;"">
+  Het kind speelt in de tuin.
+</div> [sound:googletts-a3edae9f-a0db5f59-6240a08b-2aa19707-9615d71e.mp3]"	"<b>child. </b>
+<div style=""color: gold;"">
+  The child plays in the garden.
+</div> [sound:googletts-0a1bc610-c0162ee8-88a7a91d-2ece11bb-6998f19e.mp3]"
+"<b>vriend. </b>
+<div style=""color: gold;"">
+  Hij is mijn beste vriend.
+</div> [sound:googletts-c0908694-6170974c-441a38fe-82dde803-249a8edf.mp3]"	"<b>friend. </b>
+<div style=""color: gold;"">
+  He is my best friend.
+</div> [sound:googletts-7e01feaa-ed38853a-fdfcb2a2-a60182ba-1cb237cf.mp3]"
+"<b>familie. </b>
+<div style=""color: gold;"">
+  Mijn familie woont in Turkije.
+</div> [sound:googletts-cb844d24-9ccc8bd9-13f2ca43-bb8b553c-cef9811d.mp3]"	"<b>family. </b>
+<div style=""color: gold;"">
+  My family lives in Turkey.
+</div> [sound:googletts-06f008c4-28cfe342-f52078eb-4ef51b39-a79783d0.mp3]"
+"<b>zijn. </b>
+<div style=""color: gold;"">
+  Ik ben student.
+</div> [sound:googletts-967aad69-48229aca-9e626c8d-2b53636a-c96876d2.mp3]"	"<b>to be. </b>
+<div style=""color: gold;"">
+  I am a student.
+</div> [sound:googletts-37c8dbd9-f36c3ecd-1a6fade5-005e56ba-4918adff.mp3]"
+"<b>hebben. </b>
+<div style=""color: gold;"">
+  Ik heb een auto.
+</div> [sound:googletts-2e345d24-948d3a7a-b7c5340f-d45f2c4c-0785d36f.mp3]"	"<b>to have. </b>
+<div style=""color: gold;"">
+  I have a car.
+</div> [sound:googletts-7ec7b43b-a0fd7aa7-233b0983-bc8ee4a8-032a1179.mp3]"
+"<b>worden. </b>
+<div style=""color: gold;"">
+  Hij wordt leraar.
+</div> [sound:googletts-077bc354-2c5026e7-e6e8d4f1-2ae41679-ec4c7055.mp3]"	"<b>to become. </b>
+<div style=""color: gold;"">
+  He becomes a teacher.
+</div> [sound:googletts-1eb11e55-156b92d8-b00af0f7-80c1dadd-2c06a2e4.mp3]"
+"<b>kunnen. </b>
+<div style=""color: gold;"">
+  Ik kan Nederlands spreken.
+</div> [sound:googletts-1c198062-68db972e-ad12d752-58260bf6-baf0b666.mp3]"	"<b>can / to be able to. </b>
+<div style=""color: gold;"">
+  I can speak Dutch.
+</div> [sound:googletts-f1a61e06-a86f9a9b-d6b60b2d-4840c2c5-7223943b.mp3]"
+"<b>willen. </b>
+<div style=""color: gold;"">
+  Ik wil koffie.
+</div> [sound:googletts-d14ffbd5-4346e08a-c9cb0ef7-1c1dce67-8baa0a64.mp3]"	"<b>to want. </b>
+<div style=""color: gold;"">
+  I want coffee.
+</div> [sound:googletts-04b27a08-1af98698-186361c5-5f7e33c4-6750b8b2.mp3]"
+"<b>moeten. </b>
+<div style=""color: gold;"">
+  Ik moet werken.
+</div> [sound:googletts-b5be78ca-f122dc62-ef63fe2b-af8ddf7d-a820cca9.mp3]"	"<b>must / to have to. </b>
+<div style=""color: gold;"">
+  I must work.
+</div> [sound:googletts-6ae799b4-a602aafd-e3858439-308f73dc-982a9f1d.mp3]"
+"<b>mogen. </b>
+<div style=""color: gold;"">
+  Mag ik binnenkomen?
+</div> [sound:googletts-32265538-4547998a-358f5dcd-1e5e82c4-bc396fa1.mp3]"	"<b>may / to be allowed to. </b>
+<div style=""color: gold;"">
+  May I come in?
+</div> [sound:googletts-94038e52-c605a916-09b124dc-b448d0a7-52fbf4eb.mp3]"
+"<b>zullen. </b>
+<div style=""color: gold;"">
+  Ik zal je helpen.
+</div> [sound:googletts-319cf02a-7203c907-b5b154ff-4c59a155-644cf079.mp3]"	"<b>shall / will. </b>
+<div style=""color: gold;"">
+  I will help you.
+</div> [sound:googletts-b115b251-de316500-09b6a5d5-5d7fd764-9877b72f.mp3]"
+"<b>gaan. </b>
+<div style=""color: gold;"">
+  Ik ga naar huis.
+</div> [sound:googletts-b4e50531-f6c8c6e6-b5860b13-daaeb3f3-7d3cf373.mp3]"	"<b>to go. </b>
+<div style=""color: gold;"">
+  I go home.
+</div> [sound:googletts-417ad1a0-44bd142d-4c855398-3f3d91a8-bd72be64.mp3]"
+"<b>komen. </b>
+<div style=""color: gold;"">
+  Hij komt morgen.
+</div> [sound:googletts-cdfa4bfe-3a26b5ef-84a5b847-922160de-a0b0cd67.mp3]"	"<b>to come. </b>
+<div style=""color: gold;"">
+  He comes tomorrow.
+</div> [sound:googletts-717d7e47-6e489a03-bf2e43ee-2bb2e1fa-9770fce5.mp3]"
+"<b>doen. </b>
+<div style=""color: gold;"">
+  Wat doe je?
+</div> [sound:googletts-bf89d256-19dcfd2f-4f8ab321-eb38f5fa-b3f6b8b8.mp3]"	"<b>to do. </b>
+<div style=""color: gold;"">
+  What do you do?
+</div> [sound:googletts-561f480e-7db0c540-fe60b697-86649551-04182448.mp3]"
+"<b>maken. </b>
+<div style=""color: gold;"">
+  Ik maak mijn huiswerk.
+</div> [sound:googletts-1bd91599-3cf05ef2-46dd9992-bb3f34bf-657cfc46.mp3]"	"<b>to make. </b>
+<div style=""color: gold;"">
+  I do my homework.
+</div> [sound:googletts-923b2931-83f399ff-bff20fcf-d9ac5d9a-ac01158e.mp3]"
+"<b>zeggen. </b>
+<div style=""color: gold;"">
+  Wat zeg je?
+</div> [sound:googletts-0ce7bd74-5ed037e0-cfd3e249-7de353fc-f9b64e50.mp3]"	"<b>to say. </b>
+<div style=""color: gold;"">
+  What do you say?
+</div> [sound:googletts-61109ad5-355eea7a-0acb8704-15f3c132-15f2f8ff.mp3]"
+"<b>spreken. </b>
+<div style=""color: gold;"">
+  Ik spreek Nederlands.
+</div> [sound:googletts-56c8e000-f8e9b4f5-534fe9b6-795656ab-d1ac92fb.mp3]"	"<b>to speak. </b>
+<div style=""color: gold;"">
+  I speak Dutch.
+</div> [sound:googletts-119db0d9-753780cb-c3db48d0-30339aa5-2a05ea80.mp3]"
+"<b>praten. </b>
+<div style=""color: gold;"">
+  We praten over het weer.
+</div> [sound:googletts-5db3dd4a-71612454-2ddd0b36-456750f0-922f440f.mp3]"	"<b>to talk. </b>
+<div style=""color: gold;"">
+  We talk about the weather.
+</div> [sound:googletts-8510c776-98f9960b-52d3f85e-96d12165-eee81101.mp3]"
+"<b>vragen. </b>
+<div style=""color: gold;"">
+  Ik vraag om hulp.
+</div> [sound:googletts-6ac9cd4d-23c13fe9-7abb9c5d-d3a1e2f7-b7d3675f.mp3]"	"<b>to ask. </b>
+<div style=""color: gold;"">
+  I ask for help.
+</div> [sound:googletts-6f8dd5c5-61719f85-f753b932-a50f5792-142fcfc7.mp3]"
+"<b>antwoorden. </b>
+<div style=""color: gold;"">
+  Zij antwoordt op mijn vraag.
+</div> [sound:googletts-9df11dae-d029c13e-a998a8e0-ee04a6cf-7d4e33bd.mp3]"	"<b>to answer. </b>
+<div style=""color: gold;"">
+  She answers my question.
+</div> [sound:googletts-27bc4821-8fa52b3b-117e3a28-6cf6988c-76b58ca2.mp3]"
+"<b>zien. </b>
+<div style=""color: gold;"">
+  Ik zie de zon.
+</div> [sound:googletts-d39f85c7-e60bab3d-9677104f-b4874cb3-fe8cb7bf.mp3]"	"<b>to see. </b>
+<div style=""color: gold;"">
+  I see the sun.
+</div> [sound:googletts-a263d92b-c99ee485-c6e70b8b-2a0135e3-1c16db06.mp3]"
+"<b>kijken. </b>
+<div style=""color: gold;"">
+  Ik kijk naar tv.
+</div> [sound:googletts-e9fd9cbc-80d5ed15-5786e671-177f2d51-20f97982.mp3]"	"<b>to look / to watch. </b>
+<div style=""color: gold;"">
+  I watch tv.
+</div> [sound:googletts-47ae799e-b529476b-00dec668-4e403a37-05ff3ba7.mp3]"
+"<b>horen. </b>
+<div style=""color: gold;"">
+  Ik hoor een geluid.
+</div> [sound:googletts-ba39260d-2220221b-c06502ed-c045411c-f567a92a.mp3]"	"<b>to hear. </b>
+<div style=""color: gold;"">
+  I hear a sound.
+</div> [sound:googletts-62ee6cd2-ba34ae33-3bf2a3f1-fb697db3-0a812b4c.mp3]"
+"<b>luisteren. </b>
+<div style=""color: gold;"">
+  Ik luister naar muziek.
+</div> [sound:googletts-28b90e48-3a467c26-6a58b9ae-4c865585-326c1215.mp3]"	"<b>to listen. </b>
+<div style=""color: gold;"">
+  I listen to music.
+</div> [sound:googletts-49bac0e5-f63e47f4-a762c1ba-fcd738f3-ae034dc4.mp3]"
+"<b>weten. </b>
+<div style=""color: gold;"">
+  Ik weet het antwoord.
+</div> [sound:googletts-57d39caf-d1a8bf79-6e5ad84e-92384287-e49df64d.mp3]"	"<b>to know (a fact). </b>
+<div style=""color: gold;"">
+  I know the answer.
+</div> [sound:googletts-06efa505-1c636a41-e8fe2cdd-6f959012-8cb12fd9.mp3]"
+"<b>kennen. </b>
+<div style=""color: gold;"">
+  Ik ken hem goed.
+</div> [sound:googletts-93d25baa-81c5accd-09f6f5f6-cfa0aeb1-729a36e5.mp3]"	"<b>to know (a person). </b>
+<div style=""color: gold;"">
+  I know him well.
+</div> [sound:googletts-126c0c90-c740c18d-c50a9a4d-b2125a9f-86dd660b.mp3]"
+"<b>denken. </b>
+<div style=""color: gold;"">
+  Ik denk aan jou.
+</div> [sound:googletts-54d2b757-4c3e3cfb-d7f092b8-2c169d29-ea26f0a8.mp3]"	"<b>to think. </b>
+<div style=""color: gold;"">
+  I think of you.
+</div> [sound:googletts-3ad24d11-b4841aff-c97f76ae-ea15cce5-69487663.mp3]"
+"<b>vinden. </b>
+<div style=""color: gold;"">
+  Ik vind dit mooi.
+</div> [sound:googletts-772eff9f-a16f935d-15a8242f-d3ec746f-eaaa6578.mp3]"	"<b>to find / to think. </b>
+<div style=""color: gold;"">
+  I find this beautiful.
+</div> [sound:googletts-64723156-13488558-61db69ab-dfa313e2-85852f2d.mp3]"
+"<b>geven. </b>
+<div style=""color: gold;"">
+  Geef me je hand.
+</div> [sound:googletts-848903c8-d9dd7589-6aca0cb6-3253b415-94ee2692.mp3]"	"<b>to give. </b>
+<div style=""color: gold;"">
+  Give me your hand.
+</div> [sound:googletts-83cc293b-57685aeb-dcd43711-fba59b07-718040fa.mp3]"
+"<b>krijgen. </b>
+<div style=""color: gold;"">
+  Ik krijg een cadeau.
+</div> [sound:googletts-a6865f80-3c80c5ef-d4ef3388-7c8f348e-342fc323.mp3]"	"<b>to get / to receive. </b>
+<div style=""color: gold;"">
+  I get a present.
+</div> [sound:googletts-7dce32fc-691029cc-7aec1785-7d9c2fc4-8c04ddf0.mp3]"
+"<b>nemen. </b>
+<div style=""color: gold;"">
+  Ik neem de trein.
+</div> [sound:googletts-3a901e7d-84337f06-c0728ebe-b6d7e65b-8793fe8f.mp3]"	"<b>to take. </b>
+<div style=""color: gold;"">
+  I take the train.
+</div> [sound:googletts-c183d3ed-810d45cd-9239f470-e25fbc0f-1b38cd38.mp3]"
+"<b>brengen. </b>
+<div style=""color: gold;"">
+  Ik breng je naar huis.
+</div> [sound:googletts-31d1d88b-bb4b080b-15eb64e2-deeebc10-6ee1af01.mp3]"	"<b>to bring. </b>
+<div style=""color: gold;"">
+  I bring you home.
+</div> [sound:googletts-30a2d128-b24de65c-be4b8131-52bd4dd7-46b65ede.mp3]"
+"<b>halen. </b>
+<div style=""color: gold;"">
+  Ik haal brood bij de bakker.
+</div> [sound:googletts-24a4a6af-58e50044-3288eacb-e081de0a-f9af7477.mp3]"	"<b>to get / to fetch. </b>
+<div style=""color: gold;"">
+  I get bread at the bakery.
+</div> [sound:googletts-0970dd8d-afe46af0-7b5e9e58-b69a194b-d6dee06f.mp3]"
+"<b>houden. </b>
+<div style=""color: gold;"">
+  Ik hou van jou.
+</div> [sound:googletts-4a3cb38a-07420231-bfd2b2a5-e9038654-ce0b41a7.mp3]"	"<b>to hold / to love. </b>
+<div style=""color: gold;"">
+  I love you.
+</div> [sound:googletts-0760d65e-9d2bbe3a-1d8ab6f1-27960955-cdc160c5.mp3]"
+"<b>laten. </b>
+<div style=""color: gold;"">
+  Laat me met rust.
+</div> [sound:googletts-03a1cca0-96e12d1d-d946a18d-ff3a801f-55cb64c2.mp3]"	"<b>to let / to allow. </b>
+<div style=""color: gold;"">
+  Leave me alone.
+</div> [sound:googletts-bf59f319-e02bca2b-1ee165e5-7c4e0f48-eecd67f7.mp3]"
+"<b>blijven. </b>
+<div style=""color: gold;"">
+  Ik blijf thuis.
+</div> [sound:googletts-7cc2c8b7-e25acb95-1be1fb2f-82fb7a0b-0115db51.mp3]"	"<b>to stay. </b>
+<div style=""color: gold;"">
+  I stay home.
+</div> [sound:googletts-4c9671e6-1484b42f-70064aa5-8cfe07d5-37f4088b.mp3]"
+"<b>staan. </b>
+<div style=""color: gold;"">
+  Ik sta bij de deur.
+</div> [sound:googletts-846c1fd3-84d2d134-6c7ec4b3-cd703380-6264096f.mp3]"	"<b>to stand. </b>
+<div style=""color: gold;"">
+  I stand at the door.
+</div> [sound:googletts-5e84f0b4-13f7ae6e-acc059cb-1c5600e4-8fa78139.mp3]"
+"<b>zitten. </b>
+<div style=""color: gold;"">
+  Ik zit op een stoel.
+</div> [sound:googletts-0292a84a-defb64fd-505235b7-79fb7152-52dd83e2.mp3]"	"<b>to sit. </b>
+<div style=""color: gold;"">
+  I sit on a chair.
+</div> [sound:googletts-cea3f82c-5f47eaf9-a4a87978-f5dd62b9-fecfc7d7.mp3]"
+"<b>liggen. </b>
+<div style=""color: gold;"">
+  Ik lig in bed.
+</div> [sound:googletts-7bc56238-1b8299ea-9f801734-d60281d8-65897cc9.mp3]"	"<b>to lie down. </b>
+<div style=""color: gold;"">
+  I lie in bed.
+</div> [sound:googletts-4361db99-9ec26a8b-62b50db8-c2193b1a-49126615.mp3]"
+"<b>lopen. </b>
+<div style=""color: gold;"">
+  Ik loop naar school.
+</div> [sound:googletts-396d4249-9814f331-8b33a9af-1d9110cf-fdd970a2.mp3]"	"<b>to walk. </b>
+<div style=""color: gold;"">
+  I walk to school.
+</div> [sound:googletts-3959ecc3-6deb90e3-0069d0c3-68d9e8b8-f23b8eaf.mp3]"
+"<b>werken. </b>
+<div style=""color: gold;"">
+  Ik werk vijf dagen per week.
+</div> [sound:googletts-11a9b57e-d1ab4aba-2ab66365-972eac3d-e15f844a.mp3]"	"<b>to work. </b>
+<div style=""color: gold;"">
+  I work five days a week.
+</div> [sound:googletts-010ba96a-87e6ee7a-dcd09723-12ec59f6-671817f4.mp3]"
+"<b>gebruiken. </b>
+<div style=""color: gold;"">
+  Ik gebruik een computer.
+</div> [sound:googletts-ea8b646d-2c569e52-76a52051-7d005778-2650a0bf.mp3]"	"<b>to use. </b>
+<div style=""color: gold;"">
+  I use a computer.
+</div> [sound:googletts-21562088-b0774c64-23045ae9-ce2911d2-0d42d320.mp3]"
+"<b>proberen. </b>
+<div style=""color: gold;"">
+  Ik probeer het te leren.
+</div> [sound:googletts-90561c39-5b82dae9-4dc93815-3980a5b9-4980558c.mp3]"	"<b>to try. </b>
+<div style=""color: gold;"">
+  I try to learn it.
+</div> [sound:googletts-475e8a66-49db9176-c03fa9f8-a0ae7cf6-95d38a1e.mp3]"
+"<b>beginnen. </b>
+<div style=""color: gold;"">
+  De les begint om negen uur.
+</div> [sound:googletts-09976186-5ebd4ef8-310e44b2-cab0f829-1b9cc92d.mp3]"	"<b>to begin. </b>
+<div style=""color: gold;"">
+  The lesson begins at nine o'clock.
+</div> [sound:googletts-68673346-f8260ed3-7fbb1f8c-2e29ce9e-a4b1b755.mp3]"
+"<b>stoppen. </b>
+<div style=""color: gold;"">
+  Stop hier!
+</div> [sound:googletts-b8d6d4f0-9da0df72-fd3a3dbd-a16246f2-2bb74e38.mp3]"	"<b>to stop. </b>
+<div style=""color: gold;"">
+  Stop here!
+</div> [sound:googletts-b42a2e25-e95a89ba-aedc0ea4-f65f0c1f-6fbd4d75.mp3]"
+"<b>helpen. </b>
+<div style=""color: gold;"">
+  Kan je me helpen?
+</div> [sound:googletts-06d040e2-d3d64d9b-c5a88079-c1ea49f9-6cf30ef6.mp3]"	"<b>to help. </b>
+<div style=""color: gold;"">
+  Can you help me?
+</div> [sound:googletts-86f8eaca-478a7391-1e5bcd99-7e20eb93-caedd201.mp3]"
+"<b>eten. </b>
+<div style=""color: gold;"">
+  Ik eet een boterham.
+</div> [sound:googletts-4e479ecd-6ac6b770-b1ac8e5a-7a3b6d8b-f58db6da.mp3]"	"<b>to eat. </b>
+<div style=""color: gold;"">
+  I eat a sandwich.
+</div> [sound:googletts-e35a4b7e-17c0001e-0042509f-91f29b68-f4fb889b.mp3]"
+"<b>drinken. </b>
+<div style=""color: gold;"">
+  Ik drink thee.
+</div> [sound:googletts-ec3b765c-a1d79e25-6c92f610-2dba37ed-3d048d32.mp3]"	"<b>to drink. </b>
+<div style=""color: gold;"">
+  I drink tea.
+</div> [sound:googletts-a62713e7-241a542d-f0bc6518-96f2f0f6-9f477135.mp3]"
+"<b>slapen. </b>
+<div style=""color: gold;"">
+  Ik slaap acht uur per nacht.
+</div> [sound:googletts-4d851e89-c6b30fba-b4e56ad9-db04c4fb-d2500750.mp3]"	"<b>to sleep. </b>
+<div style=""color: gold;"">
+  I sleep eight hours per night.
+</div> [sound:googletts-257507fa-231dd741-4c24a911-22870796-0f6867f6.mp3]"
+"<b>kopen. </b>
+<div style=""color: gold;"">
+  Ik koop een nieuw boek.
+</div> [sound:googletts-a83f5001-03a1b166-1adf27be-d0bc6e13-564de67e.mp3]"	"<b>to buy. </b>
+<div style=""color: gold;"">
+  I buy a new book.
+</div> [sound:googletts-a818c1b3-1e54b495-66fcbded-5efa579e-fbcbe8f8.mp3]"
+"<b>betalen. </b>
+<div style=""color: gold;"">
+  Ik betaal met mijn kaart.
+</div> [sound:googletts-bd8eceb3-f9ecdab8-2bf94e29-215ee4ea-00e3c093.mp3]"	"<b>to pay. </b>
+<div style=""color: gold;"">
+  I pay with my card.
+</div> [sound:googletts-9c0c7f16-faead651-06e06fbb-75e606a2-64b267dc.mp3]"
+"<b>lezen. </b>
+<div style=""color: gold;"">
+  Ik lees elke dag.
+</div> [sound:googletts-ecdd6b34-9ca7a853-3a175aab-eaf01a59-03313814.mp3]"	"<b>to read. </b>
+<div style=""color: gold;"">
+  I read every day.
+</div> [sound:googletts-efa9abbc-593a90b1-684f9dd9-e494f2eb-8080a366.mp3]"
+"<b>schrijven. </b>
+<div style=""color: gold;"">
+  Ik schrijf een brief.
+</div> [sound:googletts-6bda0422-6281857d-97a17331-fd400560-e72867d9.mp3]"	"<b>to write. </b>
+<div style=""color: gold;"">
+  I write a letter.
+</div> [sound:googletts-1bcb6e8c-31e367ba-a4884ef6-a11c6140-3f16dae3.mp3]"
+"<b>leren. </b>
+<div style=""color: gold;"">
+  Ik leer Nederlands op school.
+</div> [sound:googletts-0e46df59-68884ba2-4b7a9a7b-1ccea7c8-9fa912b7.mp3]"	"<b>to learn. </b>
+<div style=""color: gold;"">
+  I learn Dutch at school.
+</div> [sound:googletts-c1d77869-6792a215-2d114da4-d53d1bb6-6576a4bb.mp3]"
+"<b>begrijpen. </b>
+<div style=""color: gold;"">
+  Ik begrijp de les.
+</div> [sound:googletts-91a39e6f-8517a2a2-4ac4cb25-3b20f9f3-c2e7b920.mp3]"	"<b>to understand. </b>
+<div style=""color: gold;"">
+  I understand the lesson.
+</div> [sound:googletts-8468fb7d-6d85ee86-d15814af-d202fd6a-8b4dbd3a.mp3]"
+"<b>vergeten. </b>
+<div style=""color: gold;"">
+  Ik vergeet zijn naam.
+</div> [sound:googletts-9a6afde1-e4255012-f87ad442-a32cae47-019f6f83.mp3]"	"<b>to forget. </b>
+<div style=""color: gold;"">
+  I forget his name.
+</div> [sound:googletts-50597f0c-5d3e4143-202d942c-85f2cd97-e103d490.mp3]"
+"<b>zoeken. </b>
+<div style=""color: gold;"">
+  Ik zoek mijn sleutels.
+</div> [sound:googletts-1a6109ee-0d2171c6-3de3585e-8b42b5ff-79d58562.mp3]"	"<b>to search. </b>
+<div style=""color: gold;"">
+  I search for my keys.
+</div> [sound:googletts-5267d8d6-0a815509-917aaff8-5ecbefd6-ebfd7f08.mp3]"
+"<b>voelen. </b>
+<div style=""color: gold;"">
+  Ik voel me goed vandaag.
+</div> [sound:googletts-4782e08c-2ca46f13-a5251533-0d1a8aa8-3ea20443.mp3]"	"<b>to feel. </b>
+<div style=""color: gold;"">
+  I feel good today.
+</div> [sound:googletts-a52871af-a2760fbc-fa1cf592-69b1c5d2-e941f52b.mp3]"
+"<b>zetten. </b>
+<div style=""color: gold;"">
+  Ik zet de tas op de tafel.
+</div> [sound:googletts-7737edaf-2db8ef98-93add665-958a36cc-4bc024ce.mp3]"	"<b>to put / to place. </b>
+<div style=""color: gold;"">
+  I put the bag on the table.
+</div> [sound:googletts-ae52727a-ee05e74b-73b72588-63f6eb0e-2216ebb3.mp3]"
+"<b>goed. </b>
+<div style=""color: gold;"">
+  Dat is een goed idee.
+</div> [sound:googletts-3ad8fd4e-f219eeb5-c78a17e6-48fdc4db-004874e2.mp3]"	"<b>good. </b>
+<div style=""color: gold;"">
+  That is a good idea.
+</div> [sound:googletts-d8573f1e-bea217ef-c30c850a-8494771b-0b08f7fb.mp3]"
+"<b>slecht. </b>
+<div style=""color: gold;"">
+  Het weer is slecht vandaag.
+</div> [sound:googletts-38b6996c-6248c4b8-9dd9cffa-7d0fc197-c7d5f052.mp3]"	"<b>bad. </b>
+<div style=""color: gold;"">
+  The weather is bad today.
+</div> [sound:googletts-ce078952-bad1a414-84ddf2e3-ddf93007-08adecdd.mp3]"
+"<b>groot. </b>
+<div style=""color: gold;"">
+  Amsterdam is een grote stad.
+</div> [sound:googletts-c9f93090-95c9a3ca-7ee20ca5-38d5bc62-f791ba39.mp3]"	"<b>big. </b>
+<div style=""color: gold;"">
+  Amsterdam is a big city.
+</div> [sound:googletts-87c4063a-cb210ed7-c68c33c3-0475dab2-27df7c7a.mp3]"
+"<b>klein. </b>
+<div style=""color: gold;"">
+  Mijn kamer is klein.
+</div> [sound:googletts-9dd9359a-55a15fa2-49788f15-35daa958-6e87de47.mp3]"	"<b>small. </b>
+<div style=""color: gold;"">
+  My room is small.
+</div> [sound:googletts-a9e190f0-6b286e5d-2786b9c9-9d938dcf-bc07f7bd.mp3]"
+"<b>nieuw. </b>
+<div style=""color: gold;"">
+  Ik heb een nieuwe telefoon.
+</div> [sound:googletts-4a80a26f-c9e49b0f-66b6af8e-444503e4-5078589b.mp3]"	"<b>new. </b>
+<div style=""color: gold;"">
+  I have a new phone.
+</div> [sound:googletts-74167b5f-fd1d8071-72fb66d5-fc2047f1-2ae93605.mp3]"
+"<b>oud. </b>
+<div style=""color: gold;"">
+  Mijn opa is erg oud.
+</div> [sound:googletts-d46ab0c5-2e8b816f-e3762985-dc4dc4e4-29ce3394.mp3]"	"<b>old. </b>
+<div style=""color: gold;"">
+  My grandpa is very old.
+</div> [sound:googletts-4f10d89b-2f624bf4-18525131-39f6b8e1-91dbee45.mp3]"
+"<b>jong. </b>
+<div style=""color: gold;"">
+  Ze is nog jong.
+</div> [sound:googletts-84145f43-bed59601-1d047c1e-96ad9e6b-98490c59.mp3]"	"<b>young. </b>
+<div style=""color: gold;"">
+  She is still young.
+</div> [sound:googletts-71fb2551-9c6d108b-0055eb25-6ae20a48-c71a7d4c.mp3]"
+"<b>mooi. </b>
+<div style=""color: gold;"">
+  De bloemen zijn mooi.
+</div> [sound:googletts-345af119-719e6e69-922f0875-af202382-71596a2e.mp3]"	"<b>beautiful. </b>
+<div style=""color: gold;"">
+  The flowers are beautiful.
+</div> [sound:googletts-f17de2b8-c4e9f465-392b9827-e648bdb6-91829b6f.mp3]"
+"<b>lekker. </b>
+<div style=""color: gold;"">
+  Het eten is lekker.
+</div> [sound:googletts-eb862d6c-926cec7a-8e16d2a9-ee794507-7a1867d3.mp3]"	"<b>tasty / nice. </b>
+<div style=""color: gold;"">
+  The food is tasty.
+</div> [sound:googletts-5f2475b9-d9995dc2-a32c6129-57f99712-fea952d2.mp3]"
+"<b>lang. </b>
+<div style=""color: gold;"">
+  Hij is erg lang.
+</div> [sound:googletts-1b1350c6-167fcf39-43fe5757-028c4fe3-2c5745ab.mp3]"	"<b>long / tall. </b>
+<div style=""color: gold;"">
+  He is very tall.
+</div> [sound:googletts-7cc8eedc-60d952fe-99a12140-8b37054d-be26acc6.mp3]"
+"<b>kort. </b>
+<div style=""color: gold;"">
+  Mijn haar is kort.
+</div> [sound:googletts-ae0357f3-6b8af2c0-11981fd2-8f1f93eb-15a89c82.mp3]"	"<b>short. </b>
+<div style=""color: gold;"">
+  My hair is short.
+</div> [sound:googletts-3522750f-3c2fd838-454f67db-312e7826-4418df5f.mp3]"
+"<b>hoog. </b>
+<div style=""color: gold;"">
+  De berg is hoog.
+</div> [sound:googletts-24b245f8-10a1bbd3-741c18a5-d2c0cb5e-4e54bba0.mp3]"	"<b>high. </b>
+<div style=""color: gold;"">
+  The mountain is high.
+</div> [sound:googletts-d831eaed-6f128bb4-ad955ea1-cad2f185-26676fa8.mp3]"
+"<b>laag. </b>
+<div style=""color: gold;"">
+  De tafel is laag.
+</div> [sound:googletts-1d56a342-bd14f4e0-e15ac582-a61fd2ea-a5640c4b.mp3]"	"<b>low. </b>
+<div style=""color: gold;"">
+  The table is low.
+</div> [sound:googletts-88659702-38b74292-ac63d031-a30df36c-91d2ca02.mp3]"
+"<b>warm. </b>
+<div style=""color: gold;"">
+  Het is warm buiten.
+</div> [sound:googletts-c984fe3a-a423309b-1268b756-94f235b0-a82176f4.mp3]"	"<b>warm. </b>
+<div style=""color: gold;"">
+  It is warm outside.
+</div> [sound:googletts-d03bfdae-6aa18f4c-1214fca3-1d2e70a1-c8f45f72.mp3]"
+"<b>koud. </b>
+<div style=""color: gold;"">
+  In de winter is het koud.
+</div> [sound:googletts-bfc01d29-32f76ced-c4f793f8-d3a89183-f44caa8b.mp3]"	"<b>cold. </b>
+<div style=""color: gold;"">
+  In winter it is cold.
+</div> [sound:googletts-487c25d7-12daafc1-ee6c58a4-91c9624b-251b9608.mp3]"
+"<b>belangrijk. </b>
+<div style=""color: gold;"">
+  Dit is zeer belangrijk.
+</div> [sound:googletts-1567161d-c775bc2d-28a24951-70e3b2a5-ec5cecd5.mp3]"	"<b>important. </b>
+<div style=""color: gold;"">
+  This is very important.
+</div> [sound:googletts-a363d89c-c319f2b8-0a1f870f-3736ba80-841e2c6a.mp3]"
+"<b>makkelijk. </b>
+<div style=""color: gold;"">
+  Deze les is makkelijk.
+</div> [sound:googletts-ba792b61-c780a701-39311cd6-66f381ab-b715c0fa.mp3]"	"<b>easy. </b>
+<div style=""color: gold;"">
+  This lesson is easy.
+</div> [sound:googletts-9ebd754a-6e54b614-bc8aafd8-dfeda980-8408fb0b.mp3]"
+"<b>moeilijk. </b>
+<div style=""color: gold;"">
+  Nederlands is moeilijk.
+</div> [sound:googletts-ba7fb0e6-73550bed-50b68722-71682ca6-bbe36e0a.mp3]"	"<b>difficult. </b>
+<div style=""color: gold;"">
+  Dutch is difficult.
+</div> [sound:googletts-2ff73cf1-4c6bc665-e696e539-793a3701-32275b9f.mp3]"
+"<b>blij. </b>
+<div style=""color: gold;"">
+  Ik ben blij met je.
+</div> [sound:googletts-413943fb-2777e63f-d5910784-a75a1144-50b8aca2.mp3]"	"<b>happy. </b>
+<div style=""color: gold;"">
+  I am happy with you.
+</div> [sound:googletts-d33195ed-00ff057b-1c3bdcea-293244e1-a02b32b8.mp3]"
+"<b>boos. </b>
+<div style=""color: gold;"">
+  Hij is boos op mij.
+</div> [sound:googletts-aa0ce6a7-8df1d540-64b35219-9c37187e-3954495b.mp3]"	"<b>angry. </b>
+<div style=""color: gold;"">
+  He is angry at me.
+</div> [sound:googletts-84040cfd-7b63aabc-8c9e2075-b62ec49e-3a700d96.mp3]"
+"<b>vroeg. </b>
+<div style=""color: gold;"">
+  Ik sta vroeg op.
+</div> [sound:googletts-857b425a-304002b9-ed7465cb-adc3dde1-ab4832b3.mp3]"	"<b>early. </b>
+<div style=""color: gold;"">
+  I get up early.
+</div> [sound:googletts-2dc02b86-3116b87e-6b0dfda6-1482efa4-103355d1.mp3]"
+"<b>laat. </b>
+<div style=""color: gold;"">
+  Het is laat, ik moet gaan.
+</div> [sound:googletts-3e5b134c-df9d5bd7-3d8a73cb-47881e64-7c3b887c.mp3]"	"<b>late. </b>
+<div style=""color: gold;"">
+  It is late, I must go.
+</div> [sound:googletts-80221ff1-0ff7099d-21c7e959-60cecc9b-d93e573f.mp3]"
+"<b>snel. </b>
+<div style=""color: gold;"">
+  De auto rijdt snel.
+</div> [sound:googletts-bf9bbf30-be7e41a2-b3e9e2d0-99bcc463-410a5061.mp3]"	"<b>fast. </b>
+<div style=""color: gold;"">
+  The car drives fast.
+</div> [sound:googletts-5d0779f9-6edf2012-908f5666-98ffa92d-3aabec4b.mp3]"
+"<b>langzaam. </b>
+<div style=""color: gold;"">
+  Loop langzaam!
+</div> [sound:googletts-258318f1-30a82140-c77c2329-220fd6c3-607f7dab.mp3]"	"<b>slow. </b>
+<div style=""color: gold;"">
+  Walk slowly!
+</div> [sound:googletts-952df161-ced38bd2-9039a774-b73b8d94-3d9c653e.mp3]"
+"<b>zelfde. </b>
+<div style=""color: gold;"">
+  We hebben hetzelfde boek.
+</div> [sound:googletts-64f68307-d8af9702-eafd898c-06340382-7001226c.mp3]"	"<b>same. </b>
+<div style=""color: gold;"">
+  We have the same book.
+</div> [sound:googletts-90a3c6e0-c5b589f3-c4bd57fd-f8f455c8-5eab8757.mp3]"
+"<b>ander. </b>
+<div style=""color: gold;"">
+  Ik wil een ander boek.
+</div> [sound:googletts-8c217e8e-ecc9acd9-85d1a5bb-4e064c3f-1c370c99.mp3]"	"<b>other. </b>
+<div style=""color: gold;"">
+  I want another book.
+</div> [sound:googletts-0c2213bc-64ee1503-5b48c2ab-e2cb0d20-f0940b51.mp3]"
+"<b>niet. </b>
+<div style=""color: gold;"">
+  Ik kan niet komen.
+</div> [sound:googletts-c3cf59a2-5280d86d-c9edaced-e40abce5-587d2261.mp3]"	"<b>not. </b>
+<div style=""color: gold;"">
+  I cannot come.
+</div> [sound:googletts-e8a5bc1f-6a22814b-ab538bbc-07fc0d5f-bf892906.mp3]"
+"<b>wel. </b>
+<div style=""color: gold;"">
+  Ik ga wel mee.
+</div> [sound:googletts-cc940c85-4b1e9ceb-633e82fd-324b5cc4-114f3bac.mp3]"	"<b>indeed / yes. </b>
+<div style=""color: gold;"">
+  I will come along.
+</div> [sound:googletts-a9158a99-ea580dcd-dc58ef1d-b9a47dd2-68a4cfae.mp3]"
+"<b>ook. </b>
+<div style=""color: gold;"">
+  Ik ook, dank je.
+</div> [sound:googletts-1c94033b-17f84d91-1c029d4d-91336da1-e72263c3.mp3]"	"<b>also / too. </b>
+<div style=""color: gold;"">
+  Me too, thank you.
+</div> [sound:googletts-7e184891-a1965c77-baafb5a7-783d80ce-d7687dbb.mp3]"
+"<b>er. </b>
+<div style=""color: gold;"">
+  Er is niemand thuis.
+</div> [sound:googletts-4817c76c-ce43fcdf-e9e35e7e-7789e45e-79433b1a.mp3]"	"<b>there. </b>
+<div style=""color: gold;"">
+  There is nobody home.
+</div> [sound:googletts-7c584981-f9c14b21-6a5d6093-cc3d714f-b5dd237f.mp3]"
+"<b>hier. </b>
+<div style=""color: gold;"">
+  Kom hier!
+</div> [sound:googletts-57178c73-4d03cc97-8f79294f-2fb9ad18-877ef492.mp3]"	"<b>here. </b>
+<div style=""color: gold;"">
+  Come here!
+</div> [sound:googletts-2fb531a7-f4fd85be-96441741-913a68fc-af28a115.mp3]"
+"<b>daar. </b>
+<div style=""color: gold;"">
+  Hij staat daar.
+</div> [sound:googletts-bb63640c-40b49799-07fbc866-a29ecd43-ea139a66.mp3]"	"<b>there. </b>
+<div style=""color: gold;"">
+  He stands there.
+</div> [sound:googletts-a8fc25df-5cd9656f-6b8d991c-2a7ea89e-92f8ab81.mp3]"
+"<b>nu. </b>
+<div style=""color: gold;"">
+  Ik moet nu gaan.
+</div> [sound:googletts-e6a2dd53-1eaf2ae2-24bf44e7-8e2191ff-3fc817b3.mp3]"	"<b>now. </b>
+<div style=""color: gold;"">
+  I must go now.
+</div> [sound:googletts-7bf45540-2505d99c-3ec51533-f9f2aa0f-16fba2bc.mp3]"
+"<b>dan. </b>
+<div style=""color: gold;"">
+  Tot dan!
+</div> [sound:googletts-1d69a9d6-f4cf2575-8bb09f1d-ca8c54aa-f83de72c.mp3]"	"<b>then. </b>
+<div style=""color: gold;"">
+  See you then!
+</div> [sound:googletts-c9679472-e484aee3-085ae370-62e065f0-fff9c6ef.mp3]"
+"<b>nog. </b>
+<div style=""color: gold;"">
+  Ik heb nog tijd.
+</div> [sound:googletts-f75b5867-3dfc4896-486bf03e-ec82756d-26ee4acb.mp3]"	"<b>still / yet. </b>
+<div style=""color: gold;"">
+  I still have time.
+</div> [sound:googletts-58f2eb68-7d46584f-270a59e0-b46fba6a-2999ef08.mp3]"
+"<b>al. </b>
+<div style=""color: gold;"">
+  Ben je al klaar?
+</div> [sound:googletts-7d85e6aa-df89d300-66df59e4-3b3890f5-bb458613.mp3]"	"<b>already. </b>
+<div style=""color: gold;"">
+  Are you already done?
+</div> [sound:googletts-1d504311-02675c0b-c4613493-4b113baf-3256a9aa.mp3]"
+"<b>weer. </b>
+<div style=""color: gold;"">
+  Ik zie je weer morgen.
+</div> [sound:googletts-97067a7d-a230bf17-57de3a41-1891e8ec-23bcd41e.mp3]"	"<b>again. </b>
+<div style=""color: gold;"">
+  I see you again tomorrow.
+</div> [sound:googletts-76fdb3ba-3c141fc7-c1931ca0-aaadf440-18e285d2.mp3]"
+"<b>terug. </b>
+<div style=""color: gold;"">
+  Kom gauw terug!
+</div> [sound:googletts-eb5b41b6-883e5a65-af28e719-25f26e6f-be813c7c.mp3]"	"<b>back. </b>
+<div style=""color: gold;"">
+  Come back soon!
+</div> [sound:googletts-bdc7d451-dc6c611e-7f0f6566-d45d44c7-0fd66ddb.mp3]"
+"<b>samen. </b>
+<div style=""color: gold;"">
+  We werken samen.
+</div> [sound:googletts-e353d937-79be3a1d-edc58d71-93793560-5feb125d.mp3]"	"<b>together. </b>
+<div style=""color: gold;"">
+  We work together.
+</div> [sound:googletts-86347d81-c976ca7a-a1c01f72-637afb79-9d1a8f5f.mp3]"
+"<b>alleen. </b>
+<div style=""color: gold;"">
+  Ik woon alleen.
+</div> [sound:googletts-da1b3b04-fcd7a70d-ad1494d6-f05c20d1-23230ecb.mp3]"	"<b>only / alone. </b>
+<div style=""color: gold;"">
+  I live alone.
+</div> [sound:googletts-a42c5016-70935909-7bb44ec3-4e0792e5-abed9f5e.mp3]"
+"<b>misschien. </b>
+<div style=""color: gold;"">
+  Misschien kom ik morgen.
+</div> [sound:googletts-9b16b36e-09a88d0e-81487928-8cc3cb0a-466ae269.mp3]"	"<b>maybe. </b>
+<div style=""color: gold;"">
+  Maybe I come tomorrow.
+</div> [sound:googletts-2abb5735-a0a64bf2-95c48793-820062ce-c00482ec.mp3]"
+"<b>altijd. </b>
+<div style=""color: gold;"">
+  Hij is altijd vrolijk.
+</div> [sound:googletts-1ac84a47-4374d8e7-38e4d3a3-1dc84026-b6929075.mp3]"	"<b>always. </b>
+<div style=""color: gold;"">
+  He is always cheerful.
+</div> [sound:googletts-5415201e-b0999af2-525412d8-542097ec-a8ee9587.mp3]"
+"<b>nooit. </b>
+<div style=""color: gold;"">
+  Ik eet nooit vlees.
+</div> [sound:googletts-6f5d67e1-8f45ce3b-899c2bbf-2deb3890-58757a42.mp3]"	"<b>never. </b>
+<div style=""color: gold;"">
+  I never eat meat.
+</div> [sound:googletts-00050927-3c9fa86f-46a31ee9-d9d1d1a5-896e210f.mp3]"
+"<b>vaak. </b>
+<div style=""color: gold;"">
+  Ik sport vaak.
+</div> [sound:googletts-bf382504-60092e66-49207782-f33f3d26-aadcadc3.mp3]"	"<b>often. </b>
+<div style=""color: gold;"">
+  I exercise often.
+</div> [sound:googletts-31167274-15858bd0-cca50a28-2184bcc2-2c03ad32.mp3]"
+"<b>soms. </b>
+<div style=""color: gold;"">
+  Soms ga ik wandelen.
+</div> [sound:googletts-190ac274-7c2d9845-17451b02-7e01e4b3-0d955adc.mp3]"	"<b>sometimes. </b>
+<div style=""color: gold;"">
+  Sometimes I go walking.
+</div> [sound:googletts-389de593-6c8b51a6-31d2699b-2dd9dc3e-b7673cad.mp3]"
+"<b>erg / heel. </b>
+<div style=""color: gold;"">
+  Ik ben erg moe.
+</div> [sound:googletts-1acbf5dc-25ef9aa7-52d8fa51-cb1bb4cd-3da5a5dd.mp3]"	"<b>very. </b>
+<div style=""color: gold;"">
+  I am very tired.
+</div> [sound:googletts-fd69ffbd-1e02eda4-09e10c0d-12f22104-8197e892.mp3]"
+"<b>veel. </b>
+<div style=""color: gold;"">
+  Ik heb veel vrienden.
+</div> [sound:googletts-b8353b53-0e42ab70-4b7e5fe5-590c5384-df6ea5f3.mp3]"	"<b>much / a lot. </b>
+<div style=""color: gold;"">
+  I have many friends.
+</div> [sound:googletts-3689d97d-eab5a01b-d7b256d8-d728f2b6-225a4fa2.mp3]"
+"<b>weinig. </b>
+<div style=""color: gold;"">
+  Hij heeft weinig geld.
+</div> [sound:googletts-543b506e-e28fe912-4f0fc090-2a771f93-ff628d3e.mp3]"	"<b>little / few. </b>
+<div style=""color: gold;"">
+  He has little money.
+</div> [sound:googletts-fa0c2215-721f2b51-2d0a52bc-9556a5b5-fa8d17e4.mp3]"
+"<b>meer. </b>
+<div style=""color: gold;"">
+  Ik wil meer leren.
+</div> [sound:googletts-e3c9f719-4d33dd6e-40ade1fb-524e68b9-72f4d347.mp3]"	"<b>more. </b>
+<div style=""color: gold;"">
+  I want to learn more.
+</div> [sound:googletts-3e3e80b2-1f6a64e2-20ef132c-4c55b1cd-1a854fc5.mp3]"
+"<b>minder. </b>
+<div style=""color: gold;"">
+  Ik eet minder suiker.
+</div> [sound:googletts-dafefd90-5d98a46a-c1084bd7-e5bf35e4-d4865c08.mp3]"	"<b>less / fewer. </b>
+<div style=""color: gold;"">
+  I eat less sugar.
+</div> [sound:googletts-54c417d1-775ec78a-9fc8d351-5e87048d-7e9bedbc.mp3]"
+"<b>graag. </b>
+<div style=""color: gold;"">
+  Ik help je graag.
+</div> [sound:googletts-509f7c30-0b75e4ca-bf9edc49-8b5064e5-34a38084.mp3]"	"<b>gladly. </b>
+<div style=""color: gold;"">
+  I gladly help you.
+</div> [sound:googletts-def73793-82b15d45-84bafb95-a66fd52a-19367a9e.mp3]"
+"<b>dus. </b>
+<div style=""color: gold;"">
+  Het regent, dus ik blijf binnen.
+</div> [sound:googletts-3bc6161a-759ae660-e03d8387-07e1bc24-dfa8641f.mp3]"	"<b>so / therefore. </b>
+<div style=""color: gold;"">
+  It rains, so I stay inside.
+</div> [sound:googletts-065754b3-f0d76a06-cda053a2-0a79e14c-3eebf3d9.mp3]"
+"<b>zelfs. </b>
+<div style=""color: gold;"">
+  Zelfs hij kan het niet.
+</div> [sound:googletts-b6cd183a-9744b802-9dcf1307-1b598ddd-5f612753.mp3]"	"<b>even. </b>
+<div style=""color: gold;"">
+  Even he cannot do it.
+</div> [sound:googletts-5e86912e-282d5553-3fbfcf84-af98f02e-36eb0341.mp3]"
+"<b>genoeg. </b>
+<div style=""color: gold;"">
+  Ik heb genoeg geld.
+</div> [sound:googletts-529fa5f0-fe217dae-68fece12-dfbd166d-24478431.mp3]"	"<b>enough. </b>
+<div style=""color: gold;"">
+  I have enough money.
+</div> [sound:googletts-6c1941c4-a5fe5cfd-5d2d1507-92e8c898-fff3e8e7.mp3]"
+"<b>en. </b>
+<div style=""color: gold;"">
+  Ik lees en schrijf.
+</div> [sound:googletts-42d8a665-94048435-794221e7-ad59253f-111c443d.mp3]"	"<b>and. </b>
+<div style=""color: gold;"">
+  I read and write.
+</div> [sound:googletts-a758ffd6-6e8b113a-b1679281-e23c01d7-ad46eed6.mp3]"
+"<b>of. </b>
+<div style=""color: gold;"">
+  Wil je koffie of thee?
+</div> [sound:googletts-0159cf5b-f1aa2696-5cef3107-68e517ce-902c1d5c.mp3]"	"<b>or. </b>
+<div style=""color: gold;"">
+  Do you want coffee or tea?
+</div> [sound:googletts-65d78201-d48cd137-b540153c-a04757c8-089e2cba.mp3]"
+"<b>maar. </b>
+<div style=""color: gold;"">
+  Ik wil gaan, maar ik kan niet.
+</div> [sound:googletts-93bbb2d4-7e02fbb8-0d64daa0-12526c7b-4ee5c028.mp3]"	"<b>but. </b>
+<div style=""color: gold;"">
+  I want to go, but I cannot.
+</div> [sound:googletts-c7f35f1b-5629c414-56945e56-49f010a3-360e0af9.mp3]"
+"<b>want. </b>
+<div style=""color: gold;"">
+  Ik blijf thuis, want ik ben ziek.
+</div> [sound:googletts-8a515748-be2527fa-0060d950-d97afa76-1185c8ab.mp3]"	"<b>because. </b>
+<div style=""color: gold;"">
+  I stay home, because I am sick.
+</div> [sound:googletts-19e12fd2-b351b60f-2437dacb-9944210b-8f0032f5.mp3]"
+"<b>omdat. </b>
+<div style=""color: gold;"">
+  Omdat het laat is, ga ik naar bed.
+</div> [sound:googletts-8b86806f-1798da5c-292e336f-ccbf2eb4-05bd8c59.mp3]"	"<b>because. </b>
+<div style=""color: gold;"">
+  Because it is late, I go to bed.
+</div> [sound:googletts-3006f9a9-d4605a9e-80073327-4306f0c1-4ec07bb9.mp3]"
+"<b>als. </b>
+<div style=""color: gold;"">
+  Als je wilt, kun je blijven.
+</div> [sound:googletts-caff46a1-ae299a0d-80fb0d15-3cc3f0c1-62c0fe00.mp3]"	"<b>if / when. </b>
+<div style=""color: gold;"">
+  If you want, you can stay.
+</div> [sound:googletts-599a5b4e-939f8699-8037bbe2-241dbc27-d8d53677.mp3]"
+"<b>terwijl. </b>
+<div style=""color: gold;"">
+  Ik kook terwijl hij leest.
+</div> [sound:googletts-bd6a5d7e-13cb9cf6-8e2133dd-eb009730-000a13bb.mp3]"	"<b>while. </b>
+<div style=""color: gold;"">
+  I cook while he reads.
+</div> [sound:googletts-987cf008-75bb5407-4ca8bafd-cd5774f8-0944f7c4.mp3]"
+"<b>hoewel. </b>
+<div style=""color: gold;"">
+  Hoewel het regent, ga ik uit.
+</div> [sound:googletts-db48e6ea-a9154923-9ec5388c-e1bdf955-972db82f.mp3]"	"<b>although. </b>
+<div style=""color: gold;"">
+  Although it rains, I go out.
+</div> [sound:googletts-12d862ee-23cc5565-6ca73bef-ea8294c1-32e180dd.mp3]"
+"<b>in. </b>
+<div style=""color: gold;"">
+  Ik ben in de keuken.
+</div> [sound:googletts-07890ea6-f606f6d0-a179f8b8-e4f32959-6704c813.mp3]"	"<b>in. </b>
+<div style=""color: gold;"">
+  I am in the kitchen.
+</div> [sound:googletts-c10325d2-8792fb82-378f6e0a-57b80411-7e295f85.mp3]"
+"<b>op. </b>
+<div style=""color: gold;"">
+  De kat zit op de bank.
+</div> [sound:googletts-3138987d-d681ea0b-58d5aa81-626c844e-45ea5bde.mp3]"	"<b>on / at. </b>
+<div style=""color: gold;"">
+  The cat sits on the couch.
+</div> [sound:googletts-3caa4a50-da5731b5-c0fc5279-d307c0c0-675247a2.mp3]"
+"<b>met. </b>
+<div style=""color: gold;"">
+  Ik ga met mijn vriend.
+</div> [sound:googletts-acca327b-20eed0ce-d8f677ef-8e428c79-4646fe20.mp3]"	"<b>with. </b>
+<div style=""color: gold;"">
+  I go with my friend.
+</div> [sound:googletts-58904680-f9efcfa7-0562149c-30938386-23def220.mp3]"
+"<b>van. </b>
+<div style=""color: gold;"">
+  Dit is het huis van mijn moeder.
+</div> [sound:googletts-380c7c5a-aaf94d70-241d4681-f32a7a32-a64fe0ea.mp3]"	"<b>from / of. </b>
+<div style=""color: gold;"">
+  This is my mother's house.
+</div> [sound:googletts-e8e34cff-afd895ee-fe41812f-fadab129-269571d2.mp3]"
+"<b>naar. </b>
+<div style=""color: gold;"">
+  Ik ga naar de winkel.
+</div> [sound:googletts-1c228902-94dc512c-fd0e36ab-8429a27e-3d6e8603.mp3]"	"<b>to / towards. </b>
+<div style=""color: gold;"">
+  I go to the store.
+</div> [sound:googletts-ad1a2225-25ee93cb-a3194f4f-770d0a7c-ddb6d916.mp3]"
+"<b>voor. </b>
+<div style=""color: gold;"">
+  Dit cadeau is voor jou.
+</div> [sound:googletts-461539c7-6c9005bb-14a7ca47-0861144b-996fb41a.mp3]"	"<b>for / before. </b>
+<div style=""color: gold;"">
+  This gift is for you.
+</div> [sound:googletts-f074ddeb-93cb072b-f345c839-3d69f80b-291cfb11.mp3]"
+"<b>na. </b>
+<div style=""color: gold;"">
+  Na de les ga ik naar huis.
+</div> [sound:googletts-468aa43f-cba1a761-cfd53382-d98a498e-9ecae617.mp3]"	"<b>after. </b>
+<div style=""color: gold;"">
+  After the lesson I go home.
+</div> [sound:googletts-9ddd7074-6a573bcc-56f365a8-2a923708-ada66a86.mp3]"
+"<b>door. </b>
+<div style=""color: gold;"">
+  Ik loop door de stad.
+</div> [sound:googletts-52c5d4ac-b2090024-86fabbbc-403c6559-6d62e8eb.mp3]"	"<b>through / by. </b>
+<div style=""color: gold;"">
+  I walk through the city.
+</div> [sound:googletts-97145412-5b865b07-bfd13fde-c5a37d8e-e7944c11.mp3]"
+"<b>uit. </b>
+<div style=""color: gold;"">
+  Ik kom uit Nederland.
+</div> [sound:googletts-c5fa54fb-d316b50b-dafd0e9f-94914d1c-29fc9b72.mp3]"	"<b>out of / from. </b>
+<div style=""color: gold;"">
+  I come from the Netherlands.
+</div> [sound:googletts-2de8f117-434207f8-4ca1f941-d329e584-490693b8.mp3]"
+"<b>bij. </b>
+<div style=""color: gold;"">
+  Ik woon bij het station.
+</div> [sound:googletts-3a3303a9-c651049e-eb64f80f-7bbc4615-dcb58644.mp3]"	"<b>at / near. </b>
+<div style=""color: gold;"">
+  I live near the station.
+</div> [sound:googletts-2e35e748-36d78e87-6d487c55-89c6373d-f39ef18b.mp3]"
+"<b>tot. </b>
+<div style=""color: gold;"">
+  Ik werk tot vijf uur.
+</div> [sound:googletts-794aee15-b48cff88-c8dd1b23-068442c4-db4e0ff3.mp3]"	"<b>until / to. </b>
+<div style=""color: gold;"">
+  I work until five o'clock.
+</div> [sound:googletts-37c13dd9-4b91d48a-fb895523-a076afe0-c5ad9554.mp3]"
+"<b>over. </b>
+<div style=""color: gold;"">
+  We praten over het nieuws.
+</div> [sound:googletts-e4d4a617-bd0928ba-bdb940f1-7eecbd0f-b0e4fc99.mp3]"	"<b>about / over. </b>
+<div style=""color: gold;"">
+  We talk about the news.
+</div> [sound:googletts-fb432630-0efb1e3a-5d60939f-1bbfb52c-3f203a5e.mp3]"
+"<b>onder. </b>
+<div style=""color: gold;"">
+  De hond ligt onder de bank.
+</div> [sound:googletts-c728d2b4-00fcb587-98e6c99f-11941c25-5fba992f.mp3]"	"<b>under. </b>
+<div style=""color: gold;"">
+  The dog lies under the couch.
+</div> [sound:googletts-be46671b-f24862ef-d13f8f87-ff7d8bbf-c8115840.mp3]"
+"<b>boven. </b>
+<div style=""color: gold;"">
+  Mijn kamer is boven.
+</div> [sound:googletts-c9bfd66f-8918fe59-adf91b37-9c258571-1f5ec952.mp3]"	"<b>above / upstairs. </b>
+<div style=""color: gold;"">
+  My room is upstairs.
+</div> [sound:googletts-eb6f1005-25819491-f10e9f0d-41bb9c12-c045722e.mp3]"
+"<b>tegen. </b>
+<div style=""color: gold;"">
+  De fiets staat tegen de muur.
+</div> [sound:googletts-54a802c0-dae37510-b60277d7-31115ca7-59fafcde.mp3]"	"<b>against. </b>
+<div style=""color: gold;"">
+  The bike stands against the wall.
+</div> [sound:googletts-8a500847-738c2cd5-d8ba9adf-47095b09-279735b5.mp3]"
+"<b>zonder. </b>
+<div style=""color: gold;"">
+  Ik ga zonder jou.
+</div> [sound:googletts-e0f3013c-4ac3db6c-42e6b6d3-5efe8fa8-745800a9.mp3]"	"<b>without. </b>
+<div style=""color: gold;"">
+  I go without you.
+</div> [sound:googletts-eff00907-8ef9b46e-33c28e20-84991ab5-d1e396b8.mp3]"
+"<b>tussen. </b>
+<div style=""color: gold;"">
+  Ik zit tussen mijn ouders.
+</div> [sound:googletts-ca6d2f92-f9bd3d5f-72e36df0-61e33888-f74dd953.mp3]"	"<b>between. </b>
+<div style=""color: gold;"">
+  I sit between my parents.
+</div> [sound:googletts-ea439a24-7b6fb6c3-d7ad80a1-830870a9-295e4318.mp3]"
+"<b>achter. </b>
+<div style=""color: gold;"">
+  De tuin is achter het huis.
+</div> [sound:googletts-e4b215c0-95afa594-2f8d2ac8-435e9941-3e396572.mp3]"	"<b>behind. </b>
+<div style=""color: gold;"">
+  The garden is behind the house.
+</div> [sound:googletts-cbb5a828-572fd1b7-c7db3ffc-92b53d4a-6bf60ee2.mp3]"
+"<b>naast. </b>
+<div style=""color: gold;"">
+  Hij zit naast mij.
+</div> [sound:googletts-85456078-82283967-0c239732-2f37a89c-43ecb643.mp3]"	"<b>next to. </b>
+<div style=""color: gold;"">
+  He sits next to me.
+</div> [sound:googletts-9ef83f87-d7ac20f6-197ec7b5-2d66bf4b-8acfb9c4.mp3]"
+"<b>om. </b>
+<div style=""color: gold;"">
+  De les begint om tien uur.
+</div> [sound:googletts-69261212-e5ca4280-b9bc7d27-b5f5910b-3d440c76.mp3]"	"<b>around / at. </b>
+<div style=""color: gold;"">
+  The lesson starts at ten o'clock.
+</div> [sound:googletts-f008fce4-b22a701c-719826a6-bd7f0365-aa5dbf8d.mp3]"
+"<b>waar. </b>
+<div style=""color: gold;"">
+  Waar is de school?
+</div> [sound:googletts-9ca8bcb4-de55ee19-ec2d368a-d6af3490-e6fa79de.mp3]"	"<b>where. </b>
+<div style=""color: gold;"">
+  Where is the school?
+</div> [sound:googletts-5a2458ea-e7058b13-ac8ada43-dc45f50d-7901a2d8.mp3]"
+"<b>wanneer. </b>
+<div style=""color: gold;"">
+  Wanneer begint de film?
+</div> [sound:googletts-aaf66b65-db15af38-cf792dd6-825c5f05-a1c08930.mp3]"	"<b>when. </b>
+<div style=""color: gold;"">
+  When does the movie start?
+</div> [sound:googletts-8f95aa8d-154eaf07-6f95c87f-133581b0-92bb8670.mp3]"
+"<b>waarom. </b>
+<div style=""color: gold;"">
+  Waarom ben je boos?
+</div> [sound:googletts-fcccd3c0-1603b218-e29eddf8-8aec79b6-ac7e216e.mp3]"	"<b>why. </b>
+<div style=""color: gold;"">
+  Why are you angry?
+</div> [sound:googletts-1879338b-2b3426ed-281c5e07-a469973a-7a2929f3.mp3]"
+"<b>hoe. </b>
+<div style=""color: gold;"">
+  Hoe gaat het met je?
+</div> [sound:googletts-a1c6b2a9-c1dbb640-0996d3a7-c2c5ffe1-46e394b1.mp3]"	"<b>how. </b>
+<div style=""color: gold;"">
+  How are you?
+</div> [sound:googletts-b01e075e-3abd0487-7bb4fa14-842e086b-e83045b7.mp3]"
+"<b>welke / welk. </b>
+<div style=""color: gold;"">
+  Welke tas is van jou?
+</div> [sound:googletts-2e7100ce-3917f905-98d754e5-f0bd32a8-1f595a51.mp3]"	"<b>which. </b>
+<div style=""color: gold;"">
+  Which bag is yours?
+</div> [sound:googletts-ae20ce31-f35ec3a1-6221b648-6a25969f-346d5425.mp3]"
+"<b>hoeveel. </b>
+<div style=""color: gold;"">
+  Hoeveel kost het?
+</div> [sound:googletts-be6341d7-66654e36-7b951c05-c34d87a6-0d23ee5d.mp3]"	"<b>how much / many. </b>
+<div style=""color: gold;"">
+  How much does it cost?
+</div> [sound:googletts-01683469-a58551ab-db05398e-442cc96a-8a03d1ff.mp3]"
+"<b>dag. </b>
+<div style=""color: gold;"">
+  Ik werk elke dag.
+</div> [sound:googletts-915c727c-f741bb33-2c58ffb9-9f00b2d0-56a5ec69.mp3]"	"<b>day. </b>
+<div style=""color: gold;"">
+  I work every day.
+</div> [sound:googletts-f0c46e2f-acb5140f-bbe4ef8a-049d44db-fa506734.mp3]"
+"<b>nacht. </b>
+<div style=""color: gold;"">
+  Ik slaap 's nachts.
+</div> [sound:googletts-17f1a4ab-5e6b370c-cecf5e5b-44749402-2301d924.mp3]"	"<b>night. </b>
+<div style=""color: gold;"">
+  I sleep at night.
+</div> [sound:googletts-201d9328-9314a916-b7c3f787-5198e730-a846d30d.mp3]"
+"<b>week. </b>
+<div style=""color: gold;"">
+  Ik ga volgende week op vakantie.
+</div> [sound:googletts-0d7ae1aa-0209b722-8b5101ab-73dfabc7-320c9e1a.mp3]"	"<b>week. </b>
+<div style=""color: gold;"">
+  I go on vacation next week.
+</div> [sound:googletts-091cec94-fb773a2e-8743af8e-a1e55cae-bba46159.mp3]"
+"<b>maand. </b>
+<div style=""color: gold;"">
+  Deze maand is oktober.
+</div> [sound:googletts-330daa54-3398068f-d57c19bc-694f87d8-250016f5.mp3]"	"<b>month. </b>
+<div style=""color: gold;"">
+  This month is October.
+</div> [sound:googletts-22d99074-2b0496bb-66fcb255-630f99ce-b3eb96f6.mp3]"
+"<b>jaar. </b>
+<div style=""color: gold;"">
+  Ik ben vijfentwintig jaar oud.
+</div> [sound:googletts-c354656d-29860740-e7c58a3f-1bdb0935-7b735af6.mp3]"	"<b>year. </b>
+<div style=""color: gold;"">
+  I am twenty-five years old.
+</div> [sound:googletts-a9631f14-94daf388-3d67175a-071c1adc-5ccce87f.mp3]"
+"<b>tijd. </b>
+<div style=""color: gold;"">
+  Ik heb geen tijd vandaag.
+</div> [sound:googletts-3662ba61-1e988eeb-3adfc3c9-c1308890-78f35a11.mp3]"	"<b>time. </b>
+<div style=""color: gold;"">
+  I have no time today.
+</div> [sound:googletts-01abaf37-b35e3bff-708ba38b-276fcf80-cb00d331.mp3]"
+"<b>uur. </b>
+<div style=""color: gold;"">
+  Het is vier uur.
+</div> [sound:googletts-ac3364e5-100cb531-6283b009-94f4a3d9-bf3911de.mp3]"	"<b>hour / o'clock. </b>
+<div style=""color: gold;"">
+  It is four o'clock.
+</div> [sound:googletts-20b1191b-d2cdfbaa-37b05979-32e9393c-8986f8a1.mp3]"
+"<b>morgen. </b>
+<div style=""color: gold;"">
+  Ik zie je morgen.
+</div> [sound:googletts-7172a18f-6f65f926-602b1e97-59e3628a-3bc26bd3.mp3]"	"<b>tomorrow. </b>
+<div style=""color: gold;"">
+  I see you tomorrow.
+</div> [sound:googletts-2246a53f-a70f00e2-e4f36a90-0239da0b-85b2f75e.mp3]"
+"<b>gisteren. </b>
+<div style=""color: gold;"">
+  Gisteren was ik thuis.
+</div> [sound:googletts-289850f2-6216b22e-f7153b12-3ef69ec9-94245512.mp3]"	"<b>yesterday. </b>
+<div style=""color: gold;"">
+  Yesterday I was home.
+</div> [sound:googletts-aeee7e02-cc836b5e-0a6d1628-1122aa99-b02a9ecb.mp3]"
+"<b>vandaag. </b>
+<div style=""color: gold;"">
+  Vandaag ga ik naar de dokter.
+</div> [sound:googletts-5602fd6a-938c9330-eae2c000-515a247d-5417a217.mp3]"	"<b>today. </b>
+<div style=""color: gold;"">
+  Today I go to the doctor.
+</div> [sound:googletts-d9c0ce6c-9efef4f0-8d310f7a-4c7f1b93-73066b4e.mp3]"
+"<b>leven. </b>
+<div style=""color: gold;"">
+  Het leven is mooi.
+</div> [sound:googletts-403adfa6-aa925b9a-cc70c3de-bf284fcc-384c9254.mp3]"	"<b>life. </b>
+<div style=""color: gold;"">
+  Life is beautiful.
+</div> [sound:googletts-6848e7db-622611a7-8f467400-1482a25d-e2d18417.mp3]"
+"<b>wereld. </b>
+<div style=""color: gold;"">
+  Ik wil de wereld zien.
+</div> [sound:googletts-54c5b7b5-cabc3dbb-ed32d418-6c4c13aa-74df664b.mp3]"	"<b>world. </b>
+<div style=""color: gold;"">
+  I want to see the world.
+</div> [sound:googletts-ecfd15fd-54d372cb-8781e2c1-70d07eb3-204efe61.mp3]"
+"<b>land. </b>
+<div style=""color: gold;"">
+  Nederland is een klein land.
+</div> [sound:googletts-ee8b7e79-c0cef6c7-c46f3b9c-534ae66d-038e3b30.mp3]"	"<b>country. </b>
+<div style=""color: gold;"">
+  The Netherlands is a small country.
+</div> [sound:googletts-990a4c25-72aa35ff-8a2b6fd5-ab75e525-4fe84aec.mp3]"
+"<b>stad. </b>
+<div style=""color: gold;"">
+  Ik woon in de stad.
+</div> [sound:googletts-91a69896-3611bb39-6dfdc375-ea4f7168-2637a01d.mp3]"	"<b>city. </b>
+<div style=""color: gold;"">
+  I live in the city.
+</div> [sound:googletts-96716b2c-1b8ff95d-2cf327d4-96eb6e7e-8a44b59d.mp3]"
+"<b>huis. </b>
+<div style=""color: gold;"">
+  Mijn huis heeft drie kamers.
+</div> [sound:googletts-0f5df067-810b3a28-005472fa-221373d4-680aeac7.mp3]"	"<b>house. </b>
+<div style=""color: gold;"">
+  My house has three rooms.
+</div> [sound:googletts-6bfe70c9-4dc447cb-d849393c-501d01b2-ccadc037.mp3]"
+"<b>kamer. </b>
+<div style=""color: gold;"">
+  Ik zoek een kamer.
+</div> [sound:googletts-3570c622-34f3b6bd-1bb989bb-2e7e2393-62f0e1e8.mp3]"	"<b>room. </b>
+<div style=""color: gold;"">
+  I am looking for a room.
+</div> [sound:googletts-4bb81b73-9516ff91-afaf62a5-6d935bc5-d1d39400.mp3]"
+"<b>werk. </b>
+<div style=""color: gold;"">
+  Ik ga naar mijn werk.
+</div> [sound:googletts-bc5f9330-16a21e40-bbfbcc5c-73908252-2eb0f029.mp3]"	"<b>work. </b>
+<div style=""color: gold;"">
+  I go to my work.
+</div> [sound:googletts-3f719054-3cfe9aae-a152048c-c2338710-31b0ac6b.mp3]"
+"<b>school. </b>
+<div style=""color: gold;"">
+  De kinderen gaan naar school.
+</div> [sound:googletts-7ae28436-5c5cc362-6b1273c0-e241b481-c20c7ab1.mp3]"	"<b>school. </b>
+<div style=""color: gold;"">
+  The children go to school.
+</div> [sound:googletts-c8214492-b630a99f-1a05114b-ae9f046c-0cb637b4.mp3]"
+"<b>geld. </b>
+<div style=""color: gold;"">
+  Ik heb niet genoeg geld.
+</div> [sound:googletts-ebb31fe2-762a2fd2-1976ab6d-662b498e-1ab3a929.mp3]"	"<b>money. </b>
+<div style=""color: gold;"">
+  I don't have enough money.
+</div> [sound:googletts-65652070-980e2454-473231ab-d5e2dc4f-bf75ab5a.mp3]"
+"<b>eten. </b>
+<div style=""color: gold;"">
+  Het eten is klaar.
+</div> [sound:googletts-5bb4b4d3-8f828592-f5a8e682-14cd9eb8-6c91c6dd.mp3]"	"<b>food. </b>
+<div style=""color: gold;"">
+  The food is ready.
+</div> [sound:googletts-258624f4-223522c3-9a435768-c2dc1ed5-12b853ed.mp3]"
+"<b>water. </b>
+<div style=""color: gold;"">
+  Ik drink veel water.
+</div> [sound:googletts-82a75a4b-d0848a1a-194b0a83-2710e997-ee1c284a.mp3]"	"<b>water. </b>
+<div style=""color: gold;"">
+  I drink a lot of water.
+</div> [sound:googletts-5c7ac71a-49aad6b7-6604d3bf-1547a2f6-77832c37.mp3]"
+"<b>ding. </b>
+<div style=""color: gold;"">
+  Wat is dat voor een ding?
+</div> [sound:googletts-804dc3e8-61a24f17-41c4ad33-17e826e2-28be4e87.mp3]"	"<b>thing. </b>
+<div style=""color: gold;"">
+  What kind of thing is that?
+</div> [sound:googletts-0576347e-f3bef1ef-251ac2ca-64784afa-46868069.mp3]"
+"<b>naam. </b>
+<div style=""color: gold;"">
+  Mijn naam is Jan.
+</div> [sound:googletts-862c49c9-fb3204a6-259b502d-99b11409-ca508a64.mp3]"	"<b>name. </b>
+<div style=""color: gold;"">
+  My name is Jan.
+</div> [sound:googletts-45ab39a8-45545f8a-fa319def-09d72d89-65200360.mp3]"
+"<b>woord. </b>
+<div style=""color: gold;"">
+  Ik leer nieuwe woorden.
+</div> [sound:googletts-89246fd9-b7361dd4-aab49673-3a0c6841-a31ef182.mp3]"	"<b>word. </b>
+<div style=""color: gold;"">
+  I learn new words.
+</div> [sound:googletts-c47516e5-73d6e41e-2909b841-3ba0fbc6-6eb23ee7.mp3]"
+"<b>boek. </b>
+<div style=""color: gold;"">
+  Ik lees een interessant boek.
+</div> [sound:googletts-73320d24-52159b54-ea0e5a0c-b6f65a69-9d28a16e.mp3]"	"<b>book. </b>
+<div style=""color: gold;"">
+  I read an interesting book.
+</div> [sound:googletts-98684111-916b3c78-cb76746b-20c84de0-c50f555b.mp3]"
+"<b>vraag. </b>
+<div style=""color: gold;"">
+  Ik heb een vraag voor jou.
+</div> [sound:googletts-9565dce8-a68fc1ec-072e714e-112b0b0f-c2d310b7.mp3]"	"<b>question. </b>
+<div style=""color: gold;"">
+  I have a question for you.
+</div> [sound:googletts-b0a5275b-17dcd889-adbaf7be-7d6e6066-e8d445f4.mp3]"
+"<b>antwoord. </b>
+<div style=""color: gold;"">
+  Weet je het antwoord?
+</div> [sound:googletts-3e68c6bb-52728d7c-3d2d283b-ce4fa49f-447741e4.mp3]"	"<b>answer. </b>
+<div style=""color: gold;"">
+  Do you know the answer?
+</div> [sound:googletts-159a1fb0-53317015-fb639c56-0e362f12-90ab3cde.mp3]"
+"<b>idee. </b>
+<div style=""color: gold;"">
+  Dat is een goed idee!
+</div> [sound:googletts-f101fc2d-e40183e0-435e4bf1-7a162f1b-92b04cfb.mp3]"	"<b>idea. </b>
+<div style=""color: gold;"">
+  That is a good idea!
+</div> [sound:googletts-43c07577-dc04df52-6ddfe0f4-a725ad9d-69d60c0b.mp3]"
+"<b>kant. </b>
+<div style=""color: gold;"">
+  Aan deze kant van de straat.
+</div> [sound:googletts-3aa40419-a8882a67-f89351c6-3645fef3-2a34c0c2.mp3]"	"<b>side. </b>
+<div style=""color: gold;"">
+  On this side of the street.
+</div> [sound:googletts-f7fcf6e5-f7a362f1-3f3057e7-5456f4f0-d386842b.mp3]"
+"<b>weg. </b>
+<div style=""color: gold;"">
+  Weet jij de weg naar het station?
+</div> [sound:googletts-dda6ae7d-70f07016-4ea9e559-29e0bd25-ac032762.mp3]"	"<b>way / road. </b>
+<div style=""color: gold;"">
+  Do you know the way to the station?
+</div> [sound:googletts-b448a274-0fe8c4b4-c39bd427-abc8ce0c-dda48411.mp3]"
+"<b>keer. </b>
+<div style=""color: gold;"">
+  Ik ga één keer per week naar de sportschool.
+</div> [sound:googletts-c4183454-23a434b6-706cb665-9501598e-021bd3c9.mp3]"	"<b>time (instance). </b>
+<div style=""color: gold;"">
+  I go to the gym once a week.
+</div> [sound:googletts-baa0b766-d84f8de4-a5f2b838-66e6f86c-47f22025.mp3]"
