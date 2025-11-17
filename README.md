@@ -1,6 +1,6 @@
 # 🌍 Fluent
 
-**The AI Language Learning Kit**
+**The AI Language Learning Kit for Claude Code and others**
 
 *A comprehensive set of rules, guidance, and intelligent tracking systems that transform Claude Code into your personal language tutor. Master any language through adaptive practice powered by proven cognitive science—spaced repetition, active recall, and progress tracking that learns from you.*
 
