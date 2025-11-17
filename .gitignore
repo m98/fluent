@@ -1,0 +1,37 @@
+# Personal learning data - DO NOT commit
+/data/*.json
+/data/*.json.backup-*
+/results/*.md
+# Except the README files which explain the structure
+!/data/README.md
+!/results/README.md
+
+# Personal writing/practice files
+myfile.txt
+
+# Backup files created by hooks
+.backups/
+
+# Keep directory structure but ignore contents
+!/data/.gitkeep
+!/results/.gitkeep
+
+# System files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp files
+.tmp/
+temp/
+
