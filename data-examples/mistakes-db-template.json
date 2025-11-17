@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "last_updated": "{YYYY-MM-DD}",
+    "total_patterns_tracked": 0,
+    "language": "{target_language}"
+  },
+  "error_patterns": {
+    "example_pattern_1": {
+      "category": "{grammar|vocabulary|spelling|pronunciation|syntax}",
+      "subcategory": "{specific_area}",
+      "frequency": 0,
+      "mastery_level": 0,
+      "difficulty_score": 0.0,
+      "last_occurred": "{YYYY-MM-DD}",
+      "next_review": "{YYYY-MM-DD}",
+      "examples": [
+        {
+          "your_answer": "{what_you_wrote}",
+          "correct_answer": "{correct_version}",
+          "context": "{exercise_context}",
+          "date": "{YYYY-MM-DD}"
+        }
+      ],
+      "notes": "{any_specific_notes_about_this_pattern}"
+    }
+  }
+}

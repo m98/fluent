@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "last_updated": "{YYYY-MM-DD}",
+    "language": "{target_language}",
+    "tracking_started": "{YYYY-MM-DD}"
+  },
+  "overall_stats": {
+    "total_sessions": 0,
+    "total_exercises": 0,
+    "total_correct": 0,
+    "total_incorrect": 0,
+    "accuracy_rate": 0.0,
+    "total_study_minutes": 0,
+    "average_session_duration": 0
+  },
+  "accuracy_trend": [
+    {
+      "date": "{YYYY-MM-DD}",
+      "accuracy": 0.0,
+      "exercises": 0
+    }
+  ],
+  "skill_progress": {
+    "writing": {
+      "sessions": 0,
+      "accuracy": 0.0,
+      "last_practiced": null
+    },
+    "speaking": {
+      "sessions": 0,
+      "accuracy": 0.0,
+      "last_practiced": null
+    },
+    "vocabulary": {
+      "sessions": 0,
+      "accuracy": 0.0,
+      "last_practiced": null
+    },
+    "reading": {
+      "sessions": 0,
+      "accuracy": 0.0,
+      "last_practiced": null
+    },
+    "listening": {
+      "sessions": 0,
+      "accuracy": 0.0,
+      "last_practiced": null
+    }
+  },
+  "weekly_summary": [
+    {
+      "week_start": "{YYYY-MM-DD}",
+      "sessions": 0,
+      "total_minutes": 0,
+      "accuracy": 0.0
+    }
+  ]
+}

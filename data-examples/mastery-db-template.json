@@ -1,0 +1,54 @@
+{
+  "metadata": {
+    "last_updated": "{YYYY-MM-DD}",
+    "language": "{target_language}"
+  },
+  "skills": {
+    "writing": {
+      "mastery_level": 0,
+      "confidence_score": 0.0,
+      "total_practice_time": 0,
+      "last_practiced": null
+    },
+    "speaking": {
+      "mastery_level": 0,
+      "confidence_score": 0.0,
+      "total_practice_time": 0,
+      "last_practiced": null
+    },
+    "vocabulary": {
+      "mastery_level": 0,
+      "confidence_score": 0.0,
+      "total_practice_time": 0,
+      "last_practiced": null
+    },
+    "reading": {
+      "mastery_level": 0,
+      "confidence_score": 0.0,
+      "total_practice_time": 0,
+      "last_practiced": null
+    },
+    "listening": {
+      "mastery_level": 0,
+      "confidence_score": 0.0,
+      "total_practice_time": 0,
+      "last_practiced": null
+    }
+  },
+  "patterns": {
+    "example_grammar_pattern": {
+      "mastery_level": 0,
+      "last_practiced": null,
+      "times_practiced": 0,
+      "success_rate": 0.0
+    }
+  },
+  "mastery_scale": {
+    "0": "Not started",
+    "1": "Just started (⭐☆☆☆☆)",
+    "2": "Learning (⭐⭐☆☆☆)",
+    "3": "Good understanding (⭐⭐⭐☆☆)",
+    "4": "Strong skill (⭐⭐⭐⭐☆)",
+    "5": "Mastered! (⭐⭐⭐⭐⭐)"
+  }
+}

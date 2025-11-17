@@ -1,0 +1,66 @@
+{
+  "learner": {
+    "name": "{YOUR_NAME}",
+    "native_language": "{YOUR_NATIVE_LANGUAGE}",
+    "other_languages": ["{OTHER_LANGUAGES_YOU_SPEAK}"],
+    "target_language": "{LANGUAGE_YOU_WANT_TO_LEARN}",
+    "current_level": "{A1|A2|B1|B2|C1|C2}",
+    "target_level": "{A2|B1|B2|C1|C2}",
+    "daily_goal_minutes": 30,
+    "learning_style": "{conversational|academic|immersive|balanced}",
+    "motivation": "{travel|work|exam|living_abroad|personal|family}"
+  },
+  "profile_created": "{YYYY-MM-DD}",
+  "last_updated": "{YYYY-MM-DD}",
+  "current_streak_days": 0,
+  "total_sessions": 0,
+  "total_study_minutes": 0,
+  "skills": {
+    "writing": {
+      "current_level": 0,
+      "confidence": 0,
+      "last_practiced": null,
+      "total_practice_time": 0
+    },
+    "speaking": {
+      "current_level": 0,
+      "confidence": 0,
+      "last_practiced": null,
+      "total_practice_time": 0
+    },
+    "vocabulary": {
+      "current_level": 0,
+      "confidence": 0,
+      "last_practiced": null,
+      "total_practice_time": 0
+    },
+    "reading": {
+      "current_level": 0,
+      "confidence": 0,
+      "last_practiced": null,
+      "total_practice_time": 0
+    },
+    "listening": {
+      "current_level": 0,
+      "confidence": 0,
+      "last_practiced": null,
+      "total_practice_time": 0
+    }
+  },
+  "focus_areas": [],
+  "achievements": [
+    {
+      "id": "profile_created",
+      "name": "Getting Started",
+      "earned_date": "{YYYY-MM-DD}",
+      "description": "Created your learning profile"
+    }
+  ],
+  "preferences": {
+    "difficulty_preference": "adaptive",
+    "exercise_types_preferred": ["conversation", "writing", "quick_drills"],
+    "feedback_style": "immediate_with_explanation",
+    "gamification_enabled": true,
+    "use_emojis": true
+  }
+}

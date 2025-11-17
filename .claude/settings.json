@@ -1,0 +1,105 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Auto-backup and validate data files after modifications",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-data.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Create daily backup snapshot and session summary",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-end.py",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Display learner stats and check for due reviews",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Safety backup before conversation compaction",
+            "command": "mkdir -p \"$CLAUDE_PROJECT_DIR\"/.backups/precompact && cp -r \"$CLAUDE_PROJECT_DIR\"/data/*.json \"$CLAUDE_PROJECT_DIR\"/.backups/precompact/ 2>/dev/null && echo '[Fluent] 🔒 Pre-compact backup saved'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "description": "Fluent - The AI Language Learning Kit",
+  "version": "1.0.0",
+  "hooks_documentation": {
+    "purpose": "Automated data management, validation, and progress tracking",
+    "hooks": {
+      "PostToolUse": {
+        "trigger": "After Write/Edit operations on data files",
+        "actions": [
+          "Creates timestamped backup of modified file",
+          "Validates JSON structure",
+          "Shows error if JSON is malformed"
+        ],
+        "script": ".claude/hooks/validate-data.py"
+      },
+      "SessionEnd": {
+        "trigger": "When practice session ends",
+        "actions": [
+          "Creates daily snapshot in .backups/YYYYMMDD/",
+          "Backs up all data/*.json files",
+          "Displays current streak and total sessions"
+        ],
+        "script": ".claude/hooks/session-end.py"
+      },
+      "SessionStart": {
+        "trigger": "When Claude Code starts",
+        "actions": [
+          "Displays welcome message with learner name",
+          "Shows current language, level, and streak",
+          "Checks for due reviews and alerts user"
+        ],
+        "script": ".claude/hooks/session-start.py"
+      },
+      "PreCompact": {
+        "trigger": "Before conversation is compacted",
+        "actions": [
+          "Creates safety backup in .backups/precompact/"
+        ]
+      }
+    },
+    "backup_locations": {
+      "individual_files": "data/*.json.backup-YYYYMMDD-HHMMSS",
+      "daily_snapshots": ".backups/YYYYMMDD/",
+      "precompact_backup": ".backups/precompact/"
+    },
+    "features": [
+      "Automatic JSON validation on every save",
+      "Timestamped backups prevent data loss",
+      "Session stats displayed on start/end",
+      "Due review notifications",
+      "All backups excluded from git via .gitignore"
+    ]
+  }
+}

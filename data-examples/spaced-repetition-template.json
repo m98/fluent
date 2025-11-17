@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "algorithm": "SM-2",
+    "last_updated": "{YYYY-MM-DD}",
+    "total_items_tracked": 0,
+    "language": "{target_language}"
+  },
+  "review_queue": {
+    "today": [],
+    "tomorrow": [],
+    "this_week": [],
+    "later": []
+  },
+  "items": {
+    "example_item_id": {
+      "item_id": "{unique_identifier}",
+      "item_type": "{error_pattern|vocabulary|grammar_rule}",
+      "easiness_factor": 2.5,
+      "interval_days": 1,
+      "repetitions": 0,
+      "due_date": "{YYYY-MM-DD}",
+      "last_reviewed": null,
+      "review_history": []
+    }
+  },
+  "algorithm_notes": {
+    "SM-2": "Spaced repetition algorithm - intervals increase based on performance",
+    "quality_scale": "0=incorrect, 1=barely, 2=struggle, 3=correct_with_effort, 4=easy, 5=perfect",
+    "easiness_formula": "EF' = EF + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))"
+  }
+}
