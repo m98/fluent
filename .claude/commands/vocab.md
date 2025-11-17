@@ -12,10 +12,12 @@ Start a vocabulary drill session with the learner using spaced repetition princi
 ### 1. Load Vocabulary Data
 
 ```
-!`cat data/spaced-repetition.json`
-!`cat data/mistakes-db.json`
-!`cat data/mastery-db.json`
+data/spaced-repetition.json
+data/mistakes-db.json
+data/mastery-db.json
 ```
+
+**Note:** If any of these files don't exist in `/data`, check the `data-examples/` directory for template files (e.g., `spaced-repetition-template.json`). You may need to copy them to `/data` and initialize them.
 
 ### 2. Select Words to Practice
 

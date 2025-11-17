@@ -7,7 +7,9 @@ allowed-tools: Read, Write
 
 Welcome! Let's set up your personalized language learning system.
 
-## Step-by-Step Onboarding (Use the AskUserQuestion)
+## Step-by-Step Onboarding
+
+Important: Use all questions with a AskUserQuestion, grab all questions needed, and create AskUserQuestion blocks for all questions.
 
 ### Step 1: Welcome Message
 
@@ -268,62 +270,14 @@ Calculate and show:
 Type `/learn` to start practicing!
 ```
 
+Ask any other questions needed, based on the information we need to fill in `data-examples/learner-profile-template.json`, then move this file to `data/learner-profile.json`.
+
 ### Step 7: Save Profile
 
-Create/update `data/learner-profile.json` with:
+Create/update `data/learner-profile.json` based on the `data-examples/learner-profile-template.json` (or `data/learner-profile.json` if already exist) :
 
-```json
-{
-  "learner": {
-    "name": "{collected_name}",
-    "native_language": "{collected_native}",
-    "other_languages": ["{collected_others}"],
-    "target_language": "{collected_target}",
-    "current_level": "{collected_current}",
-    "target_level": "{collected_target_level}",
-    "target_date": "{calculated_date}",
-    "daily_goal_minutes": {collected_minutes},
-    "learning_style": "{collected_style}",
-    "motivation": "{collected_goal}"
-  },
-  "profile_created": "{today_date}",
-  "last_updated": "{today_date}",
-  "current_streak_days": 0,
-  "total_sessions": 0,
-  "total_study_minutes": 0,
-  "skills": {
-    "writing": {"current_level": 0, "confidence": 0, "last_practiced": null, "total_practice_time": 0},
-    "speaking": {"current_level": 0, "confidence": 0, "last_practiced": null, "total_practice_time": 0},
-    "vocabulary": {"current_level": 0, "confidence": 0, "last_practiced": null, "total_practice_time": 0},
-    "reading": {"current_level": 0, "confidence": 0, "last_practiced": null, "total_practice_time": 0},
-    "listening": {"current_level": 0, "confidence": 0, "last_practiced": null, "total_practice_time": 0}
-  },
-  "focus_areas": [],
-  "achievements": [
-    {
-      "id": "profile_created",
-      "name": "Getting Started",
-      "earned_date": "{today}",
-      "description": "Created your learning profile"
-    }
-  ],
-  "preferences": {
-    "difficulty_preference": "adaptive",
-    "exercise_types_preferred": ["{based_on_style}"],
-    "feedback_style": "immediate_with_explanation",
-    "gamification_enabled": {yes_or_no},
-    "use_emojis": {yes_or_no}
-  },
-  "learning_plan": {
-    "estimated_months_to_target": {calculated},
-    "total_hours_needed": {calculated},
-    "daily_schedule": {generated_schedule},
-    "weekly_milestones": {generated_milestones}
-  }
-}
-```
 
-Also initialize other database files if they don't exist:
+Also initialize other database files if they don't exist (you can find templates in `data-examples/`):
 - `progress-db.json`
 - `mistakes-db.json`
 - `mastery-db.json`

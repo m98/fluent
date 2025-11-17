@@ -12,13 +12,15 @@ Show the learner comprehensive progress statistics with visualizations.
 ### 1. Load All Progress Data
 
 ```
-!`cat data/learner-profile.json`
-!`cat data/progress-db.json`
-!`cat data/mastery-db.json`
-!`cat data/mistakes-db.json`
-!`cat data/spaced-repetition.json`
-!`cat data/session-log.json`
+data/learner-profile.json
+data/progress-db.json
+data/mastery-db.json
+data/mistakes-db.json
+data/spaced-repetition.json
+data/session-log.json
 ```
+
+**Note:** If any of these files don't exist in `/data`, check the `data-examples/` directory for template files (e.g., `learner-profile-template.json`). You may need to copy them to `/data` and initialize them.
 
 ### 2. Generate Progress Report
 

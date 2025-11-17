@@ -17,12 +17,14 @@ Deliver a fun, effective, systematic language learning session following all pri
 
 **Read these files first:**
 ```
-!`cat data/learner-profile.json`
-!`cat data/spaced-repetition.json`
-!`cat data/mistakes-db.json`
-!`cat data/progress-db.json`
-!`cat data/mastery-db.json`
+data/learner-profile.json
+data/spaced-repetition.json
+data/mistakes-db.json
+data/progress-db.json
+data/mastery-db.json
 ```
+
+**Note:** If any of these files don't exist in `/data`, check the `data-examples/` directory for template files (e.g., `learner-profile-template.json`). You may need to copy them to `/data` and initialize them with the learner's information.
 
 ### 2. Analyze Today's Plan
 
@@ -65,6 +67,7 @@ After they respond, load the appropriate skill module and begin exercises.
 ❗ **IMMEDIATE FEEDBACK** - After every answer, correct mistakes with clear explanations
 ❗ **UPDATE DATABASES** - After each question, update progress, mistakes, spaced-repetition databases
 ❗ **TRACK EVERYTHING** - Every answer goes into the tracking system
+❗ **ASK QUESTIONS IN TARGET LANGUAGE** - For higher levels (b1 and above), use target language for questions unless it's a beginner level. For lower, use both target and translation, but the main focus is target language exposure.
 
 ### 6. Question Format Template
 

@@ -12,10 +12,12 @@ Practice writing emails, letters, and forms at A2 level.
 ### 1. Load Writing Context
 
 ```
-!`cat data/learner-profile.json`
-!`cat data/mistakes-db.json`
-!`cat data/mastery-db.json`
+data/learner-profile.json
+data/mistakes-db.json
+data/mastery-db.json
 ```
+
+**Note:** If any of these files don't exist in `/data`, check the `data-examples/` directory for template files (e.g., `learner-profile-template.json`). You may need to copy them to `/data` and initialize them.
 
 Check the learner's weak patterns related to writing:
 - Formal/informal distinction

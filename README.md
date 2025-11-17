@@ -352,38 +352,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 📋 Roadmap
-
-### ✅ Version 1.0 (Current)
-- Multi-language support
-- Spaced repetition (SM-2)
-- Interactive commands
-- Comprehensive tracking
-- Gamification
-- Automatic backups
-
-### 🔄 Version 1.1 (Planned)
-- Audio pronunciation practice
-- Image-based exercises
-- Advanced statistics dashboard
-- Export progress to PDF
-- Calendar integration
-- Multi-user support
-
-### 🔮 Version 2.0 (Future)
-- Voice conversation practice
-- Native speaker comparison
-- Community features
-- Anki sync integration
-- Mobile companion app
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-**TL;DR:** Free to use, modify, and distribute. Even commercially.
 
 ---
 

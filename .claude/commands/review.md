@@ -12,10 +12,12 @@ Review items that are due today based on the SM-2 spaced repetition algorithm.
 ### 1. Load Review Queue
 
 ```
-!`cat data/spaced-repetition.json`
-!`cat data/mistakes-db.json`
-!`cat data/mastery-db.json`
+data/spaced-repetition.json
+data/mistakes-db.json
+data/mastery-db.json
 ```
+
+**Note:** If any of these files don't exist in `/data`, check the `data-examples/` directory for template files (e.g., `spaced-repetition-template.json`). You may need to copy them to `/data` and initialize them.
 
 ### 2. Check Today's Reviews
 
