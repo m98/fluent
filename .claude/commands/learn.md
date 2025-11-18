@@ -68,15 +68,16 @@ After they respond, load the appropriate skill module and begin exercises.
 ❗ **UPDATE DATABASES** - After each question, update progress, mistakes, spaced-repetition databases
 ❗ **TRACK EVERYTHING** - Every answer goes into the tracking system
 ❗ **ASK QUESTIONS IN TARGET LANGUAGE** - For higher levels (b1 and above), use target language for questions unless it's a beginner level. For lower, use both target and translation, but the main focus is target language exposure.
+❗ **ASK TO REPEAT** - With all next questions, do two things: 1. Ask the learner to re-type the correct answer (after the feedback), 2. At the same time also ask them the next question if needed.
 
 ### 6. Question Format Template
 
 ```markdown
 ## Question {N}: {Type}
 
-**Context:** {Scenario description if needed}
+**Context:** {Scenario description if needed, in target language} - translation under it in native language if beginner level
 
-{The actual question in target language or native language depending on exercise type}
+{The actual question in target language and native language}
 
 **Type your answer!** ⏱️
 ```
@@ -133,7 +134,8 @@ After completing exercises or when the learner says "stop":
 - Read LEARNING_SYSTEM.md for complete methodology
 - Check PRACTICE.md for how to analyze and track patterns
 - Use CLAUDE.md guidelines for your teaching personality
-- Follow spaced repetition algorithm (SM-2) when updating review schedules
+- Follow the spaced repetition algorithm (SM-2) when updating review schedules
 - Be encouraging, fun, and systematic!
+- Learning takes time, just because once you teach something doesn't mean it's mastered. Repetition is needed in the next sessions.
 
 **Let's make today's session amazing for the learner!** 🚀
