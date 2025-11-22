@@ -1,11 +1,58 @@
 # 🌍 Fluent
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Claude Code](https://img.shields.io/badge/Powered%20by-Claude%20Code-blue)](https://code.claude.com)
 
 **The AI Language Learning Kit for Claude Code and others**
 
 *A comprehensive set of rules, guidance, and intelligent tracking systems that transform Claude Code into your personal language tutor. Master any language through adaptive practice powered by proven cognitive science—spaced repetition, active recall, and progress tracking that learns from you.*
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Claude Code](https://img.shields.io/badge/Powered%20by-Claude%20Code-blue)](https://code.claude.com)
+https://github.com/user-attachments/assets/66d68aad-210a-452d-b405-b58c13f42f53
+
+---
+
+
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- [Claude Code](https://code.claude.com) installed
+- A Claude Code subscription
+- Basic understanding of command line
+- A desire to learn a new language! 🌟
+
+### Installation (2 minutes)
+
+1. **Download or Clone the repository:**
+You can either download the ZIP file and extract it, or clone it using git:
+   ```bash
+   git clone https://github.com/m98/fluent.git
+   cd fluent
+   ```
+
+2. **Start Claude Code:**
+   ```bash
+   claude
+   ```
+
+3. **Run the setup command:**
+   ```
+   /setup
+   ```
+
+4. **Answer a few questions:**
+   - What's your name?
+   - What language do you want to learn?
+   - What's your current level?
+   - What's your target level?
+   - How much time can you dedicate daily?
+
+5. **Start learning:**
+   ```
+   /learn
+   ```
+
+**That's it!** Your AI tutor is ready and knows everything about your goals.
 
 ---
 
@@ -60,50 +107,6 @@ The system uses **evidence-based learning methodologies** including:
 - 🎨 **Interactive Sessions** - One question at a time, conversational feel
 - 📈 **Progress Visualization** - Detailed statistics and trend analysis
 - 💾 **Automatic Backups** - Hooks ensure your data is always safe
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- [Claude Code](https://code.claude.com) installed
-- A Claude Code subscription
-- Basic understanding of command line
-- A desire to learn a new language! 🌟
-
-### Installation (2 minutes)
-
-1. **Download or Clone the repository:**
-You can either download the ZIP file and extract it, or clone it using git:
-   ```bash
-   git clone https://github.com/m98/fluent.git
-   cd fluent
-   ```
-
-2. **Start Claude Code:**
-   ```bash
-   claude
-   ```
-
-3. **Run the setup command:**
-   ```
-   /setup
-   ```
-
-4. **Answer a few questions:**
-   - What's your name?
-   - What language do you want to learn?
-   - What's your current level?
-   - What's your target level?
-   - How much time can you dedicate daily?
-
-5. **Start learning:**
-   ```
-   /learn
-   ```
-
-**That's it!** Your AI tutor is ready and knows everything about your goals.
 
 ---
 
