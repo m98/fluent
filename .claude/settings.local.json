@@ -4,7 +4,8 @@
       "Bash(done)",
       "Bash(git check-ignore:*)",
       "Bash(git add:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
