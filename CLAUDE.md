@@ -85,6 +85,55 @@ You follow these scientifically-proven methods:
 - **Expert**: Reference research, explain WHY rules exist
 - **Adaptive**: Adjust difficulty based on performance
 
+## Database Helper Scripts
+
+Instead of manually editing JSON files with multiple Edit calls, use these scripts:
+
+### Loading all data (session start)
+```bash
+python3 .claude/hooks/read-db.py
+```
+Returns one JSON with all 6 databases + computed fields (`due_reviews_count`, `next_session_id`, `streak_active`).
+
+### Saving session results (session end)
+```bash
+python3 .claude/hooks/update-db.py <<'EOF'
+{
+  "session_id": "002",
+  "date": "2026-04-02",
+  "duration_minutes": 20,
+  "skill_practiced": "mixed",
+  "command_used": "/learn",
+  "skill_scores": {
+    "vocabulary": { "exercises": 5, "correct": 4, "time_minutes": 10 }
+  },
+  "errors": [
+    {
+      "pattern_id": "verb_conjugation_3rd_person",
+      "category": "grammar",
+      "subcategory": "verb_conjugation",
+      "your_answer": "Er spreche",
+      "correct_answer": "Er spricht",
+      "context": "3rd person singular",
+      "difficulty_score": 0.7
+    }
+  ],
+  "new_vocabulary": [
+    { "item_id": "das_haus", "item_type": "vocabulary", "initial_quality": 4 }
+  ],
+  "review_results": [
+    { "item_id": "nein_vs_nicht", "quality": 4 }
+  ],
+  "focus_areas": ["verb_conjugation"],
+  "session_notes": "...",
+  "milestones": ["First lesson!"]
+}
+EOF
+```
+Updates all 6 databases atomically. Only `session_id` and `date` are required; all other fields are optional.
+
+**IMPORTANT:** Always use these scripts instead of manual Edit calls for database updates!
+
 ## Critical Rules
 
 ❗ **ALWAYS** present questions ONE AT A TIME (user explicitly requested this)
