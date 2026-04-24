@@ -5,15 +5,19 @@ Updates all 6 learning databases from a single JSON session report via stdin.
 
 Usage:
     python3 .claude/hooks/update-db.py <<'EOF'
-    { "session_id": "002", "date": "2026-04-02", ... }
+    { "session_id": "session-005", "date": "2026-04-24", ... }
     EOF
+
+See docs/DB_SCRIPTS.md for the full input schema.
 
 Exit codes: 0=success, 1=validation error, 2=blocking/data error
 """
+import copy
 import json
-import sys
 import os
+import re
 import shutil
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -37,12 +41,12 @@ def save_json(path: Path, data: dict):
     os.rename(str(tmp_path), str(path))
 
 
-def date_str(d: datetime) -> str:
-    return d.strftime("%Y-%m-%d")
-
-
 def parse_date(s: str) -> datetime:
     return datetime.strptime(s, "%Y-%m-%d")
+
+
+def date_str(d: datetime) -> str:
+    return d.strftime("%Y-%m-%d")
 
 
 def tomorrow(today_str: str) -> str:
@@ -73,6 +77,8 @@ def backup_all(tag: str):
 # --- SM-2 Algorithm ---
 
 def calculate_sm2(item: dict, quality: int) -> dict:
+    """Classic SM-2. Uses ceil() for interval growth (standard)."""
+    import math
     ef = item.get("easiness_factor", 2.5)
     interval = item.get("interval_days", 1)
     reps = item.get("repetitions", 0)
@@ -83,7 +89,7 @@ def calculate_sm2(item: dict, quality: int) -> dict:
         elif reps == 1:
             interval = 6
         else:
-            interval = round(interval * ef)
+            interval = int(math.ceil(interval * ef))
         reps += 1
     else:
         reps = 0
@@ -100,14 +106,22 @@ def calculate_sm2(item: dict, quality: int) -> dict:
 
 
 # --- Updater functions ---
+# Each mutates in place. Confidence in learner-profile is 0-100 int.
+# Session-log preserves the existing rich schema (skills_practiced array,
+# score_breakdown, topics_covered, breakthroughs, focus_next_session,
+# achievements_earned). Spaced-repetition preserves consecutive_*,
+# mastery_level, total_reviews, priority, content, answer, category,
+# difficulty fields on existing items.
 
 def update_learner_profile(profile: dict, session: dict):
     today = session["date"]
     last = profile.get("last_updated", "")
 
-    if last == yesterday(today):
+    if last == today:
+        pass
+    elif last == yesterday(today):
         profile["current_streak_days"] = profile.get("current_streak_days", 0) + 1
-    elif last != today:
+    else:
         profile["current_streak_days"] = 1
 
     profile["last_updated"] = today
@@ -115,22 +129,27 @@ def update_learner_profile(profile: dict, session: dict):
     profile["total_study_minutes"] = profile.get("total_study_minutes", 0) + session.get("duration_minutes", 0)
 
     for skill, scores in session.get("skill_scores", {}).items():
-        if skill in profile.get("skills", {}):
-            s = profile["skills"][skill]
-            s["last_practiced"] = today
-            s["total_practice_time"] = s.get("total_practice_time", 0) + scores.get("time_minutes", 0)
-            if scores.get("exercises", 0) > 0:
-                new_acc = scores["correct"] / scores["exercises"]
-                old_conf = s.get("confidence", 0)
-                s["confidence"] = round(old_conf * 0.7 + new_acc * 0.3, 2)
-            s["current_level"] = max(s.get("current_level", 0), 1)
+        skills = profile.setdefault("skills", {})
+        s = skills.setdefault(skill, {
+            "current_level": 0, "confidence": 0,
+            "last_practiced": None, "total_practice_time": 0,
+        })
+        s["last_practiced"] = today
+        s["total_practice_time"] = s.get("total_practice_time", 0) + scores.get("time_minutes", 0)
+        if scores.get("exercises", 0) > 0:
+            # confidence is 0-100 int; EWMA against session accuracy (0-100)
+            new_acc_pct = (scores["correct"] / scores["exercises"]) * 100
+            old_conf = s.get("confidence", 0)
+            s["confidence"] = round(old_conf * 0.7 + new_acc_pct * 0.3)
+        s["current_level"] = max(s.get("current_level", 0), 1)
 
     if session.get("focus_areas"):
         profile["focus_areas"] = session["focus_areas"]
 
     for ms in session.get("milestones", []):
+        slug = re.sub(r'[^a-z0-9]+', '_', ms[:30].lower()).strip('_')
         profile.setdefault("achievements", []).append({
-            "id": f"session_{session['session_id']}_{ms[:20].lower().replace(' ', '_')}",
+            "id": f"session_{session['session_id']}_{slug}",
             "name": ms,
             "earned_date": today,
             "description": ms,
@@ -142,71 +161,81 @@ def update_progress_db(progress: dict, session: dict):
     skill_scores = session.get("skill_scores", {})
     total_ex = sum(s.get("exercises", 0) for s in skill_scores.values())
     total_cor = sum(s.get("correct", 0) for s in skill_scores.values())
-    accuracy = round(total_cor / total_ex, 2) if total_ex > 0 else 0.0
+    accuracy = round(total_cor / total_ex, 3) if total_ex > 0 else 0.0
 
-    stats = progress["overall_stats"]
+    stats = progress.setdefault("overall_stats", {
+        "total_sessions": 0, "total_exercises": 0, "total_correct": 0,
+        "total_incorrect": 0, "accuracy_rate": 0.0,
+        "total_study_minutes": 0, "average_session_duration": 0,
+    })
     stats["total_sessions"] = stats.get("total_sessions", 0) + 1
     stats["total_exercises"] = stats.get("total_exercises", 0) + total_ex
     stats["total_correct"] = stats.get("total_correct", 0) + total_cor
     stats["total_incorrect"] = stats.get("total_incorrect", 0) + (total_ex - total_cor)
-    stats["accuracy_rate"] = round(stats["total_correct"] / stats["total_exercises"], 2) if stats["total_exercises"] > 0 else 0.0
+    stats["accuracy_rate"] = round(stats["total_correct"] / stats["total_exercises"], 3) if stats["total_exercises"] > 0 else 0.0
     stats["total_study_minutes"] = stats.get("total_study_minutes", 0) + session.get("duration_minutes", 0)
     stats["average_session_duration"] = round(stats["total_study_minutes"] / stats["total_sessions"])
 
-    progress.setdefault("accuracy_trend", []).append({
-        "date": today,
-        "accuracy": accuracy,
-        "exercises": total_ex,
-    })
+    trend = progress.setdefault("accuracy_trend", [])
+    # Dedup same-day entries: replace if present, else append
+    existing = next((t for t in trend if t.get("date") == today), None)
+    if existing is not None:
+        existing["accuracy"] = accuracy
+        existing["exercises"] = existing.get("exercises", 0) + total_ex
+    else:
+        trend.append({"date": today, "accuracy": accuracy, "exercises": total_ex})
 
     for skill, scores in skill_scores.items():
         sp = progress.setdefault("skill_progress", {}).setdefault(skill, {
-            "sessions": 0, "accuracy": 0.0, "last_practiced": None
+            "sessions": 0, "accuracy": 0.0, "last_practiced": None,
+            "exercises_completed": 0, "correct_count": 0, "incorrect_count": 0,
         })
-        old_sessions = sp["sessions"]
-        sp["sessions"] += 1
+        old_sessions = sp.get("sessions", 0)
+        sp["sessions"] = old_sessions + 1
         new_acc = scores["correct"] / scores["exercises"] if scores.get("exercises", 0) > 0 else 0.0
         sp["accuracy"] = round(
-            (sp["accuracy"] * old_sessions + new_acc) / sp["sessions"], 2
+            (sp.get("accuracy", 0.0) * old_sessions + new_acc) / sp["sessions"], 3
         )
         sp["last_practiced"] = today
+        sp["exercises_completed"] = sp.get("exercises_completed", 0) + scores.get("exercises", 0)
+        sp["correct_count"] = sp.get("correct_count", 0) + scores.get("correct", 0)
+        sp["incorrect_count"] = sp.get("incorrect_count", 0) + (scores.get("exercises", 0) - scores.get("correct", 0))
 
     week_start = get_week_start(today)
     weekly = progress.setdefault("weekly_summary", [])
-    week_entry = None
-    for w in weekly:
-        if w["week_start"] == week_start:
-            week_entry = w
-            break
+    week_entry = next((w for w in weekly if w.get("week_start") == week_start), None)
     if week_entry is None:
         week_entry = {"week_start": week_start, "sessions": 0, "total_minutes": 0, "accuracy": 0.0}
         weekly.append(week_entry)
 
-    old_s = week_entry["sessions"]
-    week_entry["sessions"] += 1
-    week_entry["total_minutes"] += session.get("duration_minutes", 0)
+    old_s = week_entry.get("sessions", 0)
+    week_entry["sessions"] = old_s + 1
+    week_entry["total_minutes"] = week_entry.get("total_minutes", 0) + session.get("duration_minutes", 0)
     week_entry["accuracy"] = round(
-        (week_entry["accuracy"] * old_s + accuracy) / week_entry["sessions"], 2
+        (week_entry.get("accuracy", 0.0) * old_s + accuracy) / week_entry["sessions"], 3
     )
 
-    progress["metadata"]["last_updated"] = today
+    progress.setdefault("metadata", {})["last_updated"] = today
 
 
 def update_mistakes_db(mistakes: dict, session: dict):
     today = session["date"]
+    patterns = mistakes.setdefault("error_patterns", {})
 
     for error in session.get("errors", []):
         pid = error["pattern_id"]
-        patterns = mistakes.setdefault("error_patterns", {})
 
         if pid in patterns:
             pat = patterns[pid]
             pat["frequency"] = pat.get("frequency", 0) + 1
-            pat["last_occurred"] = today
+            pat["last_seen"] = today
+            pat["last_occurred"] = today  # legacy alias kept
             pat["next_review"] = tomorrow(today)
+            pat["consecutive_incorrect"] = pat.get("consecutive_incorrect", 0) + 1
+            pat["consecutive_correct"] = 0
             pat.setdefault("examples", []).append({
-                "your_answer": error.get("your_answer", ""),
-                "correct_answer": error.get("correct_answer", ""),
+                "incorrect": error.get("your_answer", ""),
+                "correct": error.get("correct_answer", ""),
                 "context": error.get("context", ""),
                 "date": today,
             })
@@ -217,22 +246,27 @@ def update_mistakes_db(mistakes: dict, session: dict):
             patterns[pid] = {
                 "category": error.get("category", "other"),
                 "subcategory": error.get("subcategory", ""),
+                "description": error.get("description", ""),
+                "severity": error.get("severity", "minor"),
                 "frequency": 1,
                 "mastery_level": 0,
                 "difficulty_score": error.get("difficulty_score", 0.5),
+                "last_seen": today,
                 "last_occurred": today,
                 "next_review": tomorrow(today),
+                "consecutive_correct": 0,
+                "consecutive_incorrect": 1,
                 "examples": [{
-                    "your_answer": error.get("your_answer", ""),
-                    "correct_answer": error.get("correct_answer", ""),
+                    "incorrect": error.get("your_answer", ""),
+                    "correct": error.get("correct_answer", ""),
                     "context": error.get("context", ""),
                     "date": today,
                 }],
                 "notes": error.get("notes", ""),
             }
 
-    mistakes["metadata"]["last_updated"] = today
-    mistakes["metadata"]["total_patterns_tracked"] = len(mistakes.get("error_patterns", {}))
+    mistakes.setdefault("metadata", {})["last_updated"] = today
+    mistakes["metadata"]["total_patterns_tracked"] = len(patterns)
 
 
 def update_mastery_db(mastery: dict, session: dict, progress: dict):
@@ -242,14 +276,17 @@ def update_mastery_db(mastery: dict, session: dict, progress: dict):
         s = mastery.setdefault("skills", {}).setdefault(skill, {
             "mastery_level": 0, "confidence_score": 0.0,
             "total_practice_time": 0, "last_practiced": None,
+            "practice_count": 0, "avg_accuracy": 0.0,
         })
         s["last_practiced"] = today
         s["total_practice_time"] = s.get("total_practice_time", 0) + scores.get("time_minutes", 0)
+        s["practice_count"] = s.get("practice_count", 0) + scores.get("exercises", 0)
 
         sp = progress.get("skill_progress", {}).get(skill, {})
         acc = sp.get("accuracy", 0)
         sessions = sp.get("sessions", 0)
-        s["confidence_score"] = round(acc, 2)
+        s["confidence_score"] = round(acc, 3)
+        s["avg_accuracy"] = round(acc, 3)
 
         if sessions == 0:
             s["mastery_level"] = 0
@@ -264,23 +301,44 @@ def update_mastery_db(mastery: dict, session: dict, progress: dict):
         else:
             s["mastery_level"] = 5
 
-    mastery["metadata"]["last_updated"] = today
+    mastery.setdefault("metadata", {})["last_updated"] = today
 
 
 def update_spaced_repetition(sr: dict, session: dict):
     today = session["date"]
+    items = sr.setdefault("items", {})
 
     for review in session.get("review_results", []):
         item_id = review["item_id"]
         quality = review["quality"]
-        if item_id in sr.get("items", {}):
-            item = sr["items"][item_id]
+        if item_id in items:
+            item = items[item_id]
             result = calculate_sm2(item, quality)
             item["easiness_factor"] = result["easiness_factor"]
             item["interval_days"] = result["interval_days"]
             item["repetitions"] = result["repetitions"]
             item["due_date"] = date_plus_days(today, result["interval_days"])
             item["last_reviewed"] = today
+            item["last_quality"] = quality
+            item["total_reviews"] = item.get("total_reviews", 0) + 1
+            if quality >= 3:
+                item["consecutive_correct"] = item.get("consecutive_correct", 0) + 1
+                item["consecutive_incorrect"] = 0
+            else:
+                item["consecutive_incorrect"] = item.get("consecutive_incorrect", 0) + 1
+                item["consecutive_correct"] = 0
+            # Mastery: rough map from repetitions and quality
+            if item["repetitions"] >= 5 and item["consecutive_correct"] >= 3:
+                item["mastery_level"] = max(item.get("mastery_level", 0), 3)
+            elif item["repetitions"] >= 2 and item["consecutive_correct"] >= 1:
+                item["mastery_level"] = max(item.get("mastery_level", 0), item.get("mastery_level", 0) + 1 if quality >= 4 else item.get("mastery_level", 0))
+            # priority heuristic
+            if item.get("consecutive_incorrect", 0) >= 2:
+                item["priority"] = "high"
+            elif item.get("mastery_level", 0) >= 3:
+                item["priority"] = "low"
+            else:
+                item["priority"] = item.get("priority", "medium")
             item.setdefault("review_history", []).append({
                 "date": today,
                 "quality": quality,
@@ -289,45 +347,57 @@ def update_spaced_repetition(sr: dict, session: dict):
 
     for vocab in session.get("new_vocabulary", []):
         item_id = vocab["item_id"]
-        if item_id not in sr.get("items", {}):
-            sr.setdefault("items", {})[item_id] = {
-                "item_id": item_id,
-                "item_type": vocab.get("item_type", "vocabulary"),
-                "easiness_factor": 2.5,
+        if item_id not in items:
+            items[item_id] = {
+                "id": item_id,
+                "type": vocab.get("item_type", "vocabulary"),
+                "content": vocab.get("content", ""),
+                "answer": vocab.get("answer", ""),
+                "category": vocab.get("category", ""),
+                "difficulty": vocab.get("difficulty", ""),
+                "created_date": today,
+                "due_date": tomorrow(today),
                 "interval_days": 1,
                 "repetitions": 0,
-                "due_date": tomorrow(today),
+                "easiness_factor": 2.5,
+                "consecutive_correct": 0,
+                "consecutive_incorrect": 0,
                 "last_reviewed": today,
-                "review_history": [{
-                    "date": today,
-                    "quality": vocab.get("initial_quality", 3),
-                    "score": 0,
-                }],
+                "last_quality": vocab.get("initial_quality", 3),
+                "mastery_level": 0,
+                "total_reviews": 0,
+                "priority": vocab.get("priority", "medium"),
             }
 
     for error in session.get("errors", []):
         item_id = error["pattern_id"]
-        if item_id not in sr.get("items", {}):
-            sr.setdefault("items", {})[item_id] = {
-                "item_id": item_id,
-                "item_type": "error_pattern",
-                "easiness_factor": 2.5,
+        if item_id not in items:
+            items[item_id] = {
+                "id": item_id,
+                "type": "error_pattern",
+                "content": error.get("your_answer", ""),
+                "answer": error.get("correct_answer", ""),
+                "category": error.get("category", ""),
+                "difficulty": "",
+                "created_date": today,
+                "due_date": tomorrow(today),
                 "interval_days": 1,
                 "repetitions": 0,
-                "due_date": tomorrow(today),
+                "easiness_factor": 2.5,
+                "consecutive_correct": 0,
+                "consecutive_incorrect": 1,
                 "last_reviewed": today,
-                "review_history": [{
-                    "date": today,
-                    "quality": 2,
-                    "score": 0,
-                }],
+                "last_quality": 2,
+                "mastery_level": 0,
+                "total_reviews": 0,
+                "priority": "high",
             }
 
     # Rebuild review queue
     sr["review_queue"] = {"today": [], "tomorrow": [], "this_week": [], "later": []}
     tom = tomorrow(today)
     week_end = date_plus_days(today, 7)
-    for item_id, item in sr.get("items", {}).items():
+    for item_id, item in items.items():
         due = item.get("due_date", today)
         if due <= today:
             sr["review_queue"]["today"].append(item_id)
@@ -338,32 +408,45 @@ def update_spaced_repetition(sr: dict, session: dict):
         else:
             sr["review_queue"]["later"].append(item_id)
 
-    sr["metadata"]["last_updated"] = today
-    sr["metadata"]["total_items_tracked"] = len(sr.get("items", {}))
+    sr.setdefault("metadata", {})["last_updated"] = today
+    sr["metadata"]["total_items_tracked"] = len(items)
 
 
 def update_session_log(log: dict, session: dict, streak: int):
+    """Matches existing schema: skills_practiced (array), score_breakdown,
+    topics_covered, breakthroughs, focus_next_session, achievements_earned."""
     today = session["date"]
     skill_scores = session.get("skill_scores", {})
     total_ex = sum(s.get("exercises", 0) for s in skill_scores.values())
     total_cor = sum(s.get("correct", 0) for s in skill_scores.values())
 
-    log.setdefault("sessions", []).append({
+    score_breakdown = {
+        skill: round(s["correct"] / s["exercises"], 3) if s.get("exercises", 0) > 0 else 0.0
+        for skill, s in skill_scores.items()
+    }
+
+    entry = {
         "session_id": session["session_id"],
         "date": today,
         "duration_minutes": session.get("duration_minutes", 0),
-        "skill_practiced": session.get("skill_practiced", "mixed"),
+        "skills_practiced": session.get("skills_practiced", list(skill_scores.keys())),
         "command_used": session.get("command_used", "/learn"),
         "exercises_completed": total_ex,
-        "exercises_correct": total_cor,
-        "exercises_incorrect": total_ex - total_cor,
-        "accuracy": round(total_cor / total_ex, 2) if total_ex > 0 else 0.0,
-        "focus_areas": session.get("focus_areas", []),
-        "new_patterns_encountered": [e["pattern_id"] for e in session.get("errors", [])],
-        "mastered_this_session": [],
+        "accuracy": round(total_cor / total_ex, 3) if total_ex > 0 else 0.0,
+        "score_breakdown": score_breakdown,
+        "topics_covered": session.get("topics_covered", []),
+        "breakthroughs": session.get("breakthroughs", []),
+        "focus_next_session": session.get("focus_next_session", session.get("focus_areas", [])),
         "notes": session.get("session_notes", ""),
+        "achievements_earned": session.get("achievements_earned", []),
         "streak_day": streak,
-    })
+    }
+    if session.get("exam_focus"):
+        entry["exam_focus"] = session["exam_focus"]
+    if session.get("critical_errors_identified"):
+        entry["critical_errors_identified"] = session["critical_errors_identified"]
+
+    log.setdefault("sessions", []).append(entry)
 
     for ms in session.get("milestones", []):
         log.setdefault("milestones", []).append({
@@ -372,7 +455,7 @@ def update_session_log(log: dict, session: dict, streak: int):
             "session_id": session["session_id"],
         })
 
-    log["metadata"]["total_sessions"] = len(log["sessions"])
+    log.setdefault("metadata", {})["total_sessions"] = len(log["sessions"])
 
 
 # --- Main ---
@@ -384,7 +467,6 @@ def main():
         print(f"[Fluent] Error: Invalid JSON input: {e}", file=sys.stderr)
         sys.exit(1)
 
-    # Validate required fields
     for field in ("session_id", "date"):
         if field not in session:
             print(f"[Fluent] Error: Missing required field '{field}'", file=sys.stderr)
@@ -392,7 +474,6 @@ def main():
 
     session.setdefault("duration_minutes", 0)
 
-    # Load all databases
     files = {
         "profile": DATA_DIR / "learner-profile.json",
         "progress": DATA_DIR / "progress-db.json",
@@ -403,15 +484,14 @@ def main():
     }
 
     try:
-        data = {k: load_json(p) for k, p in files.items()}
+        originals = {k: load_json(p) for k, p in files.items()}
     except Exception as e:
         print(f"[Fluent] Error loading databases: {e}", file=sys.stderr)
         sys.exit(2)
 
-    # Backup before changes
-    backup_all(f"pre-update-{session['session_id']}")
+    # Work on deep copies so a mid-run exception leaves disk untouched.
+    data = {k: copy.deepcopy(v) for k, v in originals.items()}
 
-    # Run all updaters
     try:
         update_learner_profile(data["profile"], session)
         update_progress_db(data["progress"], session)
@@ -421,12 +501,14 @@ def main():
         streak = data["profile"].get("current_streak_days", 0)
         update_session_log(data["log"], session, streak)
     except Exception as e:
-        print(f"[Fluent] Error updating databases: {e}", file=sys.stderr)
         import traceback
+        print(f"[Fluent] Error updating databases: {e}", file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
         sys.exit(2)
 
-    # Save all atomically
+    # Backup originals BEFORE writing new state.
+    backup_all(f"pre-update-{session['session_id']}")
+
     try:
         for k, p in files.items():
             save_json(p, data[k])
@@ -434,7 +516,7 @@ def main():
         print(f"[Fluent] Error saving databases: {e}", file=sys.stderr)
         sys.exit(2)
 
-    # Summary output
+    # Summary
     stats = data["progress"]["overall_stats"]
     sr_tomorrow = len(data["sr"]["review_queue"].get("tomorrow", []))
     skill_scores = session.get("skill_scores", {})
@@ -443,7 +525,10 @@ def main():
 
     print(f"[Fluent] ✅ Updated 6 databases for session {session['session_id']}")
     print(f"[Fluent] 🔥 Streak: {streak} days | Sessions: {stats['total_sessions']} | Minutes: {stats['total_study_minutes']}")
-    print(f"[Fluent] 📊 This session: {total_cor}/{total_ex} correct ({round(total_cor/total_ex*100)}%)" if total_ex > 0 else "[Fluent] 📊 No exercises recorded")
+    if total_ex > 0:
+        print(f"[Fluent] 📊 This session: {total_cor}/{total_ex} correct ({round(total_cor/total_ex*100)}%)")
+    else:
+        print("[Fluent] 📊 No exercises recorded")
     print(f"[Fluent] 📈 Overall accuracy: {stats['accuracy_rate']*100:.0f}% ({stats['total_exercises']} exercises)")
     print(f"[Fluent] 🧠 SR: {data['sr']['metadata']['total_items_tracked']} items tracked, {sr_tomorrow} due tomorrow")
     print(f"[Fluent] 📝 Errors tracked: {data['mistakes']['metadata']['total_patterns_tracked']} patterns")

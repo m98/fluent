@@ -9,8 +9,9 @@ Usage:
 Exit codes: 0=success, 1=partial (some files missing), 2=critical error
 """
 import json
+import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 DATA_DIR = Path("data")
@@ -32,55 +33,66 @@ def load_json(path: Path):
         return json.load(f)
 
 
+def next_session_id(sessions: list) -> str:
+    """Produce 'session-NNN' matching existing id convention.
+    Falls back to 'session-001' on empty log or unparseable last id."""
+    if not sessions:
+        return "session-001"
+    last_id = sessions[-1].get("session_id", "")
+    m = re.search(r'(\d+)', last_id)
+    if m:
+        return f"session-{int(m.group(1)) + 1:03d}"
+    return f"session-{len(sessions) + 1:03d}"
+
+
 def main():
-    result = {}
+    databases = {}
     missing = []
 
     for key, path in FILES.items():
         data = load_json(path)
         if data is None:
             missing.append(str(path))
-            result[key] = {}
+            databases[key] = {}
         else:
-            result[key] = data
+            databases[key] = data
 
-    # Computed fields
-    today = datetime.now().strftime("%Y-%m-%d")
-    yesterday = (datetime.now() - __import__('datetime').timedelta(days=1)).strftime("%Y-%m-%d")
+    now = datetime.now()
+    today = now.strftime("%Y-%m-%d")
+    yesterday = (now - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    sr = result.get("spaced_repetition", {})
+    sr = databases.get("spaced_repetition", {})
     items = sr.get("items", {})
     due_items = [iid for iid, item in items.items() if item.get("due_date", "") <= today]
 
-    log = result.get("session_log", {})
+    log = databases.get("session_log", {})
     sessions = log.get("sessions", [])
-    if sessions:
-        last_id = sessions[-1].get("session_id", "000")
-        try:
-            next_id = str(int(last_id) + 1).zfill(3)
-        except ValueError:
-            next_id = f"{len(sessions) + 1:03d}"
-    else:
-        next_id = "001"
 
-    profile = result.get("learner_profile", {})
+    profile = databases.get("learner_profile", {})
     last_updated = profile.get("last_updated", "")
     streak_active = last_updated in (today, yesterday)
+    try:
+        days_since = (now - datetime.strptime(last_updated, "%Y-%m-%d")).days if last_updated else None
+    except ValueError:
+        days_since = None
 
-    result["computed"] = {
-        "today": today,
-        "due_reviews_count": len(due_items),
-        "due_review_items": due_items,
-        "next_session_id": next_id,
-        "streak_active": streak_active,
-        "days_since_last_session": (datetime.now() - datetime.strptime(last_updated, "%Y-%m-%d")).days if last_updated else None,
+    result = {
+        "databases": databases,
+        "computed": {
+            "today": today,
+            "due_reviews_count": len(due_items),
+            "due_review_items": due_items,
+            "next_session_id": next_session_id(sessions),
+            "streak_active": streak_active,
+            "days_since_last_session": days_since,
+        },
     }
 
     if missing:
         result["_warnings"] = [f"Missing file: {m}" for m in missing]
 
     json.dump(result, sys.stdout, indent=2, ensure_ascii=False)
-    print()  # trailing newline
+    print()
 
     sys.exit(1 if missing else 0)
 
