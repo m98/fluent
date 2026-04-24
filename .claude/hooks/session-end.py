@@ -43,9 +43,8 @@ def main():
             with open(profile_path, 'r') as f:
                 profile = json.load(f)
 
-            stats = profile.get("stats", {})
-            streak = stats.get("streak_days", 0)
-            total_sessions = stats.get("total_practice_sessions", 0)
+            streak = profile.get("current_streak_days", 0)
+            total_sessions = profile.get("total_sessions", 0)
 
             print(f"[Fluent] 🔥 Current streak: {streak} days")
             print(f"[Fluent] 📊 Total sessions: {total_sessions}")

@@ -30,13 +30,12 @@ def main():
             profile = json.load(f)
 
         learner = profile.get("learner", {})
-        stats = profile.get("stats", {})
 
         name = learner.get("name", "Learner")
         target_lang = learner.get("target_language", "your target language")
         current_level = learner.get("current_level", "...")
         target_level = learner.get("target_level", "...")
-        streak = stats.get("streak_days", 0)
+        streak = profile.get("current_streak_days", 0)
 
         print(f"[Fluent] 🌍 Welcome back, {name}!")
         print(f"[Fluent] 📚 Learning: {target_lang}")
@@ -53,8 +52,12 @@ def main():
                 today = datetime.now().strftime("%Y-%m-%d")
                 due_count = 0
 
-                for item in sr_data.get("items", []):
-                    if item.get("next_review_date", "") <= today:
+                items = sr_data.get("items", {})
+                # items may be a dict (current schema) or list (legacy)
+                iterable = items.values() if isinstance(items, dict) else items
+                for item in iterable:
+                    due = item.get("due_date") or item.get("next_review_date", "")
+                    if due and due <= today:
                         due_count += 1
 
                 if due_count > 0:
