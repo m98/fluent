@@ -360,7 +360,7 @@ def update_spaced_repetition(sr: dict, session: dict):
                 "category": vocab.get("category", ""),
                 "difficulty": vocab.get("difficulty", ""),
                 "created_date": today,
-                "due_date": tomorrow(today),
+                "due_date": vocab.get("due_date", tomorrow(today)),
                 "interval_days": 1,
                 "repetitions": 0,
                 "easiness_factor": 2.5,
@@ -372,6 +372,8 @@ def update_spaced_repetition(sr: dict, session: dict):
                 "total_reviews": 0,
                 "priority": vocab.get("priority", "medium"),
             }
+            if vocab.get("source"):
+                items[item_id]["source"] = vocab["source"]
 
     for error in session.get("errors", []):
         item_id = error["pattern_id"]

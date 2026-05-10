@@ -236,6 +236,55 @@ class UpdateDbSmokeTest(unittest.TestCase):
             profile = json.load(f)
         self.assertEqual(profile["current_streak_days"], 2)
 
+    def test_wortchallenge_new_vocab_preserves_source_metadata(self):
+        payload = {
+            "session_id": "session-004",
+            "date": "2026-04-24",
+            "duration_minutes": 8,
+            "command_used": "/wortchallenge",
+            "skills_practiced": ["vocabulary"],
+            "skill_scores": {
+                "vocabulary": {"exercises": 1, "correct": 0, "time_minutes": 8}
+            },
+            "new_vocabulary": [{
+                "item_id": "wortchallenge_antrieb",
+                "item_type": "vocabulary",
+                "content": "Antrieb",
+                "answer": "itici güç / motivasyon / drive / motivation",
+                "category": "wortchallenge_noun",
+                "difficulty": "B1",
+                "due_date": "2026-04-24",
+                "initial_quality": 2,
+                "priority": "high",
+                "source": {
+                    "type": "wortchallenge",
+                    "note_path": "/tmp/vault/words/Antrieb.md",
+                    "obsidian_link": "[[Antrieb]]",
+                },
+            }],
+            "errors": [{
+                "pattern_id": "wortchallenge_antrieb",
+                "category": "vocabulary",
+                "your_answer": "idk",
+                "correct_answer": "Antrieb",
+                "context": "wortchallenge unknown word",
+                "severity": "critical",
+            }],
+        }
+
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+
+        with open(self.tmp / "data" / "spaced-repetition.json") as f:
+            sr = json.load(f)
+
+        item = sr["items"]["wortchallenge_antrieb"]
+        self.assertEqual(item["type"], "vocabulary")
+        self.assertEqual(item["priority"], "high")
+        self.assertEqual(item["source"]["type"], "wortchallenge")
+        self.assertEqual(item["source"]["obsidian_link"], "[[Antrieb]]")
+        self.assertIn("wortchallenge_antrieb", sr["review_queue"]["today"])
+
 
 if __name__ == "__main__":
     unittest.main()
