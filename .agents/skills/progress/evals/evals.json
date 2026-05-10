@@ -1,0 +1,64 @@
+{
+  "skill_name": "progress",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How am I doing with my Dutch?",
+      "expected_output": "A dashboard report rendered in the progress skill's canonical format — overview, skills mastery, trends, focus areas, spaced-repetition status, achievements, session history, next goals, recommendations. Must use the learner's name and the current streak value from learner-profile.json. No DB writes.",
+      "files": [],
+      "expectations": [
+        "The output contains the learner's name (from learner-profile.json)",
+        "The output contains the target language (from learner-profile.json)",
+        "The output contains the current streak value (day vs days rendered correctly)",
+        "The output contains a '💪 Skills Mastery' section with entries for writing, speaking, vocabulary, reading",
+        "The output contains a '🔄 Spaced Repetition Status' section with the due_reviews_count",
+        "The output does NOT call update-db.py",
+        "The output does NOT write to any file in data/"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/progress",
+      "expected_output": "Same dashboard as #1 — the explicit slash invocation should trigger the same canonical report.",
+      "files": [],
+      "expectations": [
+        "The output contains the learner's name",
+        "The output contains the target language",
+        "The output contains the current streak value",
+        "The output contains all 4 skill sections",
+        "The output does NOT call update-db.py"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "show my stats",
+      "expected_output": "Dashboard report. 'show my stats' is a natural-language trigger that should auto-invoke this skill.",
+      "files": [],
+      "expectations": [
+        "The skill was triggered (output matches the dashboard template)",
+        "The output contains the learner's name",
+        "The output contains the current streak value"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "can you teach me some Dutch vocabulary?",
+      "expected_output": "The progress skill should NOT trigger. This is a /vocab request, not a stats request.",
+      "files": [],
+      "expectations": [
+        "The progress-skill dashboard template is NOT rendered",
+        "The assistant routes the learner to /vocab or engages vocabulary practice"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "what is the weather like today",
+      "expected_output": "The progress skill should NOT trigger. Unrelated to Fluent.",
+      "files": [],
+      "expectations": [
+        "The progress-skill dashboard template is NOT rendered",
+        "The assistant does not try to apply Fluent skills to an unrelated question"
+      ]
+    }
+  ]
+}
