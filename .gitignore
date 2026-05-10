@@ -2,9 +2,13 @@
 /data/*.json
 /data/*.json.backup-*
 /results/*.md
+/words/
 # Except the README files which explain the structure
 !/data/README.md
 !/results/README.md
+
+# Git worktrees created by Claude Code sessions
+/.claude/worktrees/
 
 # Personal writing/practice files
 myfile.txt
