@@ -147,7 +147,7 @@ Then use the `fluent-db-updater` skill:
 - `errors[]`, `new_vocabulary[]`, `review_results[]`
 - `breakthroughs[]`, `focus_next_session[]`, `session_notes`
 
-Save exchange to `/results/fluent-learn-session-{NNN}.md`.
+Save exchange to `{computed.results_dir}/fluent-learn-session-{NNN}.md` (use the `results_dir` value from the `read-db.py` output — e.g. `results/es/` when `FLUENT_LANG=es`).
 
 ## Examples
 

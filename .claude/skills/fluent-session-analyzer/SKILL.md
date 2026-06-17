@@ -1,13 +1,13 @@
 ---
 name: fluent-session-analyzer
-description: Parse Fluent `/results/*.md` session files to extract error patterns, strengths, accuracy trends, and focus areas for the next session. Use when the tutor needs to analyze the learner's recent performance — planning the next lesson, recommending focus areas, or answering "what should I practice next?".
+description: Parse Fluent session files (in `computed.results_dir` from read-db.py) to extract error patterns, strengths, accuracy trends, and focus areas for the next session. Use when the tutor needs to analyze the learner's recent performance — planning the next lesson, recommending focus areas, or answering "what should I practice next?".
 ---
 
 # Session Analyzer
 
 ## Overview
 
-Every practice session writes a markdown report to `/results/{skill}-session-{ID}.md` (e.g. `writing-session-012.md`). This skill describes how to read those files to plan adaptive follow-up practice. Use it when the tutor needs narrative context the JSON databases don't capture — the exact sentence the learner wrote, the scenario, the feedback they received.
+Every practice session writes a markdown report to `{computed.results_dir}/{skill}-session-{ID}.md` (e.g. `results/es/writing-session-012.md`). Use the `results_dir` from `read-db.py` computed output to locate the correct language subdirectory. This skill describes how to read those files to plan adaptive follow-up practice. Use it when the tutor needs narrative context the JSON databases don't capture — the exact sentence the learner wrote, the scenario, the feedback they received.
 
 ## When to Use
 
@@ -24,10 +24,10 @@ Skip this skill when aggregated JSON numbers are enough — prefer `read-db.py` 
 ### 1. Find recent session files
 
 ```
-/results/{skill}-session-{ID}.md
+{computed.results_dir}/{skill}-session-{ID}.md
 ```
 
-File naming: `{skill}-session-{NNN}.md` keeps files grouped by skill + chronological by ID. Read the most recent 3-5 files of the relevant skill; don't re-read the entire history.
+Use the `results_dir` value from `read-db.py` computed output — e.g. `results/es/` when `FLUENT_LANG=es`. File naming: `{skill}-session-{NNN}.md` keeps files grouped by skill + chronological by ID. Read the most recent 3-5 files of the relevant skill; don't re-read the entire history.
 
 ### 2. Extract error patterns
 
@@ -132,9 +132,9 @@ Trend: accuracy rising ~7% per session. Critical errors halving each session —
 
 ## Critical Rules
 
-- **Read `/results/` markdown for context.** Use `read-db.py` for numerical summaries — don't reimplement counts by re-parsing markdown when the DB already has them.
+- **Read `{computed.results_dir}/` markdown for context.** Use `read-db.py` for numerical summaries — don't reimplement counts by re-parsing markdown when the DB already has them.
 - **Cap the look-back window.** 3-5 recent sessions for the relevant skill. Older data is already baked into `mistakes-db.json` mastery levels.
-- **Never alter `/results/` files.** They are immutable records. Planning only.
+- **Never alter session files.** They are immutable records. Planning only.
 
 ## Why This Matters
 

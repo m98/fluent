@@ -152,7 +152,7 @@ Use the `fluent-db-updater` skill:
 - `errors[]` — only patterns where the learner got it wrong (bumps frequency)
 - `focus_next_session[]` — the 2-3 items with lowest quality this session
 
-Save exchange to `/results/fluent-review-session-{NNN}.md` for later analysis.
+Save exchange to `{computed.results_dir}/fluent-review-session-{NNN}.md` for later analysis. Use the `results_dir` value from the `read-db.py` output.
 
 ## Examples
 

@@ -153,7 +153,7 @@ Use the `fluent-db-updater` skill:
 - `errors[]` — one per distinct pattern found (dedupe; the script bumps frequency)
 - `focus_next_session[]` — top 2 patterns to drill
 
-Also save the exchange as `/results/fluent-writing-session-{NNN}.md` with the full task, the learner's original text, the corrected version, and the error table. The `fluent-session-analyzer` skill depends on this format.
+Also save the exchange as `{computed.results_dir}/fluent-writing-session-{NNN}.md` with the full task, the learner's original text, the corrected version, and the error table. The `fluent-session-analyzer` skill depends on this format.
 
 ## Examples
 
@@ -216,7 +216,7 @@ Learner: "Hallo, Ik schrijf je omdat ik kan niet komen op donderdag. Ik ben ziek
 - **One scenario per session.** Don't chain multiple writing tasks — depth over breadth.
 - **Wait for the full answer** before correcting.
 - **Severity tagging is mandatory.** Fed into `mistakes-db` and drives spaced repetition priority.
-- **Always save the session file** in `/results/` for later analysis by `fluent-session-analyzer`.
+- **Always save the session file** in `{computed.results_dir}/` for later analysis by `fluent-session-analyzer`.
 - **Never auto-invoke.** This skill is gated; must fire only on explicit `/fluent-writing`.
 
 ## Language Reference

@@ -165,7 +165,7 @@ Use the `fluent-db-updater` skill:
 - `errors[]` — only communication-blocking ones (don't flood mistakes-db with minor speaking slips)
 - `focus_next_session[]` — one topic + one pattern
 
-Save exchange to `/results/fluent-speaking-session-{NNN}.md`.
+Save exchange to `{computed.results_dir}/fluent-speaking-session-{NNN}.md` (use the `results_dir` value from the `read-db.py` output).
 
 ## Examples
 
