@@ -67,11 +67,28 @@ Learner data lives in `./data/` inside the cloned repo instead of `~/.claude/flu
 Fluent resolves the data directory in this order — first match wins:
 
 1. `$FLUENT_DATA_DIR` if set (override everything).
-2. `$CLAUDE_PROJECT_DIR/data/` if it has `learner-profile.json` (clone mode, running from outside the repo root).
-3. `./data/` if it has `learner-profile.json` (clone mode, running inside the repo).
-4. `~/.claude/fluent-data/` (plugin-install default).
+2. `$CLAUDE_PROJECT_DIR/data/$FLUENT_LANG` if `FLUENT_LANG` is set (language subdirectory).
+3. `$CLAUDE_PROJECT_DIR/data/` if it has `learner-profile.json` (clone mode, running from outside the repo root).
+4. `./data/$FLUENT_LANG` if `FLUENT_LANG` is set (clone mode, in-repo cwd).
+5. `./data/` if it has `learner-profile.json` (clone mode, running inside the repo).
+6. `~/.claude/fluent-data/$FLUENT_LANG` if `FLUENT_LANG` is set (plugin-mode).
+7. `~/.claude/fluent-data/` (plugin-install default).
 
-Set `FLUENT_DATA_DIR` to run multiple learners on one machine:
+### Studying multiple languages
+
+Set `FLUENT_LANG` to a language code when launching Claude Code. Each language gets its own isolated data directory and results subdirectory — no data is ever mixed or overwritten.
+
+```bash
+# Spanish session  (data: ~/.claude/fluent-data/es/  results: results/es/)
+FLUENT_LANG=es claude
+
+# French session   (data: ~/.claude/fluent-data/fr/  results: results/fr/)
+FLUENT_LANG=fr claude
+```
+
+Run `/fluent-setup` once per language the first time to initialize the profile. After that, just launch with the appropriate `FLUENT_LANG` — the session-start hook will greet you in the right language with the correct stats.
+
+For a completely custom path, use the lower-level `FLUENT_DATA_DIR` override:
 
 ```bash
 export FLUENT_DATA_DIR=~/.fluent/dutch
@@ -80,7 +97,7 @@ export FLUENT_DATA_DIR=~/.fluent/dutch
 Check where Fluent is currently looking:
 
 ```bash
-python3 -c "import sys; sys.path.insert(0, '.claude/hooks'); from fluent_paths import data_dir; print(data_dir())"
+python3 -c "import sys; sys.path.insert(0, '.claude/hooks'); from fluent_paths import data_dir, results_dir; print('data:', data_dir()); print('results:', results_dir())"
 ```
 
 ---
@@ -185,12 +202,12 @@ This system implements proven learning science:
 
 ## 🎮 Available Commands & Skills
 
-Fluent is built as **Claude Code skills** — 12 of them. Skills work two ways:
+Fluent is built as **Claude Code skills** — 13 of them. Skills work two ways:
 
 1. **Type the slash command** (`/fluent-learn`, `/fluent-vocab`, etc.) — you explicitly start a session. Learner-facing skills are gated so they only run this way. No accidental 20-minute session triggered by a chat message.
 2. **Ask naturally** — read-only skills like `/fluent-progress` auto-trigger when you ask "how am I doing?" or "what's my streak?". Helper skills (SM-2 math, feedback formatter, DB updater, session analyzer) auto-load whenever Claude needs them during a session.
 
-All 12 skills appear in your `/` menu so you can always invoke any of them manually.
+All 13 skills appear in your `/` menu so you can always invoke any of them manually.
 
 ### Learner-facing commands
 
@@ -203,6 +220,7 @@ These are the commands you'll use daily. Each is backed by a dedicated skill und
 | **`/fluent-setup`** | **One-time onboarding** - Asks you questions about your name, target language, current level, goals, and timeline. Creates your personalized learning profile. | **First time only** - Run this once to set up your account. The system generates a custom learning plan based on your answers. |
 | **`/fluent-learn`** | **Adaptive mixed practice** - Combines different exercise types (vocabulary, grammar, sentences) based on your weak areas. Adjusts difficulty in real-time based on your performance. | **Daily core practice** - Your main command for general improvement. The AI decides what you need to practice most. Best after `/fluent-review`. |
 | **`/fluent-review`** | **Spaced repetition session** - Shows you items that are due for review today based on the SM-2 algorithm. Focuses on things you learned before that need reinforcement. | **Start every day here!** - Review before learning new content. This is scientifically proven to be the most effective way to retain what you've learned. |
+| **`/fluent-lang`** | **Language switcher** - Type `/fluent-lang fr` to switch to French, `/fluent-lang es` for Spanish, or any ISO 639-1 code. Also accepts full names ("switch to Japanese"). Type `/fluent-lang` alone to see your current language. Takes effect immediately — no restart needed. | **When studying multiple languages** - Run once per session to pick which language to practice. Run `/fluent-setup` the first time you add a new language to initialize its profile. |
 
 #### Skill-Specific Commands
 
@@ -284,7 +302,7 @@ The AI follows these guides:
 
 ### Interface Layer
 
-- **Skills** (`.claude/skills/`) — 12 skills total. 8 learner-facing (`/fluent-setup`, `/fluent-learn`, `/fluent-vocab`, `/fluent-writing`, `/fluent-speaking`, `/fluent-reading`, `/fluent-review`, `/fluent-progress`) run when you invoke them. 4 helper skills (`/fluent-sm2-calculator`, `/fluent-feedback-formatter`, `/fluent-db-updater`, `/fluent-session-analyzer`) auto-load whenever Claude needs them during a session — and are also directly `/`-invokable if you want to read the reference.
+- **Skills** (`.claude/skills/`) — 13 skills total. 9 learner-facing (`/fluent-setup`, `/fluent-learn`, `/fluent-vocab`, `/fluent-writing`, `/fluent-speaking`, `/fluent-reading`, `/fluent-review`, `/fluent-progress`, `/fluent-lang`) run when you invoke them. 4 helper skills (`/fluent-sm2-calculator`, `/fluent-feedback-formatter`, `/fluent-db-updater`, `/fluent-session-analyzer`) auto-load whenever Claude needs them during a session — and are also directly `/`-invokable if you want to read the reference.
 - **Plugin manifests** (`.claude-plugin/`) — `plugin.json` + `marketplace.json` make Fluent installable via `/plugin marketplace add m98/fluent`.
 - **Automatic Hooks** (`.claude/hooks/`) — SessionStart welcome, SessionEnd backups, PostToolUse JSON validation + backups, PreCompact safety backup. Both `hooks.json` (plugin mode) and `.claude/settings.json` (clone mode) wire them up.
 - **Session Results** (`/results/`) — Detailed practice logs per session, parsed by `fluent-session-analyzer` to plan future sessions.
@@ -444,7 +462,7 @@ It helps others discover this project and motivates us to keep improving it!
 
 ## 📈 Project Stats
 
-- **Skills:** 12 (8 learner-facing + 4 helper)
+- **Skills:** 13 (9 learner-facing + 4 helper)
 - **Hooks:** 5 automated (SessionStart, SessionEnd, PostToolUse, PreCompact, DB helpers)
 - **Databases:** 6 JSON tracking files
 - **Install paths:** 2 (Claude Code plugin + git clone — both supported)
