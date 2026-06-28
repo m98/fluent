@@ -53,7 +53,38 @@ Why review? Spaced repetition prevents forgetting, moves items into long-term me
 **Ready? Let's start!** 💪
 ```
 
-### 3. Generate exercise per item
+### 3. Batch Mode (--batch flag)
+
+When the learner invokes `/fluent-review --batch`, replace the one-at-a-time flow with a worksheet:
+
+1. Generate all exercises upfront and display them together as a numbered list in one message.
+2. Ask the learner to send all answers in a single reply.
+3. Parse answers flexibly — accept:
+   - `1. answer` / `2. answer` (one per line, numbered)
+   - `1) answer` / `[1] answer`
+   - Unformatted sequence (match by position if count matches)
+4. Evaluate each answer in order, show full feedback for all items in sequence.
+5. Continue to session summary and DB update as normal.
+
+**Batch question block format:**
+
+```markdown
+## 🔄 Batch Review — {count} items
+
+Answer all questions below, then send them in one message.
+Format: one answer per line, e.g. `1. your answer`.
+
+**1.** {exercise 1}
+**2.** {exercise 2}
+…
+**{N}.** {exercise N}
+```
+
+**Trade-off:** You lose the per-item struggle effect for later items (you may peek at earlier feedback before answering later ones), but the session flows faster and with fewer interruptions. SM-2 scores are still based on accuracy, not speed.
+
+---
+
+### 3b. Standard mode — Generate exercise per item
 
 Each item has:
 
@@ -206,7 +237,7 @@ Learner: "niet"
 
 - **Daily.** The whole system assumes the learner runs `/fluent-review` every day. Missing a day breaks the intended spacing.
 - **Never auto-invoke.** Gated; must fire only on explicit `/fluent-review`. Long interactive + SM-2 mutation.
-- **One item at a time.** Rushing = false positives.
+- **One item at a time in standard mode.** Rushing = false positives. `--batch` is the deliberate opt-in exception.
 - **Let the learner struggle.** If they don't remember, that's useful data (quality 0-2). The algorithm needs honest signals.
 - **Never hand-edit `spaced-repetition.json`.** Queue is rebuilt on every `update-db.py` call.
 

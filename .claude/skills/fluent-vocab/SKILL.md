@@ -44,7 +44,40 @@ Priority order:
 
 Limit: `spaced-repetition.daily_limits.review_items_per_day` (default 20).
 
-### 3. Present one word at a time
+### 3. Batch Mode (--batch flag)
+
+When the learner invokes `/fluent-vocab --batch`, replace the one-at-a-time flow with a worksheet:
+
+1. Generate all exercises upfront (using the same recognition / production / cloze rotation) and display them together as a numbered list in one message.
+2. Ask the learner to send all answers in a single reply.
+3. Parse answers flexibly — accept:
+   - `1. answer` / `2. answer` (one per line, numbered)
+   - `1) answer` / `[1] answer`
+   - Unformatted sequence (match by position if count matches)
+4. Evaluate each answer in order, show full feedback for all items in sequence.
+5. Continue to session summary and DB update as normal.
+
+**Batch question block format:**
+
+```markdown
+## 📚 Batch Vocab — {count} words
+
+Answer all questions below, then send them in one message.
+Format: one answer per line, e.g. `1. your answer`.
+
+**1.** [{mode}] {exercise 1}
+**2.** [{mode}] {exercise 2}
+…
+**{N}.** [{mode}] {exercise N}
+```
+
+Where `{mode}` is `Recognition`, `Production`, or `Cloze` so the learner knows what's expected per item.
+
+**Trade-off:** You lose the immediate reinforcement loop, but the session is faster and less interrupted. Accuracy signals for SM-2 are unchanged.
+
+---
+
+### 3b. Standard mode — Present one word at a time
 
 Rotate the three modes so the session is not monotonous.
 
@@ -188,9 +221,9 @@ Learner: "schrijven"
 
 ## Critical Rules
 
-- **One word at a time.** Wait for the learner's answer before showing the next.
-- **Immediate feedback** after each — use `fluent-feedback-formatter`.
-- **Mix modes.** Don't drill 20 recognition prompts in a row — interleave for discrimination.
+- **One word at a time in standard mode.** Wait for the learner's answer before showing the next. `--batch` is the deliberate opt-in exception.
+- **Immediate feedback** after each (standard mode) or in sequence after all answers (batch mode) — use `fluent-feedback-formatter`.
+- **Mix modes.** Don't drill 20 recognition prompts in a row — interleave for discrimination. Apply the same rotation in batch mode.
 - **Use target language** for greetings + transitions when the learner is B1+; for A1-A2 mix target + native.
 - **Never** update the DBs mid-session — batch at end.
 - **Never auto-invoke.** This skill is gated; must fire only on explicit `/fluent-vocab`.
