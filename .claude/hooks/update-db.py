@@ -531,7 +531,10 @@ def update_session_log(log: dict, session: dict, streak: int):
 
 def main():
     try:
-        session = json.load(sys.stdin)
+        if len(sys.argv) > 1:
+            session = json.loads(sys.argv[1])
+        else:
+            session = json.load(sys.stdin)
     except json.JSONDecodeError as e:
         print(f"[Fluent] Error: Invalid JSON input: {e}", file=sys.stderr)
         sys.exit(1)
