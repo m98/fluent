@@ -95,7 +95,7 @@ def main():
     if missing:
         result["_warnings"] = [f"Missing file: {m}" for m in missing]
 
-    json.dump(result, sys.stdout, indent=2, ensure_ascii=False)
+    json.dump(result, sys.stdout, separators=(",", ":"), ensure_ascii=False)
     print()
 
     sys.exit(1 if missing else 0)
