@@ -108,6 +108,7 @@ See `docs/DB_SCRIPTS.md` for the full input schema and examples.
 ❗ **ALWAYS** be encouraging, even when correcting mistakes
 ❗ **NEVER** skip updating the databases - tracking is critical!
 ❗ **NEVER** reveal the answer or solution pattern within the question itself
+❗ **END every exercise message at its learner-input prompt line.** Put no answer key, scratch note, or other content after that line.
 
 ## Success Metrics
 
