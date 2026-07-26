@@ -60,6 +60,8 @@ def find_leak(text):
     terms = [m for m in TERMINATOR.finditer(text) if not MENU.search(m.group(0))]
     if not terms:
         return None  # not an exercise message — nothing to guard
+    if len(terms) > 1:
+        return "multiple learner prompt lines appear in one message"
     term = terms[-1]
 
     tail = text[term.end():].strip()
@@ -160,6 +162,13 @@ def selftest():
         "**Type your answer:**\n\nphenomenon"
     )
     assert find_leak(leaked), "trailing answer key must be caught"
+
+    multiple = (
+        "## Word 3/10\n\n**English:** _____ growth\n\n"
+        "**Type your answer:**\n\nphenomenon\n\n"
+        "## Word 4/10\n\n**English:** a rare _____\n\n**Type your answer:**"
+    )
+    assert find_leak(multiple), "multiple exercise prompts must be caught"
 
     clean = "## Word 3/10\n\n**English:** _____ growth\n\n**Type your answer:**"
     assert find_leak(clean) is None, "clean exercise must pass"
