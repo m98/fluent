@@ -202,7 +202,7 @@ These are the commands you'll use daily. Each is backed by a dedicated skill und
 |---------|--------------|----------------------|
 | **`/fluent-setup`** | **One-time onboarding** - Asks you questions about your name, target language, current level, goals, and timeline. Creates your personalized learning profile. | **First time only** - Run this once to set up your account. The system generates a custom learning plan based on your answers. |
 | **`/fluent-learn`** | **Adaptive mixed practice** - Combines different exercise types (vocabulary, grammar, sentences) based on your weak areas. Adjusts difficulty in real-time based on your performance. | **Daily core practice** - Your main command for general improvement. The AI decides what you need to practice most. Best after `/fluent-review`. |
-| **`/fluent-review`** | **Spaced repetition session** - Shows you items that are due for review today based on the SM-2 algorithm. Focuses on things you learned before that need reinforcement. | **Start every day here!** - Review before learning new content. This is scientifically proven to be the most effective way to retain what you've learned. |
+| **`/fluent-review`** | **Concept-diverse spaced repetition** - Reviews due SM-2 items while covering different underlying concepts before repeating one concept. Difficult answers can trigger one bounded transfer variant without exceeding the daily limit. | **Start every day here!** - Review before learning new content. Unselected due items remain scheduled for later instead of being marked complete. |
 
 #### Skill-Specific Commands
 
@@ -227,7 +227,7 @@ These skills don't change what the learner-facing commands do — they let Claud
 |-------|--------------|--------------|
 | **`/fluent-sm2-calculator`** | SM-2 spaced-repetition algorithm reference: quality scale, interval formula, easiness-factor update, mastery-level transitions. | Auto-loaded whenever a review item is scored. |
 | **`/fluent-feedback-formatter`** | Canonical per-answer feedback template — severity tagging (🔴 critical / 🟡 moderate / 🟢 minor), category labels, tone rules. | Auto-loaded every time Claude grades an answer. |
-| **`/fluent-db-updater`** | How to call `update-db.py` with a single JSON payload that atomically updates all 6 databases at session end. | Auto-loaded when a session ends. |
+| **`/fluent-db-updater`** | How to call `update-db.py` with one validated JSON payload that atomically replaces each learner database file at session end. | Auto-loaded when a session ends. |
 | **`/fluent-session-analyzer`** | Parses `/results/fluent-{skill}-session-{ID}.md` files to extract error patterns, strengths, and focus areas for the next session. | Auto-loaded when planning the next session. |
 
 ### 📅 Recommended Daily Routine

@@ -8,6 +8,7 @@
     "example_pattern_1": {
       "category": "{grammar|vocabulary|spelling|pronunciation|syntax}",
       "subcategory": "{specific_area}",
+      "concept_id": "{optional stable concept slug}",
       "frequency": 0,
       "mastery_level": 0,
       "difficulty_score": 0.0,

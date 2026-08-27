@@ -107,9 +107,14 @@ Ready? Let's make today count!"
 ### Step 3: Check Review Queue
 
 From `spaced-repetition.json`:
-- Load `review_queue.today` items
-- Prioritize by `priority` field (critical > high > medium > low)
+- Load `review_queue.today` items and their records from `items`
+- Remove duplicate IDs and ignore IDs missing from `items`
+- Prioritize by `priority` field (critical > high > medium > low), then overdue age and stable item ID
+- Group by optional `concept_id` (use the review compatibility map for legacy items)
+- Select one item per concept in a round-robin pass before selecting a second variant
 - Limit to `daily_limits.review_items_per_day` (default: 20)
+- If a learner answers with quality below 3, optionally replace one later unasked item with at most one unasked same-concept variant; never review the same item twice
+- Do not include deferred items in `review_results[]`; they remain due for a later session
 
 ### Step 4: Generate Session Plan
 
@@ -229,59 +234,17 @@ Map learner performance to quality:
 - **2-3/10 score** → quality = 1
 - **0-1/10 score** → quality = 0
 
-### Update Spaced Repetition After Each Answer
+### Stage Spaced Repetition During a Session
 
-**Algorithm:**
-```javascript
-function updateSpacedRepetition(item_id, performance_score) {
-    // 1. Load current item from spaced-repetition.json
-    let item = load_item(item_id);
+After each answer, calculate `quality = floor(score / 2)` and append one
+`{ "item_id": "...", "quality": 0-5 }` entry to the in-memory session report.
+Do not write a JSON database after each question. At session end, call
+`.claude/hooks/update-db.py` once with the complete report; it applies SM-2,
+updates mastery and rebuilds all queues atomically at the per-file level.
 
-    // 2. Calculate quality from score
-    let quality = Math.floor(performance_score / 2); // 10 → 5, 8 → 4, etc.
-
-    // 3. Update repetitions
-    if (quality >= 3) {
-        item.repetitions += 1;
-        item.consecutive_correct += 1;
-        item.consecutive_incorrect = 0;
-    } else {
-        item.repetitions = 0;
-        item.consecutive_incorrect += 1;
-        item.consecutive_correct = 0;
-    }
-
-    // 4. Calculate new interval
-    if (quality < 3) {
-        item.interval_days = 1; // Reset to daily
-    } else {
-        if (item.repetitions == 1) {
-            item.interval_days = 1;
-        } else if (item.repetitions == 2) {
-            item.interval_days = 6;
-        } else {
-            item.interval_days = Math.round(item.interval_days * item.easiness_factor);
-        }
-    }
-
-    // 5. Update easiness factor
-    item.easiness_factor = item.easiness_factor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-    item.easiness_factor = Math.max(1.3, item.easiness_factor); // Min 1.3
-
-    // 6. Calculate next review date
-    item.due_date = add_days(today, item.interval_days);
-
-    // 7. Update mastery level based on consecutive correct
-    if (item.consecutive_correct >= 5) {
-        item.mastery_level = Math.min(5, item.mastery_level + 1);
-    } else if (item.consecutive_incorrect >= 3) {
-        item.mastery_level = Math.max(0, item.mastery_level - 1);
-    }
-
-    // 8. Save back to spaced-repetition.json
-    save_item(item);
-}
-```
+For `/fluent-review`, submit only items actually answered. Deferred items stay
+due, and a difficult answer can use one distinct same-concept variant without
+submitting the original item twice.
 
 ---
 
@@ -289,7 +252,9 @@ function updateSpacedRepetition(item_id, performance_score) {
 
 ### Update `progress-db.json`
 
-After **every question answered**:
+After **every question answered**, record the delta in the in-memory session
+report. The single database write happens at session end through
+`update-db.py`:
 
 ```json
 {
@@ -527,18 +492,20 @@ Show progress in fun ways:
 3. Visualize with ASCII charts if helpful
 4. Motivational summary
 
-### `/dutch-review` - Spaced Repetition Review
+### `/fluent-review` - Spaced Repetition Review
 
 **Flow:**
-1. Load spaced-repetition.json → review_queue.today
-2. Sort by priority (critical first)
-3. Limit to daily_limits.review_items_per_day
-4. For each item:
-   - Generate targeted exercise
-   - Get response
-   - Update SM-2 parameters
-   - Move to appropriate queue (today/tomorrow/later)
-5. Show completion: "{X} items reviewed! Next review in {Y} days"
+1. Load the six databases and the current `review_queue.today`.
+2. Run the read-only `review_selector.py` helper.
+3. Sort by priority and select a round-robin plan across `concept_id` groups;
+   legacy items use the explicit compatibility map or an independent fallback.
+4. Reserve up to two slots for same-concept transfer variants only after a
+   difficult answer; never exceed `daily_limits.review_items_per_day`.
+5. For each selected item, generate a targeted exercise, get the response, and
+   stage one SM-2 result. Do not submit deferred items.
+6. Update all databases once at session end. Unselected due items retain their
+   due dates and remain eligible for the next review.
+7. Show completion: "{X} items reviewed across {Y} concepts"
 
 ---
 

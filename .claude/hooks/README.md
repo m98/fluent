@@ -12,6 +12,22 @@ Hooks ensure your learning data is:
 
 ## 📋 Hook Scripts
 
+### `review_selector.py` (on demand, read-only)
+
+**Triggered:** At the start of `/fluent-review`.
+
+**What it does:**
+1. Reads the JSON output of `read-db.py` from stdin.
+2. Applies stable priority sorting and groups due items by optional `concept_id`.
+3. Selects one item per concept before selecting a second variant.
+4. Reserves up to two daily slots for same-concept variants after a difficult answer.
+5. Prints a JSON plan without modifying learner data or running SM-2.
+
+Items omitted from the plan remain due because they are not submitted in
+`review_results[]`.
+
+---
+
 ### 1. `validate-data.py` (PostToolUse)
 
 **Triggered:** After every Write/Edit operation on data files

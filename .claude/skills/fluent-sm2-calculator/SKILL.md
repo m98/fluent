@@ -94,7 +94,7 @@ After updating:
 - `interval_days <= 7` → `review_queue.this_week`
 - `interval_days > 7` → `review_queue.later`
 
-If the learner got it wrong (quality < 3), keep the item in `review_queue.today` so it reappears in the same session.
+If the learner got it wrong (quality < 3), the updater places it in `review_queue.tomorrow`. The review skill may use a distinct same-concept variant during the current session without submitting the original item twice.
 
 ### 7. Preferred implementation
 
@@ -119,7 +119,7 @@ See `.claude/references/sm2-worked-examples.md` for 4 worked examples covering: 
 Quick version:
 
 - Correct, q=4: `interval = round(prev * EF)`, `repetitions += 1`, EF barely moves.
-- Wrong, q<3: `interval = 1`, `repetitions = 0`, EF drops sharply, item stays in today's queue.
+- Wrong, q<3: `interval = 1`, `repetitions = 0`, EF drops sharply, item goes to tomorrow's queue.
 
 ## Critical Rules
 

@@ -19,13 +19,53 @@ Skip this skill when the queue is empty — suggest `/fluent-vocab` or `/fluent-
 
 ## Instructions
 
-### 1. Load review queue
+### 1. Load and select a diverse review queue
 
 ```bash
-python3 "${CLAUDE_PLUGIN_ROOT:-${CLAUDE_PROJECT_DIR:-.}}/.claude/hooks/read-db.py"
+snapshot=$(mktemp "${TMPDIR:-/tmp}/fluent-review.XXXXXX")
+trap 'rm -f "$snapshot"' EXIT
+if ! python3 "${CLAUDE_PLUGIN_ROOT:-${CLAUDE_PROJECT_DIR:-.}}/.claude/hooks/read-db.py" > "$snapshot"; then
+  printf '%s\n' '[Fluent] Unable to load all learner databases; run /fluent-setup.' >&2
+  exit 1
+fi
+python3 "${CLAUDE_PLUGIN_ROOT:-${CLAUDE_PROJECT_DIR:-.}}/.claude/hooks/review_selector.py" < "$snapshot"
 ```
 
-Read `spaced-repetition.review_queue.today` and `daily_limits.review_items_per_day`. Sort items by `priority` (critical → high → medium → low). Cap at the daily limit (usually 20).
+Read `spaced-repetition.review_queue.today`, `spaced-repetition.items`, and
+`daily_limits.review_items_per_day`. The selector uses
+`computed.due_review_items` when available so items whose due dates rolled over
+since the last queue rebuild are not lost; it falls back to `queue.today` for
+legacy snapshots. Use the selector output as the session plan instead of
+simply taking the first N IDs. Its `selected_items` and `selected_patterns`
+fields provide the item and grading context for the questions.
+
+The selector is read-only and deterministic:
+
+1. Remove duplicate IDs and ignore IDs missing from `items`.
+2. Sort by `priority` (`critical → high → medium → low`), then overdue days,
+   due date, mastery, last review, and item ID as stable tie-breakers.
+3. Group by `concept_id`. For legacy items without a concept ID, use the
+   compatibility map in `.claude/references/review-concepts.json`; if no map
+   exists, use `legacy:<item_id>` and do not guess a merge from text.
+4. First pass: select at most one item per concept, round-robin across
+   concepts, until the daily limit is reached.
+5. If the number of concepts is smaller than the limit, make a second pass and
+   select at most one additional item per concept. Do not force a third item
+   merely to reach 20.
+
+The selector reserves up to two slots for adaptive variants when the due
+pool is larger than the daily limit. Therefore `selected_count` may initially
+be `limit - 2`; show the learner the primary count, the reserved slots, and the
+number of distinct concepts covered. If no difficult answer needs a variant,
+use the reserved slots at the end for the next unasked candidates, preferring
+new concepts. Never exceed the limit.
+
+The selector's `omitted_due_item_ids` are deferred, not completed: do not
+submit them in `review_results[]`, and do not remove them from the queue. When
+there are reserved slots, use `reserved_fill_item_ids` to fill unused capacity
+with unasked items (prefer a new concept); a difficult answer may instead
+replace one reserved fill with an unasked item from that primary item's
+`variant_candidates` list (or the equivalent result of `choose_variant`).
 
 If the queue is empty:
 
@@ -46,6 +86,8 @@ Want to practice something new? Try:
 Hallo {name}! Time to review items your brain is about to forget. This keeps everything fresh. 🧠
 
 **Items Due Today:** {count}
+**Primary Items:** {selected_count} across {unique_concepts} concepts
+**Reserved Variant Slots:** {variant_slots}
 **Estimated Time:** ~{minutes} min
 
 Why review? Spaced repetition prevents forgetting, moves items into long-term memory, and builds automaticity.
@@ -59,8 +101,9 @@ Each item has:
 
 ```json
 {
-  "item_id": "...",
-  "item_type": "error_pattern | vocabulary | grammar_rule",
+  "id": "...",
+  "type": "error_pattern | vocabulary | grammar_rule",
+  "concept_id": "optional stable concept slug",
   "easiness_factor": 2.5,
   "interval_days": 6,
   "repetitions": 2,
@@ -71,7 +114,11 @@ Each item has:
 }
 ```
 
-Generate an exercise matched to `item_type`:
+`concept_id` is for selection only; it is not an answer key. Do not mark a
+reasonable answer wrong merely because it differs from another item in the
+same concept family.
+
+Generate an exercise matched to `type` (fall back to legacy `item_type`):
 
 - **error_pattern**: load the pattern from `mistakes-db`, create a scenario that forces the correct form. E.g. `formal_informal_confusion` → ask the learner to complete a formal email opening.
 - **vocabulary**: recognition (target → native), production (native → target), or cloze — rotate modes.
@@ -82,7 +129,7 @@ Present one at a time:
 ```markdown
 ## Review {N}/{total} — {priority emoji}
 
-**Type:** {item_type}
+**Type:** {type or legacy item_type}
 **Last reviewed:** {X} days ago
 **Current mastery:** {stars}
 
@@ -91,11 +138,26 @@ Present one at a time:
 **Type your answer:**
 ```
 
-### 4. Evaluate + update SM-2
+### 4. Evaluate, add limited variants, and update SM-2
 
 Use the `fluent-feedback-formatter` skill for per-answer feedback.
 
-Then stage the item for the end-of-session update. Do NOT hand-edit `spaced-repetition.json` — use `review_results[]` in the `fluent-db-updater` payload:
+The selector output is the primary plan. Track `seen_item_ids` and
+`seen_concept_ids` for the whole session. Grade each answer against that
+item's own content, target, context, and accepted meanings; concept membership
+is for scheduling only and must never replace item-specific grading.
+
+If a learner answers with quality `< 3`, you may add at most one unasked
+variant from the same concept family. The variant must have a different
+`item_id`, and each concept may receive at most one variant in a session. A
+variant consumes an available daily slot and must not push the total above
+`daily_limits.review_items_per_day`. If no same-concept variant exists, do not
+invent a second review of the same item. Deferred items remain due for a later
+session.
+
+Stage each answered item for the end-of-session update. Do NOT hand-edit
+`spaced-repetition.json` — use `review_results[]` in the `fluent-db-updater`
+payload:
 
 ```json
 { "item_id": "vocab_huis", "quality": 4 }
@@ -148,7 +210,8 @@ Use the `fluent-db-updater` skill:
 
 - `command_used: "/fluent-review"`, `skills_practiced: [derived from reviewed items]`
 - `skill_scores` — aggregate per skill touched
-- `review_results[]` — every item reviewed, with `quality`
+- `review_results[]` — every item actually answered, with `quality`; never
+  submit a deferred item and never submit the same `item_id` twice
 - `errors[]` — only patterns where the learner got it wrong (bumps frequency)
 - `focus_next_session[]` — the 2-3 items with lowest quality this session
 
@@ -180,7 +243,7 @@ Learner: "the door"
 >
 > **Score: 3/10** 💪 Easy to mix — we'll review this again soon.
 >
-> (Logged: `review_results[]` item quality=1 → `interval_days=1, repetitions=0`, stays in today's queue.)
+> (Logged: `review_results[]` item quality=1 → `interval_days=1, repetitions=0`; the updater schedules it for tomorrow, while the review skill may use a distinct same-concept variant in the current session.)
 
 ### Example 2 — correct answer with mastery bump
 

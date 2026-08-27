@@ -2,6 +2,26 @@
 
 All notable changes to Fluent will be documented in this file.
 
+## [0.4.0] — 2026-08-27
+
+### Added
+
+- `/fluent-review` now selects due items with deterministic concept-aware
+  round-robin coverage instead of taking a priority-only slice.
+- Added optional `concept_id` metadata and a compatibility map for legacy review
+  items, plus bounded same-concept variants after a difficult answer.
+- Added selector and updater tests for concept coverage, deferred items, and
+  duplicate review protection.
+
+### Fixed
+
+- New vocabulary and error-pattern records now preserve optional `concept_id`.
+- Reusing a `review_results.item_id` in one payload is rejected before any data
+  is written.
+- SM-2 interval rounding and per-item mastery threshold transitions now match
+  the documented calculator; invalid review quality and unknown item IDs are
+  rejected before writing.
+
 ## [0.3.0] — 2026-06-15
 
 ### Added

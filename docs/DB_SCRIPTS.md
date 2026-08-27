@@ -5,7 +5,7 @@ Two Python scripts under `.claude/hooks/` manage the six learner databases:
 | Script | Purpose |
 |--------|---------|
 | `read-db.py` | Load all 6 databases (+ computed fields) in one call |
-| `update-db.py` | Apply a session report to all 6 databases atomically |
+| `update-db.py` | Apply a session report to all 6 databases, atomically replacing each file |
 
 Both scripts resolve the data directory internally (see `fluent_paths.data_dir()`)
 and produce identical output regardless of CWD. Always invoke them with the
@@ -112,7 +112,18 @@ Everything else is optional; omitted fields do not update.
 - Writes each JSON file via a `.tmp` + `fsync` + `rename` pattern so a crash
   mid-write cannot leave a half-written file.
 - Rebuilds `spaced-repetition.review_queue` from scratch each run — any manual
-  edits there will be overwritten.
+  edits there will be overwritten. Items omitted from a review payload retain
+  their existing due dates and are eligible for the next selection.
+
+### Diverse review selection
+
+`/fluent-review` uses the read-only `.claude/hooks/review_selector.py` helper
+before presenting questions. It groups items by optional `concept_id`, takes a
+stable priority-ordered round-robin pass so one concept does not fill the
+session, and reserves at most two daily slots for difficult-answer variants.
+Items without a concept ID remain valid and are treated as independent legacy
+items unless `.claude/references/review-concepts.json` explicitly maps them.
+The selector does not run SM-2 or write any database.
 
 ### Exit codes
 - `0` success
@@ -129,8 +140,16 @@ Everything else is optional; omitted fields do not update.
   `session-NNN`.
 - `spaced-repetition.json` items preserve `consecutive_correct/incorrect`,
   `mastery_level`, `total_reviews`, `priority`, `content`, `answer`,
-  `category`, `difficulty` — supply these in `new_vocabulary` payloads so new
-  items are fully populated.
+  `category`, and `difficulty` — supply these in `new_vocabulary` payloads so
+  new items are fully populated. Items may also carry an optional `concept_id`
+  used by `/fluent-review` to avoid testing the same underlying concept twice.
+- `mistakes-db.json` patterns may carry the same optional `concept_id`; it is
+  metadata for grouping, not an answer key. Legacy items without one remain
+  valid and are treated as independent concepts unless the review compatibility
+  map explicitly groups them.
+- A review session must submit only the item IDs actually answered in
+  `review_results[]`. Deferred due items remain due, and an `item_id` may
+  appear only once in one session payload.
 - `milestones[]` accepts **either** a bare string **or** an object
   `{ "milestone": <required non-empty string>, "date": <optional YYYY-MM-DD,
   defaults to the session date> }`. A nested `session_id` is ignored — the
