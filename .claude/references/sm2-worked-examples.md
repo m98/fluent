@@ -111,13 +111,13 @@ After:
 - `EF = 1.6 + (0.1 - 4 * 0.16) = 1.6 - 0.54 = 1.3` (floored)
 - `consecutive_incorrect = 3` → **mastery_level = 1**, `consecutive_incorrect` resets to 0
 - `due_date = today + 1`
-- Queue: `today` (immediate re-practice)
+- Queue: `tomorrow` (the review skill may select a distinct same-concept variant today)
 
 ## Queue routing rules
 
 After computing the new `interval_days`:
 
-- `< 3` or wrong answer → `review_queue.today`
+- `quality < 3` or wrong answer → `review_queue.tomorrow` after `due_date = today + 1`
 - `interval_days == 1` (day after wrong) → `review_queue.tomorrow`
 - `2 <= interval_days <= 7` → `review_queue.this_week`
 - `interval_days > 7` → `review_queue.later`

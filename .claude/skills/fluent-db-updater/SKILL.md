@@ -7,7 +7,7 @@ description: Atomically update all 6 Fluent learner databases (learner-profile, 
 
 ## Overview
 
-Every practice skill ends with a DB update. Instead of hand-editing 6 JSON files (error-prone, racy, easy to desync), pipe one JSON report to `update-db.py`. The script runs pre-write backups, validates the payload, applies all changes atomically via `.tmp + fsync + rename`, and rebuilds the spaced-repetition queue.
+Every practice skill ends with a DB update. Instead of hand-editing 6 JSON files (error-prone, racy, easy to desync), pipe one JSON report to `update-db.py`. The script runs pre-write backups, validates the payload, atomically replaces each JSON file with an isolated temporary file, and rebuilds the spaced-repetition queue. The six-file update is not a cross-file transaction.
 
 ## When to Use
 
@@ -51,9 +51,9 @@ Key blocks the example covers: `skill_scores`, `errors[]`, `new_vocabulary[]`, `
 
 ### 3. Field notes
 
-- `errors[]` — one entry per distinct mistake this session. Collapse duplicates (same `pattern_id`) before sending; `frequency` is bumped by the script.
-- `new_vocabulary[]` — items the learner met for the first time. Fill every field; incomplete entries yield incomplete spaced-repetition records.
-- `review_results[]` — items already in the queue that were reviewed. The script runs SM-2 on each. See the `fluent-sm2-calculator` skill. Mapping: `quality = floor(score / 2)`.
+- `errors[]` — one entry per distinct mistake this session. Collapse duplicates (same `pattern_id`) before sending; `frequency` is bumped by the script. `concept_id` is optional and links similar patterns for diverse review selection.
+- `new_vocabulary[]` — items the learner met for the first time. Fill every field; incomplete entries yield incomplete spaced-repetition records. `concept_id` is optional.
+- `review_results[]` — items already in the queue that were reviewed. The script runs SM-2 on each. See the `fluent-sm2-calculator` skill. Mapping: `quality = floor(score / 2)`. Each `item_id` may appear at most once per session.
 - `skill_scores[].correct` counts correct exercises, not a percentage. Accuracy is derived.
 - `confidence` in `learner-profile.skills` is 0–100 integer; `accuracy` in `progress-db` is 0.0–1.0 float. The script handles the conversion.
 - `milestones[]` — each entry is a bare string OR an object `{ "milestone": <required non-empty string>, "date": <optional YYYY-MM-DD, defaults to the session date> }`. Don't set a nested `session_id`; the script stamps the authoritative top-level one. A malformed entry (neither string nor object, or an object missing/empty `milestone`) exits `1` with no files written. Each milestone becomes both a `session-log.milestones[]` record and a `learner-profile.achievements[]` entry.
@@ -135,7 +135,7 @@ EOF
 
 - **Call once per session, at the end.** The script rebuilds the review queue each run — partial updates risk inconsistency.
 - **Never hand-edit `spaced-repetition.review_queue`.** It's regenerated from scratch on every run.
-- **Same `session_id` replaces.** Sending the same ID twice overwrites the first call. Useful for corrections, dangerous if unintentional.
+- **Do not reuse a `session_id`.** The updater appends a session-log entry and increments totals for every call; sending the same ID twice does not replace the first call.
 - **Backups are automatic.** Written to `.backups/pre-update-<session_id>/` before any change. Check there to roll back.
 - **Exit code 1 means validation failed, no files touched.** Fix the payload and retry.
 - **Exit code 2 means I/O failure, no files touched.** Check disk space, permissions, then retry.

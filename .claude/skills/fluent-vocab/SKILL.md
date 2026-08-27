@@ -38,7 +38,7 @@ If any are missing, direct the learner to `/fluent-setup` and stop.
 
 Priority order:
 
-1. Items in `spaced-repetition.review_queue.today` with `item_type == "vocabulary"`.
+1. Items in `spaced-repetition.review_queue.today` with `type == "vocabulary"` (fall back to legacy `item_type`).
 2. Words from `mistakes-db.json` where `category == "vocabulary"` and `mastery_level <= 2`.
 3. New high-frequency words matching `learner-profile.focus_areas`.
 

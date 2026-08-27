@@ -17,6 +17,7 @@
       "pattern_id": "verb_conjugation_3rd_person",
       "category": "grammar",
       "subcategory": "verb_conjugation",
+      "concept_id": "grammar:third_person_singular",
       "your_answer": "Hij spreek",
       "correct_answer": "Hij spreekt",
       "context": "3rd person singular",
@@ -33,6 +34,7 @@
       "content": "het huis",
       "answer": "the house",
       "category": "essential_nouns",
+      "concept_id": "vocabulary:home_rooms",
       "difficulty": "A1",
       "initial_quality": 4,
       "priority": "medium"

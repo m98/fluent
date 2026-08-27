@@ -13,8 +13,9 @@
   },
   "items": {
     "example_item_id": {
-      "item_id": "{unique_identifier}",
-      "item_type": "{error_pattern|vocabulary|grammar_rule}",
+      "id": "{unique_identifier}",
+      "type": "{error_pattern|vocabulary|grammar_rule}",
+      "concept_id": "{optional stable concept slug}",
       "easiness_factor": 2.5,
       "interval_days": 1,
       "repetitions": 0,

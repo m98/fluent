@@ -18,6 +18,7 @@ import os
 import re
 import shutil
 import sys
+import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -35,14 +36,25 @@ def load_json(path: Path) -> dict:
         return json.load(f)
 
 
-def save_json(path: Path, data: dict):
-    tmp_path = path.with_suffix('.json.tmp')
-    with open(tmp_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-        f.write('\n')
-        f.flush()
-        os.fsync(f.fileno())
-    os.replace(str(tmp_path), str(path))  # atomic + overwrites (os.rename fails on Windows if dest exists)
+def save_json(path: Path, data: dict, temp_dir=None):
+    """Atomically replace one JSON file using an isolated temporary file."""
+    if temp_dir is None:
+        temp_dir = path.parent
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=temp_dir)
+    tmp_path = Path(tmp_name)
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+            f.write('\n')
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(str(tmp_path), str(path))  # atomic replacement of one file
+    finally:
+        try:
+            tmp_path.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def parse_date(s: str) -> datetime:
@@ -63,6 +75,104 @@ def yesterday(today_str: str) -> str:
 
 def date_plus_days(today_str: str, days: int) -> str:
     return date_str(parse_date(today_str) + timedelta(days=days))
+
+
+def validate_concept_id(value):
+    """Return a normalized optional concept ID or raise ValueError."""
+    if value is None:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("concept_id must be a non-empty string when provided")
+    return value.strip()
+
+
+def validate_review_results(session: dict, existing_items=None):
+    """Validate review IDs and quality before any database copy is updated."""
+    reviews = session.get("review_results", [])
+    if not isinstance(reviews, list):
+        raise ValueError("review_results must be a list")
+    seen = set()
+    for review in reviews:
+        if not isinstance(review, dict) or "item_id" not in review:
+            raise ValueError("each review_results entry must include item_id")
+        item_id = review["item_id"]
+        if not isinstance(item_id, str) or not item_id.strip():
+            raise ValueError("review_results item_id must be a non-empty string")
+        if item_id in seen:
+            raise ValueError(f"duplicate review_results item_id: {item_id}")
+        seen.add(item_id)
+        quality = review.get("quality")
+        if isinstance(quality, bool) or not isinstance(quality, int) or not 0 <= quality <= 5:
+            raise ValueError(f"review quality must be an integer from 0 to 5: {quality!r}")
+        if existing_items is not None and item_id not in existing_items:
+            raise ValueError(f"unknown review_results item_id: {item_id}")
+        if "concept_id" in review:
+            validate_concept_id(review.get("concept_id"))
+
+    vocabularies = session.get("new_vocabulary", [])
+    if not isinstance(vocabularies, list):
+        raise ValueError("new_vocabulary must be a list")
+    seen_vocab = set()
+    for vocab in vocabularies:
+        if not isinstance(vocab, dict):
+            raise ValueError("each new_vocabulary entry must be an object")
+        item_id = vocab.get("item_id")
+        if not isinstance(item_id, str) or not item_id.strip():
+            raise ValueError("new_vocabulary item_id must be a non-empty string")
+        if item_id in seen_vocab:
+            raise ValueError(f"duplicate new_vocabulary item_id: {item_id}")
+        seen_vocab.add(item_id)
+        if "concept_id" in vocab:
+            validate_concept_id(vocab.get("concept_id"))
+    errors = session.get("errors", [])
+    if not isinstance(errors, list):
+        raise ValueError("errors must be a list")
+    seen_errors = set()
+    for error in errors:
+        if not isinstance(error, dict):
+            raise ValueError("each errors entry must be an object")
+        pattern_id = error.get("pattern_id")
+        if not isinstance(pattern_id, str) or not pattern_id.strip():
+            raise ValueError("errors pattern_id must be a non-empty string")
+        if pattern_id in seen_errors:
+            raise ValueError(f"duplicate errors pattern_id: {pattern_id}")
+        seen_errors.add(pattern_id)
+        if "concept_id" in error:
+            validate_concept_id(error.get("concept_id"))
+
+
+def merge_concept_id(record: dict, supplied, label: str):
+    """Add a concept ID without silently changing an existing assignment."""
+    concept_id = validate_concept_id(supplied)
+    if concept_id is None:
+        return
+    existing = validate_concept_id(record.get("concept_id")) if record.get("concept_id") is not None else None
+    if existing is not None and existing != concept_id:
+        raise ValueError(
+            f"concept_id conflict for {label}: existing={existing!r}, supplied={concept_id!r}"
+        )
+    if existing is None:
+        record["concept_id"] = concept_id
+
+
+def validate_existing_concept_conflicts(originals: dict, session: dict):
+    """Check supplied IDs against existing records before making a copy."""
+    sr_items = originals["sr"].get("items", {})
+    patterns = originals["mistakes"].get("error_patterns", {})
+    for review in session.get("review_results", []):
+        item_id = review["item_id"]
+        if item_id in sr_items:
+            merge_concept_id(sr_items[item_id], review.get("concept_id"), f"review item {item_id}")
+    for vocab in session.get("new_vocabulary", []):
+        item_id = vocab.get("item_id")
+        if item_id in sr_items:
+            merge_concept_id(sr_items[item_id], vocab.get("concept_id"), f"vocabulary item {item_id}")
+    for error in session.get("errors", []):
+        pattern_id = error["pattern_id"]
+        if pattern_id in patterns:
+            merge_concept_id(patterns[pattern_id], error.get("concept_id"), f"mistake pattern {pattern_id}")
+        if pattern_id in sr_items:
+            merge_concept_id(sr_items[pattern_id], error.get("concept_id"), f"error item {pattern_id}")
 
 
 def get_week_start(today_str: str) -> str:
@@ -146,8 +256,7 @@ def backup_all(tag: str):
 # --- SM-2 Algorithm ---
 
 def calculate_sm2(item: dict, quality: int) -> dict:
-    """Classic SM-2. Uses ceil() for interval growth (standard)."""
-    import math
+    """Classic SM-2 interval and easiness update."""
     ef = item.get("easiness_factor", 2.5)
     interval = item.get("interval_days", 1)
     reps = item.get("repetitions", 0)
@@ -158,7 +267,7 @@ def calculate_sm2(item: dict, quality: int) -> dict:
         elif reps == 1:
             interval = 6
         else:
-            interval = int(math.ceil(interval * ef))
+            interval = int(round(interval * ef))
         reps += 1
     else:
         reps = 0
@@ -295,6 +404,7 @@ def update_mistakes_db(mistakes: dict, session: dict):
 
         if pid in patterns:
             pat = patterns[pid]
+            merge_concept_id(pat, error.get("concept_id"), f"mistake pattern {pid}")
             pat["frequency"] = pat.get("frequency", 0) + 1
             pat["last_seen"] = today
             pat["last_occurred"] = today  # legacy alias kept
@@ -332,6 +442,7 @@ def update_mistakes_db(mistakes: dict, session: dict):
                 }],
                 "notes": error.get("notes", ""),
             }
+            merge_concept_id(patterns[pid], error.get("concept_id"), f"mistake pattern {pid}")
 
     mistakes.setdefault("metadata", {})["last_updated"] = today
     mistakes["metadata"]["total_patterns_tracked"] = len(patterns)
@@ -381,6 +492,7 @@ def update_spaced_repetition(sr: dict, session: dict):
         quality = review["quality"]
         if item_id in items:
             item = items[item_id]
+            merge_concept_id(item, review.get("concept_id"), f"review item {item_id}")
             result = calculate_sm2(item, quality)
             item["easiness_factor"] = result["easiness_factor"]
             item["interval_days"] = result["interval_days"]
@@ -395,14 +507,16 @@ def update_spaced_repetition(sr: dict, session: dict):
             else:
                 item["consecutive_incorrect"] = item.get("consecutive_incorrect", 0) + 1
                 item["consecutive_correct"] = 0
-            # Mastery: rough map from repetitions and quality (clamped 0..5)
+            had_incorrect_streak = item["consecutive_incorrect"] >= 2
             current = item.get("mastery_level", 0)
-            if item["repetitions"] >= 5 and item["consecutive_correct"] >= 3:
-                item["mastery_level"] = min(5, max(current, 3))
-            elif item["repetitions"] >= 2 and item["consecutive_correct"] >= 1 and quality >= 4:
+            if item["consecutive_correct"] >= 5:
                 item["mastery_level"] = min(5, current + 1)
+                item["consecutive_correct"] = 0
+            elif item["consecutive_incorrect"] >= 3:
+                item["mastery_level"] = max(0, current - 1)
+                item["consecutive_incorrect"] = 0
             # priority heuristic
-            if item.get("consecutive_incorrect", 0) >= 2:
+            if had_incorrect_streak or item.get("consecutive_incorrect", 0) >= 2:
                 item["priority"] = "high"
             elif item.get("mastery_level", 0) >= 3:
                 item["priority"] = "low"
@@ -437,10 +551,13 @@ def update_spaced_repetition(sr: dict, session: dict):
                 "total_reviews": 0,
                 "priority": vocab.get("priority", "medium"),
             }
+            merge_concept_id(items[item_id], vocab.get("concept_id"), f"vocabulary item {item_id}")
 
     for error in session.get("errors", []):
         item_id = error["pattern_id"]
-        if item_id not in items:
+        if item_id in items:
+            merge_concept_id(items[item_id], error.get("concept_id"), f"error item {item_id}")
+        else:
             items[item_id] = {
                 "id": item_id,
                 "type": "error_pattern",
@@ -461,6 +578,7 @@ def update_spaced_repetition(sr: dict, session: dict):
                 "total_reviews": 0,
                 "priority": "high",
             }
+            merge_concept_id(items[item_id], error.get("concept_id"), f"error item {item_id}")
 
     # Rebuild review queue
     sr["review_queue"] = {"today": [], "tomorrow": [], "this_week": [], "later": []}
@@ -541,6 +659,12 @@ def main():
             print(f"[Fluent] Error: Missing required field '{field}'", file=sys.stderr)
             sys.exit(1)
 
+    try:
+        validate_review_results(session)
+    except (TypeError, ValueError) as exc:
+        print(f"[Fluent] Error: {exc}", file=sys.stderr)
+        sys.exit(1)
+
     # Validate + canonicalize milestones before touching any DB (exits 1 on
     # malformed input, so disk stays untouched on a validation failure).
     normalize_milestones(session)
@@ -558,6 +682,11 @@ def main():
 
     try:
         originals = {k: load_json(p) for k, p in files.items()}
+        validate_review_results(session, originals["sr"].get("items", {}))
+        validate_existing_concept_conflicts(originals, session)
+    except ValueError as e:
+        print(f"[Fluent] Error: {e}", file=sys.stderr)
+        sys.exit(1)
     except Exception as e:
         print(f"[Fluent] Error loading databases: {e}", file=sys.stderr)
         sys.exit(2)

@@ -8,6 +8,7 @@ session report, and asserts schema invariants on the output files.
 Usage:
     python3 tests/test_update_db.py
 """
+import copy
 import json
 import os
 import shutil
@@ -235,6 +236,191 @@ class UpdateDbSmokeTest(unittest.TestCase):
         with open(self.tmp / "data" / "learner-profile.json") as f:
             profile = json.load(f)
         self.assertEqual(profile["current_streak_days"], 2)
+
+    def test_concept_ids_are_saved_for_new_items_and_patterns(self):
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-020"
+        payload["new_vocabulary"][0]["concept_id"] = "vocabulary:home_rooms"
+        payload["errors"][0]["concept_id"] = "grammar:third_person_singular"
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+
+        sr = self._load("spaced-repetition.json")
+        self.assertEqual(sr["items"]["het_huis"]["concept_id"], "vocabulary:home_rooms")
+        self.assertEqual(sr["items"]["verb_spreek"]["concept_id"], "grammar:third_person_singular")
+        mistakes = self._load("mistakes-db.json")
+        self.assertEqual(
+            mistakes["error_patterns"]["verb_spreek"]["concept_id"],
+            "grammar:third_person_singular",
+        )
+
+    def test_review_can_backfill_and_preserve_concept_id(self):
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-021"
+        payload["review_results"] = [{
+            "item_id": "vocab_dag",
+            "quality": 5,
+            "concept_id": "vocabulary:greetings",
+        }]
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        sr = self._load("spaced-repetition.json")
+        self.assertEqual(sr["items"]["vocab_dag"]["concept_id"], "vocabulary:greetings")
+
+    def test_duplicate_review_result_exits_1_without_mutation(self):
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-022"
+        payload["review_results"] = [
+            {"item_id": "vocab_dag", "quality": 5},
+            {"item_id": "vocab_dag", "quality": 4},
+        ]
+        before = self._load("spaced-repetition.json")
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn(b"duplicate review_results item_id", proc.stderr)
+        self.assertEqual(self._load("spaced-repetition.json"), before)
+        self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_invalid_review_quality_exits_1_without_mutation(self):
+        for quality in (-1, 6, "5", True, None):
+            with self.subTest(quality=quality):
+                payload = copy.deepcopy(SESSION_PAYLOAD)
+                payload["session_id"] = f"session-quality-{quality!s}"
+                payload["review_results"] = [{"item_id": "vocab_dag", "quality": quality}]
+                before = self._load("spaced-repetition.json")
+                proc = self._run(payload)
+                self.assertEqual(proc.returncode, 1)
+                self.assertEqual(self._load("spaced-repetition.json"), before)
+                self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_duplicate_new_entries_exit_1_without_mutation(self):
+        cases = [
+            ("new_vocabulary", "item_id", "same_word"),
+            ("errors", "pattern_id", "same_pattern"),
+        ]
+        for field, key, value in cases:
+            with self.subTest(field=field):
+                payload = copy.deepcopy(SESSION_PAYLOAD)
+                payload["session_id"] = f"session-duplicate-{field}"
+                payload[field] = [{key: value}, {key: value}]
+                payload["review_results"] = []
+                before = self._load("spaced-repetition.json")
+                proc = self._run(payload)
+                self.assertEqual(proc.returncode, 1)
+                self.assertEqual(self._load("spaced-repetition.json"), before)
+                self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_unknown_review_id_exits_1_without_mutation(self):
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-unknown-review"
+        payload["review_results"] = [{"item_id": "missing_item", "quality": 5}]
+        before = self._load("spaced-repetition.json")
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn(b"unknown review_results item_id", proc.stderr)
+        self.assertEqual(self._load("spaced-repetition.json"), before)
+        self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_sm2_mastery_thresholds_update_and_reset(self):
+        sr = self._load("spaced-repetition.json")
+        item = sr["items"]["vocab_dag"]
+        item.update({"mastery_level": 2, "consecutive_correct": 4, "consecutive_incorrect": 0,
+                     "repetitions": 2, "interval_days": 6})
+        (self.tmp / "data" / "spaced-repetition.json").write_text(json.dumps(sr))
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-mastery-up"
+        payload["review_results"] = [{"item_id": "vocab_dag", "quality": 5}]
+        payload["errors"] = []
+        payload["new_vocabulary"] = []
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        updated = self._load("spaced-repetition.json")["items"]["vocab_dag"]
+        self.assertEqual(updated["mastery_level"], 3)
+        self.assertEqual(updated["consecutive_correct"], 0)
+
+        sr = self._load("spaced-repetition.json")
+        item = sr["items"]["vocab_dag"]
+        item.update({"mastery_level": 3, "consecutive_correct": 0, "consecutive_incorrect": 2})
+        (self.tmp / "data" / "spaced-repetition.json").write_text(json.dumps(sr))
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-mastery-down"
+        payload["review_results"] = [{"item_id": "vocab_dag", "quality": 2}]
+        payload["errors"] = []
+        payload["new_vocabulary"] = []
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        updated = self._load("spaced-repetition.json")["items"]["vocab_dag"]
+        self.assertEqual(updated["mastery_level"], 2)
+        self.assertEqual(updated["consecutive_incorrect"], 0)
+        self.assertIn("vocab_dag", self._load("spaced-repetition.json")["review_queue"]["tomorrow"])
+
+    def test_sm2_uses_documented_rounding(self):
+        sr = self._load("spaced-repetition.json")
+        item = sr["items"]["vocab_dag"]
+        item.update({"mastery_level": 1, "consecutive_correct": 0, "consecutive_incorrect": 0,
+                     "repetitions": 2, "interval_days": 2, "easiness_factor": 2.25})
+        (self.tmp / "data" / "spaced-repetition.json").write_text(json.dumps(sr))
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-rounding"
+        payload["review_results"] = [{"item_id": "vocab_dag", "quality": 5}]
+        payload["errors"] = []
+        payload["new_vocabulary"] = []
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        updated = self._load("spaced-repetition.json")["items"]["vocab_dag"]
+        self.assertEqual(updated["interval_days"], 4)
+
+    def test_concept_conflict_leaves_databases_unchanged(self):
+        sr = self._load("spaced-repetition.json")
+        sr["items"]["vocab_dag"]["concept_id"] = "vocabulary:greetings"
+        (self.tmp / "data" / "spaced-repetition.json").write_text(json.dumps(sr))
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-023"
+        payload["review_results"] = [{
+            "item_id": "vocab_dag",
+            "quality": 5,
+            "concept_id": "vocabulary:days",
+        }]
+        before = self._load("spaced-repetition.json")
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(self._load("spaced-repetition.json"), before)
+        self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_unreviewed_due_items_remain_today(self):
+        sr = self._load("spaced-repetition.json")
+        for item_id in ("vocab_due_a", "vocab_due_b"):
+            sr["items"][item_id] = {
+                "id": item_id,
+                "type": "vocabulary",
+                "content": item_id,
+                "answer": item_id,
+                "category": "test",
+                "difficulty": "A1",
+                "created_date": "2026-04-20",
+                "due_date": "2026-04-24",
+                "interval_days": 1,
+                "repetitions": 0,
+                "easiness_factor": 2.5,
+                "consecutive_correct": 0,
+                "consecutive_incorrect": 0,
+                "last_reviewed": "2026-04-20",
+                "last_quality": 3,
+                "mastery_level": 0,
+                "total_reviews": 0,
+                "priority": "medium",
+            }
+        (self.tmp / "data" / "spaced-repetition.json").write_text(json.dumps(sr))
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-024"
+        payload["review_results"] = [{"item_id": "vocab_due_a", "quality": 5}]
+        payload["errors"] = []
+        payload["new_vocabulary"] = []
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        updated = self._load("spaced-repetition.json")
+        self.assertNotIn("vocab_due_a", updated["review_queue"]["today"])
+        self.assertIn("vocab_due_b", updated["review_queue"]["today"])
 
     # --- Milestones (issue #8) ---
 
