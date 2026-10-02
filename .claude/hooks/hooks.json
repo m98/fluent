@@ -13,6 +13,30 @@
         ]
       }
     ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Block exercise messages that leak the answer key",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/answer-leak-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "description": "Remind the tutor to end exercise messages at the prompt line",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/answer-leak-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [

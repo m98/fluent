@@ -8,6 +8,7 @@ session report, and asserts schema invariants on the output files.
 Usage:
     python3 tests/test_update_db.py
 """
+import copy
 import json
 import os
 import shutil
@@ -167,7 +168,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         self.assertEqual(proc.returncode, 0,
                          msg=f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
 
-        with open(self.tmp / "data" / "session-log.json") as f:
+        with open(self.tmp / "data" / "session-log.json", encoding="utf-8") as f:
             log = json.load(f)
         latest = log["sessions"][-1]
         self.assertEqual(latest["session_id"], "session-002")
@@ -180,7 +181,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         self.assertIn("achievements_earned", latest)
         self.assertEqual(latest["streak_day"], 3)  # was 2, yesterday -> +1
 
-        with open(self.tmp / "data" / "learner-profile.json") as f:
+        with open(self.tmp / "data" / "learner-profile.json", encoding="utf-8") as f:
             profile = json.load(f)
         self.assertEqual(profile["current_streak_days"], 3)
         conf = profile["skills"]["vocabulary"]["confidence"]
@@ -188,7 +189,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         self.assertGreaterEqual(conf, 0)
         self.assertLessEqual(conf, 100)
 
-        with open(self.tmp / "data" / "spaced-repetition.json") as f:
+        with open(self.tmp / "data" / "spaced-repetition.json", encoding="utf-8") as f:
             sr = json.load(f)
         dag = sr["items"]["vocab_dag"]
         # Schema preserved
@@ -208,7 +209,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
                   "total_reviews", "priority"):
             self.assertIn(k, huis, f"new item missing {k}")
 
-        with open(self.tmp / "data" / "mistakes-db.json") as f:
+        with open(self.tmp / "data" / "mistakes-db.json", encoding="utf-8") as f:
             mistakes = json.load(f)
         self.assertIn("verb_spreek", mistakes["error_patterns"])
         pat = mistakes["error_patterns"]["verb_spreek"]
@@ -232,7 +233,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         payload["date"] = "2026-04-23"
         proc = self._run(payload)
         self.assertEqual(proc.returncode, 0, msg=proc.stderr)
-        with open(self.tmp / "data" / "learner-profile.json") as f:
+        with open(self.tmp / "data" / "learner-profile.json", encoding="utf-8") as f:
             profile = json.load(f)
         self.assertEqual(profile["current_streak_days"], 2)
 
@@ -246,7 +247,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         return payload
 
     def _load(self, name):
-        with open(self.tmp / "data" / name) as f:
+        with open(self.tmp / "data" / name, encoding="utf-8") as f:
             return json.load(f)
 
     def test_milestone_string_form(self):
@@ -349,6 +350,78 @@ class UpdateDbSmokeTest(unittest.TestCase):
         for i in ids:
             self.assertFalse(i.endswith("_"), f"bare trailing underscore: {i}")
 
+    def test_cjk_payload_roundtrips_utf8(self):
+        # Regression: under an ASCII/C locale (Git Bash on Windows), stdin was
+        # decoded with surrogateescape and CJK payloads crashed at save time,
+        # after some databases were already written.
+        payload = dict(SESSION_PAYLOAD)
+        payload["session_id"] = "session-300"
+        payload["errors"] = [dict(SESSION_PAYLOAD["errors"][0],
+                                  your_answer="achieve = 実績",
+                                  correct_answer="achieve = 達成する（動詞）")]
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 0,
+                         msg=f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
+        with open(self.tmp / "data" / "mistakes-db.json", encoding="utf-8") as f:
+            mistakes = json.load(f)
+        example = mistakes["error_patterns"]["verb_spreek"]["examples"][-1]
+        self.assertEqual(example["incorrect"], "achieve = 実績")
+        self.assertEqual(example["correct"], "achieve = 達成する（動詞）")
+
+    def test_cjk_payload_survives_ascii_locale(self):
+        # Same as above but forcing the worst-case locale explicitly.
+        payload = dict(SESSION_PAYLOAD)
+        payload["session_id"] = "session-301"
+        payload["session_notes"] = "過去形と冠詞のリベンジ成功"
+        env = dict(os.environ, LC_ALL="C", LANG="C")
+        env.pop("PYTHONUTF8", None)
+        env.pop("PYTHONIOENCODING", None)
+        proc = subprocess.run(
+            ["python3", str(SCRIPT)],
+            input=json.dumps(payload).encode(),
+            cwd=str(self.tmp),
+            capture_output=True,
+            env=env,
+        )
+        self.assertEqual(proc.returncode, 0,
+                         msg=f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
+        with open(self.tmp / "data" / "session-log.json", encoding="utf-8") as f:
+            log = json.load(f)
+        self.assertEqual(log["sessions"][-1]["notes"], "過去形と冠詞のリベンジ成功")
+
+    def test_rerun_same_session_id_preserves_first_backup(self):
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        first = self.tmp / "data" / ".backups" / "pre-update-session-002"
+        marker = json.loads((first / "learner-profile.json").read_text())
+
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        second = self.tmp / "data" / ".backups" / "pre-update-session-002-2"
+        self.assertTrue(second.exists(), "retry should get a numbered backup dir")
+        # First backup still holds the original pre-update state.
+        preserved = json.loads((first / "learner-profile.json").read_text())
+        self.assertEqual(preserved, marker)
+
+    def test_save_failure_leaves_all_databases_unchanged(self):
+        # Force a staging failure by making one destination's .tmp path a
+        # directory; the two-phase commit must abort before replacing any DB.
+        before = {name: (self.tmp / "data" / name).read_text()
+                  for name in ("learner-profile.json", "progress-db.json",
+                               "mistakes-db.json", "mastery-db.json",
+                               "spaced-repetition.json", "session-log.json")}
+        blocker = self.tmp / "data" / "session-log.json.tmp"
+        blocker.mkdir()
+        try:
+            proc = self._run(SESSION_PAYLOAD)
+            self.assertEqual(proc.returncode, 2, msg=proc.stderr)
+            after = {name: (self.tmp / "data" / name).read_text()
+                     for name in before}
+            self.assertEqual(after, before,
+                             "a failed save must not modify any database")
+        finally:
+            blocker.rmdir()
+
     def test_milestones_empty_and_omitted_are_noops(self):
         for n, payload in enumerate([
             self._payload_with("session-107", []),
@@ -361,6 +434,46 @@ class UpdateDbSmokeTest(unittest.TestCase):
                 self.assertEqual(proc.returncode, 0, msg=proc.stderr)
                 after = len(self._load("learner-profile.json").get("achievements", []))
                 self.assertEqual(after, before)
+
+    # Ported from m98/fluent#18: review_results must fail loudly instead of
+    # being skipped (unknown id), double-applied (duplicate) or corrupting
+    # the easiness factor (quality outside 0..5).
+    def test_duplicate_review_result_exits_1_without_mutation(self):
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-022"
+        payload["review_results"] = [
+            {"item_id": "vocab_dag", "quality": 5},
+            {"item_id": "vocab_dag", "quality": 4},
+        ]
+        before = self._load("spaced-repetition.json")
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn(b"duplicate review_results item_id", proc.stderr)
+        self.assertEqual(self._load("spaced-repetition.json"), before)
+        self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_invalid_review_quality_exits_1_without_mutation(self):
+        for quality in (-1, 6, "5", True, None):
+            with self.subTest(quality=quality):
+                payload = copy.deepcopy(SESSION_PAYLOAD)
+                payload["session_id"] = f"session-quality-{quality!s}"
+                payload["review_results"] = [{"item_id": "vocab_dag", "quality": quality}]
+                before = self._load("spaced-repetition.json")
+                proc = self._run(payload)
+                self.assertEqual(proc.returncode, 1)
+                self.assertEqual(self._load("spaced-repetition.json"), before)
+                self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
+
+    def test_unknown_review_id_exits_1_without_mutation(self):
+        payload = copy.deepcopy(SESSION_PAYLOAD)
+        payload["session_id"] = "session-unknown-review"
+        payload["review_results"] = [{"item_id": "missing_item", "quality": 5}]
+        before = self._load("spaced-repetition.json")
+        proc = self._run(payload)
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn(b"unknown review_results item_id", proc.stderr)
+        self.assertEqual(self._load("spaced-repetition.json"), before)
+        self.assertEqual(len(self._load("session-log.json")["sessions"]), 1)
 
 
 if __name__ == "__main__":

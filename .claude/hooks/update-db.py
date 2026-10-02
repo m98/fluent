@@ -35,14 +35,31 @@ def load_json(path: Path) -> dict:
         return json.load(f)
 
 
-def save_json(path: Path, data: dict):
-    tmp_path = path.with_suffix('.json.tmp')
-    with open(tmp_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-        f.write('\n')
-        f.flush()
-        os.fsync(f.fileno())
-    os.replace(str(tmp_path), str(path))  # atomic + overwrites (os.rename fails on Windows if dest exists)
+def save_all(files: dict, data: dict):
+    """Two-phase commit across every DB: stage each one to a .tmp file first,
+    then swap them all in. A serialization/encoding error during staging
+    aborts before a single real database is replaced, so exit 2 never leaves
+    the six files mutually inconsistent (e.g. profile updated but session-log
+    not)."""
+    staged = []
+    try:
+        for key, path in files.items():
+            tmp_path = path.with_suffix('.json.tmp')
+            with open(tmp_path, 'w', encoding='utf-8') as f:
+                json.dump(data[key], f, indent=2, ensure_ascii=False)
+                f.write('\n')
+                f.flush()
+                os.fsync(f.fileno())
+            staged.append((tmp_path, path))
+    except Exception:
+        for path in files.values():
+            try:
+                path.with_suffix('.json.tmp').unlink(missing_ok=True)
+            except OSError:
+                pass
+        raise
+    for tmp_path, path in staged:
+        os.replace(str(tmp_path), str(path))  # atomic + overwrites (os.rename fails on Windows if dest exists)
 
 
 def parse_date(s: str) -> datetime:
@@ -63,6 +80,34 @@ def yesterday(today_str: str) -> str:
 
 def date_plus_days(today_str: str, days: int) -> str:
     return date_str(parse_date(today_str) + timedelta(days=days))
+
+
+def validate_review_results(session: dict, sr_items: dict):
+    """Raise ValueError for review_results the SM-2 update would mishandle
+    silently: an unknown item_id is skipped (the review is lost), a duplicate
+    item_id runs SM-2 twice, and a quality outside 0..5 corrupts the easiness
+    factor. Call before any database copy is modified."""
+    reviews = session.get("review_results", [])
+    if not isinstance(reviews, list):
+        raise ValueError("review_results must be a list")
+    seen = set()
+    for review in reviews:
+        if not isinstance(review, dict):
+            raise ValueError("each review_results entry must be an object")
+        item_id = review.get("item_id")
+        if not isinstance(item_id, str) or not item_id.strip():
+            raise ValueError("review_results item_id must be a non-empty string")
+        if item_id in seen:
+            raise ValueError(f"duplicate review_results item_id: {item_id}")
+        seen.add(item_id)
+        quality = review.get("quality")
+        # bool is an int subclass: True/False must not pass as quality 1/0.
+        if isinstance(quality, bool) or not isinstance(quality, int) or not 0 <= quality <= 5:
+            raise ValueError(
+                f"review_results quality for {item_id} must be an integer from 0 to 5, got {quality!r}")
+        if item_id not in sr_items:
+            raise ValueError(
+                f"unknown review_results item_id: {item_id} (not in spaced-repetition.json items)")
 
 
 def get_week_start(today_str: str) -> str:
@@ -136,11 +181,19 @@ def normalize_milestones(session: dict) -> list:
     return normalized
 
 
-def backup_all(tag: str):
+def backup_all(tag: str) -> Path:
+    # Never reuse an existing dir: re-running the same session_id (e.g. a
+    # retry after a failure) would otherwise overwrite the only backup taken
+    # before anything went wrong.
     backup_path = BACKUP_DIR / tag
-    backup_path.mkdir(parents=True, exist_ok=True)
+    n = 1
+    while backup_path.exists():
+        n += 1
+        backup_path = BACKUP_DIR / f"{tag}-{n}"
+    backup_path.mkdir(parents=True)
     for f in DATA_DIR.glob("*.json"):
         shutil.copy2(f, backup_path / f.name)
+    return backup_path
 
 
 # --- SM-2 Algorithm ---
@@ -531,7 +584,10 @@ def update_session_log(log: dict, session: dict, streak: int):
 
 def main():
     try:
-        session = json.load(sys.stdin)
+        if len(sys.argv) > 1:
+            session = json.loads(sys.argv[1])
+        else:
+            session = json.load(sys.stdin)
     except json.JSONDecodeError as e:
         print(f"[Fluent] Error: Invalid JSON input: {e}", file=sys.stderr)
         sys.exit(1)
@@ -562,6 +618,12 @@ def main():
         print(f"[Fluent] Error loading databases: {e}", file=sys.stderr)
         sys.exit(2)
 
+    try:
+        validate_review_results(session, originals["sr"].get("items", {}))
+    except ValueError as e:
+        print(f"[Fluent] Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
     # Work on deep copies so a mid-run exception leaves disk untouched.
     data = {k: copy.deepcopy(v) for k, v in originals.items()}
 
@@ -583,8 +645,7 @@ def main():
     backup_all(f"pre-update-{session['session_id']}")
 
     try:
-        for k, p in files.items():
-            save_json(p, data[k])
+        save_all(files, data)
     except Exception as e:
         print(f"[Fluent] Error saving databases: {e}", file=sys.stderr)
         sys.exit(2)

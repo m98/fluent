@@ -2,6 +2,44 @@
 
 All notable changes to Fluent will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Answer-leak guard (`answer-leak-guard.py`, PR #15): a `Stop` hook
+  voids an exercise whose message shows the answer after the prompt line, and a
+  `UserPromptSubmit` reminder keeps exercise messages ending at that line.
+- `/fluent-export-anki` (`export-anki.py`, from PR #11): read-only
+  export of spaced-repetition items to an Anki-importable TSV file.
+
+### Fixed
+
+- `update-db.py` accepts the JSON payload as `argv[1]` as well as on stdin, so
+  it no longer blocks when invoked without a pipe (PR #11).
+- `update-db.py` rejects (exit `1`, nothing written) a `review_results` entry
+  with an unknown `item_id`, a duplicate `item_id`, or a `quality` that is not
+  an integer 0–5. These were previously skipped, double-applied, or fed into
+  the easiness factor silently (from PR #18).
+- Docs: a wrong answer is scheduled for tomorrow's queue, not kept in today's;
+  reusing a `session_id` appends instead of replacing (from PR #18).
+
+- `update-db.py` no longer corrupts learner databases when the session payload
+  contains non-ASCII text (CJK, Arabic, …) on Windows/Git Bash. `force_utf8_io()`
+  now reconfigures stdin as well — under an ASCII/C locale the payload was
+  decoded with surrogateescape and crashed at save time, *after* some databases
+  had already been written (double-counting stats on retry).
+- All six databases are now written with a two-phase commit (stage every file
+  to `.tmp`, then swap all in), so a serialization or encoding error exits `2`
+  without touching any database — the documented "no files were modified"
+  guarantee now actually holds.
+- Pre-update backups are no longer overwritten when the same `session_id` is
+  retried; a numbered sibling directory (`pre-update-<id>-2`, `-3`, …) is
+  created instead, preserving the earliest (pre-corruption) backup.
+- Test suite: file reads now pass `encoding="utf-8"` so non-Latin milestone
+  tests pass on Windows (default cp932/cp1252 locales); added regression tests
+  for CJK payloads, ASCII-locale runs, backup preservation, and save-failure
+  atomicity.
+
 ## [0.3.0] — 2026-06-15
 
 ### Added

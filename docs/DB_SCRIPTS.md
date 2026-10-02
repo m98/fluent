@@ -108,15 +108,21 @@ Everything else is optional; omitted fields do not update.
 
 ### Side effects
 - Backs up `data/*.json` to `.backups/pre-update-<session_id>/` *before*
-  writing.
-- Writes each JSON file via a `.tmp` + `fsync` + `rename` pattern so a crash
-  mid-write cannot leave a half-written file.
+  writing. If that directory already exists (e.g. a retry of the same
+  session_id), a numbered sibling (`pre-update-<session_id>-2`, `-3`, …) is
+  created instead — an earlier backup is never overwritten.
+- Writes all six databases with a two-phase commit: every file is staged to a
+  `.tmp` (with `fsync`) first, then all are swapped in via `rename`. A
+  serialization or encoding error therefore aborts before any real database
+  is touched — the six files never end up mutually inconsistent.
 - Rebuilds `spaced-repetition.review_queue` from scratch each run — any manual
   edits there will be overwritten.
 
 ### Exit codes
 - `0` success
-- `1` validation error (bad/missing JSON, missing required field)
+- `1` validation error (bad/missing JSON, missing required field, or a
+  `review_results` entry with an unknown or duplicate `item_id` or a `quality`
+  that is not an integer 0–5); no files were modified
 - `2` I/O or logic error (full traceback on stderr; no files were modified)
 
 ## Data model notes
