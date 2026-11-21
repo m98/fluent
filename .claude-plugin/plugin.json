@@ -1,6 +1,6 @@
 {
   "name": "fluent",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Fluent — AI Language Learning Kit. Personal AI tutor for any target language. Uses spaced repetition (SM-2), active recall, adaptive difficulty, and tracking across 6 databases. Daily practice: /fluent-review, /fluent-vocab, /fluent-writing, /fluent-speaking, /fluent-reading, /fluent-learn. Start with /fluent-setup.",
   "author": {
     "name": "Mohammad Kermani",

@@ -4,6 +4,13 @@ All notable changes to Fluent will be documented in this file.
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-11-21
+
+A reliability release: learner data is safer on Windows and on retries, an
+exercise whose answer was leaked is no longer graded, and Fluent now has one
+instruction file for every AI agent. Thanks to everyone who reported issues
+and sent pull requests.
+
 ### Changed
 
 - `AGENTS.md` is now the single instruction file for every AI agent. It holds
@@ -16,6 +23,8 @@ All notable changes to Fluent will be documented in this file.
 
 ### Added
 
+- Continuous integration: the test suite, the answer-leak guard self-test and
+  a config check now run on Linux, macOS and Windows for every pull request.
 - Answer-leak guard (`answer-leak-guard.py`, `Stop` + `UserPromptSubmit` hooks).
   When an exercise message shows the answer after the prompt line, the item is
   voided and re-posed instead of being graded, so a leaked answer is never
@@ -60,6 +69,18 @@ All notable changes to Fluent will be documented in this file.
   tests pass on Windows (default cp932/cp1252 locales); added regression tests
   for CJK payloads, ASCII-locale runs, backup preservation, and save-failure
   atomicity.
+
+### Upgrade
+
+```
+# plugin install
+claude plugin update fluent@m98
+
+# git clone
+git pull
+```
+
+Your data is unchanged; no migration is needed.
 
 ## [0.3.0] — 2026-06-15
 
