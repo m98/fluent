@@ -155,7 +155,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
 
     def _run(self, payload: dict):
         proc = subprocess.run(
-            ["python3", str(SCRIPT)],
+            [sys.executable, str(SCRIPT)],
             input=json.dumps(payload).encode(),
             cwd=str(self.tmp),
             capture_output=True,
@@ -225,7 +225,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         """The payload may be passed as argv[1] instead of stdin (stdin is not
         always connected, e.g. when run as a background task)."""
         proc = subprocess.run(
-            ["python3", str(SCRIPT), json.dumps(SESSION_PAYLOAD)],
+            [sys.executable, str(SCRIPT), json.dumps(SESSION_PAYLOAD)],
             stdin=subprocess.DEVNULL,
             cwd=str(self.tmp),
             capture_output=True,
@@ -239,7 +239,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
 
     def test_invalid_argv_payload_exits_1(self):
         proc = subprocess.run(
-            ["python3", str(SCRIPT), "{not json"],
+            [sys.executable, str(SCRIPT), "{not json"],
             stdin=subprocess.DEVNULL,
             cwd=str(self.tmp),
             capture_output=True,
@@ -401,7 +401,7 @@ class UpdateDbSmokeTest(unittest.TestCase):
         env.pop("PYTHONUTF8", None)
         env.pop("PYTHONIOENCODING", None)
         proc = subprocess.run(
-            ["python3", str(SCRIPT)],
+            [sys.executable, str(SCRIPT)],
             input=json.dumps(payload).encode(),
             cwd=str(self.tmp),
             capture_output=True,
