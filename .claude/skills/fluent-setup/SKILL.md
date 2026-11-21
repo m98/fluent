@@ -183,10 +183,10 @@ Use the Write tool for each. Do not call `update-db.py` — that script is for s
 
 A quick 5-10 min intro session to learn your first 10 words and get familiar with the system.
 
-Type "yes" to start, "later" to begin on your own.
+Type `/fluent-learn` to start, or come back whenever you're ready.
 ```
 
-If yes, hand off to the `fluent-learn` skill.
+End the setup here. Do not try to start the lesson yourself: `fluent-learn` is gated with `disable-model-invocation: true`, so calling it through the Skill tool fails with an error. Only the learner typing `/fluent-learn` can start it.
 
 ## Profile Updates (existing profile)
 
