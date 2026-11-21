@@ -221,6 +221,31 @@ class UpdateDbSmokeTest(unittest.TestCase):
         backup = self.tmp / "data" / ".backups" / "pre-update-session-002"
         self.assertTrue(backup.exists(), "pre-update backup missing")
 
+    def test_payload_from_argv(self):
+        """The payload may be passed as argv[1] instead of stdin (stdin is not
+        always connected, e.g. when run as a background task)."""
+        proc = subprocess.run(
+            ["python3", str(SCRIPT), json.dumps(SESSION_PAYLOAD)],
+            stdin=subprocess.DEVNULL,
+            cwd=str(self.tmp),
+            capture_output=True,
+        )
+        self.assertEqual(proc.returncode, 0,
+                         msg=f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
+        with open(self.tmp / "data" / "session-log.json", encoding="utf-8") as f:
+            log = json.load(f)
+        self.assertEqual(log["sessions"][-1]["session_id"],
+                         SESSION_PAYLOAD["session_id"])
+
+    def test_invalid_argv_payload_exits_1(self):
+        proc = subprocess.run(
+            ["python3", str(SCRIPT), "{not json"],
+            stdin=subprocess.DEVNULL,
+            cwd=str(self.tmp),
+            capture_output=True,
+        )
+        self.assertEqual(proc.returncode, 1)
+
     def test_missing_required_field_exits_1(self):
         proc = self._run({"date": "2026-04-24"})  # no session_id
         self.assertEqual(proc.returncode, 1)
