@@ -11,6 +11,11 @@ its next message. CLAUDE.md sits far away in a long session; this sits adjacent.
 A Stop hook fires AFTER the message is displayed, so it cannot unsend a leak. It
 voids the item instead — which keeps a compromised answer out of the SM-2
 databases, where it would otherwise register as genuine mastery.
+
+Both events are no-ops unless the learner started a Fluent practice skill in
+this conversation (see in_fluent_session). Plugin hooks run in every project
+where the plugin is enabled, so without that gate the reminder would be added
+to unrelated work.
 """
 import json
 import re
@@ -33,8 +38,12 @@ REMINDER = (
 # "**Answer in {lang}:**", "**Write your {type} below:**", "**Type your answer!** ⏱️".
 # The bold span must be the whole line (trailing emoji ok) — that excludes the
 # feedback template's "**Answer:** {correct_answer}", which carries content after
-# the bold span and is legitimate.
-TERMINATOR = re.compile(r"^[ \t]*\*\*(?:Type|Write|Answer)\b[^*\n]*\*\*[^\w\n]*$", re.M)
+# the bold span and is legitimate. "Answer" must be followed by more words
+# ("Answer in Dutch:"): a bare "**Answer:**" on its own line is a feedback label
+# whose answer sits on the next line, not a learner prompt.
+TERMINATOR = re.compile(
+    r"^[ \t]*\*\*(?:(?:Type|Write)\b[^*\n]*|Answer[ \t]+\w[^*\n]*)\*\*[^\w\n]*$", re.M
+)
 
 # Navigation prompts, not exercises: "Type a number or skill name:" (the /fluent-learn
 # menu), "Type 1, 2, 3, or 4:" (setup). They have no answer to leak and legitimately
@@ -106,6 +115,59 @@ BLOCK_REASON = (
 )
 
 
+# A learner-typed practice command as Claude Code records it in the transcript:
+# "<command-name>/fluent-vocab</command-name>" (clone install) or
+# "<command-name>/fluent:fluent-vocab</command-name>" (plugin install).
+# /fluent-setup and /fluent-progress pose no exercises, so they don't count.
+SESSION_COMMAND = re.compile(
+    r"<command-name>/(?:[\w-]+:)?fluent-(?:learn|vocab|review|writing|speaking|reading)\b"
+)
+
+
+def _user_text(entry):
+    """Text the user typed in a transcript entry ('' for tool results etc.)."""
+    if entry.get("type") != "user":
+        return ""
+    content = entry.get("message", {}).get("content", "")
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        return "".join(
+            b.get("text", "")
+            for b in content
+            if isinstance(b, dict) and b.get("type") == "text"
+        )
+    return ""
+
+
+def in_fluent_session(transcript_path, prompt=""):
+    """True if the learner started a Fluent practice skill in this conversation.
+
+    Only user-typed text counts: the command name appearing in a tool result or
+    in the assistant's own output (e.g. while developing Fluent itself) must not
+    switch the guard on. Any read error means "not a Fluent session" — the guard
+    then stays silent, which is the safe direction.
+    """
+    if prompt and SESSION_COMMAND.search(prompt):
+        return True
+    if not transcript_path:
+        return False
+    try:
+        with open(transcript_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if "fluent-" not in line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                if SESSION_COMMAND.search(_user_text(entry)):
+                    return True
+    except OSError:
+        return False
+    return False
+
+
 def last_assistant_text(transcript_path):
     text = ""
     try:
@@ -137,17 +199,18 @@ def main():
         payload = {}
 
     event = payload.get("hook_event_name", "")
+    transcript = payload.get("transcript_path")
 
     if event == "UserPromptSubmit":
-        print(REMINDER)
+        if in_fluent_session(transcript, str(payload.get("prompt") or "")):
+            print(REMINDER)
         sys.exit(0)
 
     if event != "Stop" or payload.get("stop_hook_active"):
         sys.exit(0)  # already re-prompted once; never loop
 
-    transcript = payload.get("transcript_path")
-    if not transcript:
-        sys.exit(0)
+    if not transcript or not in_fluent_session(transcript):
+        sys.exit(0)  # not a Fluent practice session — stay out of the way
 
     leak = find_leak(last_assistant_text(transcript))
     if leak:
@@ -216,6 +279,48 @@ def selftest():
 
     mcq = "## Vraag 1\n\nWhat does it mean?\n\na) x\nb) y\nc) z\n\n**Type a, b, or c:**\n\nb"
     assert find_leak(mcq), "an MCQ is an exercise — trailing key must still be caught"
+
+    bare_answer_label = (
+        "## Feedback\n\n✅ Correct!\n\n**Answer:**\nphenomenon\n\nNice work — 3 in a row."
+    )
+    assert find_leak(bare_answer_label) is None, "bare **Answer:** feedback label must pass"
+
+    answer_in_lang = "## Vraag 2\n\nTranslate: the house\n\n**Answer in Dutch:**\n\nhet huis"
+    assert find_leak(answer_in_lang), "'Answer in {lang}:' is a prompt — trailing key must be caught"
+
+    # Session gate: only a learner-typed practice command switches the guard on.
+    import os
+    import tempfile
+
+    def transcript(*entries):
+        fd, path = tempfile.mkstemp(suffix=".jsonl")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            for e in entries:
+                f.write(json.dumps(e) + "\n")
+        return path
+
+    def user(content):
+        return {"type": "user", "message": {"content": content}}
+
+    cmd = "<command-name>/%s</command-name>\n<command-message>x</command-message>"
+    cases = [
+        ([user(cmd % "fluent-vocab")], True, "clone-mode command"),
+        ([user(cmd % "fluent:fluent-review")], True, "plugin-mode command"),
+        ([user([{"type": "text", "text": cmd % "fluent-learn"}])], True, "text-block content"),
+        ([user(cmd % "fluent-setup")], False, "setup poses no exercises"),
+        ([user(cmd % "model"), user("fix the bug in fluent-vocab")], False, "unrelated session"),
+        ([user([{"type": "tool_result", "content": cmd % "fluent-vocab"}])], False, "tool result"),
+        ([{"type": "assistant", "message": {"content": [
+            {"type": "text", "text": cmd % "fluent-vocab"}]}}], False, "assistant text"),
+    ]
+    for entries, expected, label in cases:
+        path = transcript(*entries)
+        try:
+            assert in_fluent_session(path) is expected, "session gate: " + label
+        finally:
+            os.unlink(path)
+    assert in_fluent_session(None, "/fluent-vocab") is False, "bare prompt text is not a command record"
+    assert in_fluent_session("/nonexistent/transcript.jsonl") is False, "unreadable transcript = off"
 
     print("selftest: all assertions passed")
 

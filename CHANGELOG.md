@@ -4,6 +4,18 @@ All notable changes to Fluent will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Answer-leak guard (`answer-leak-guard.py`, `Stop` + `UserPromptSubmit` hooks).
+  When an exercise message shows the answer after the prompt line, the item is
+  voided and re-posed instead of being graded, so a leaked answer is never
+  recorded as mastery. The guard only runs in conversations where the learner
+  started a practice skill (`/fluent-learn`, `/fluent-vocab`, `/fluent-review`,
+  `/fluent-writing`, `/fluent-speaking`, `/fluent-reading`); it stays silent in
+  every other project (#14, #15, thanks @ShengLin1001).
+- Review and reading prompts now end at an explicit learner-input line, and the
+  review `**Type:**` header shows the bare category only (#13).
+
 ### Fixed
 
 - `update-db.py` no longer corrupts learner databases when the session payload
