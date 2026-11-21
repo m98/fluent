@@ -60,7 +60,9 @@ Need all 6 DBs. If any missing, direct the learner to `/fluent-setup` and stop.
 
 ### 4. Route
 
-- 1-5 → hand off to the matching skill (`fluent-writing`, `fluent-speaking`, `fluent-vocab`, `fluent-reading`, `fluent-review`). Those skills cover everything needed; this skill's job here is just to dispatch.
+- 1-5 → run the matching skill (`fluent-writing`, `fluent-speaking`, `fluent-vocab`, `fluent-reading`, `fluent-review`). Those skills cover everything needed; this skill's job here is just to dispatch.
+  - Do **not** call the Skill tool for them. They are gated with `disable-model-invocation: true`, so the call fails with an error.
+  - Instead, open the matching skill file with the Read tool and follow it from its first step. It sits next to this skill: `../{skill-name}/SKILL.md` relative to this skill's directory (e.g. `../fluent-vocab/SKILL.md`). The learner picked it from the menu, so this is still a learner-initiated start.
 - 6 (adaptive mix) → use this skill's own exercise sequencer (below).
 
 ### 5. Adaptive mix (option 6)

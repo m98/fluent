@@ -18,6 +18,13 @@ All notable changes to Fluent will be documented in this file.
 
 ### Fixed
 
+- `/fluent-setup` no longer fails with `Skill fluent:fluent-learn can not be used
+  with Skill tool due to disable-model-invocation` when the learner accepts the
+  first lesson. Setup now ends by asking the learner to type `/fluent-learn`
+  (#29).
+- The `/fluent-learn` menu (options 1-5) no longer tries to start the gated
+  practice skills through the Skill tool; it reads the chosen skill's file and
+  follows it instead.
 - `update-db.py` no longer corrupts learner databases when the session payload
   contains non-ASCII text (CJK, Arabic, …) on Windows/Git Bash. `force_utf8_io()`
   now reconfigures stdin as well — under an ASCII/C locale the payload was
