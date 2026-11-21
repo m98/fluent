@@ -34,5 +34,7 @@ jobs:
         run: python -m unittest discover -s tests -p "test_*.py" -v
       - name: Answer-leak guard self-test
         run: python .claude/hooks/answer-leak-guard.py --selftest
+      - name: CLAUDE.md only imports AGENTS.md (single source of instructions)
+        run: python -c "import pathlib; assert pathlib.Path('CLAUDE.md').read_text(encoding='utf-8').strip() == '@AGENTS.md', 'Put instructions in AGENTS.md; CLAUDE.md must contain only @AGENTS.md'"
       - name: Hook and plugin config are valid JSON
         run: python -c "import json, pathlib; [json.loads(pathlib.Path(p).read_text(encoding='utf-8')) for p in ('.claude/hooks/hooks.json', '.claude/settings.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json')]"

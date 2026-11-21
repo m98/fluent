@@ -73,7 +73,7 @@ This AI-powered system will help you learn any language through:
 
 ### 3. Collect info
 
-Use the `AskUserQuestion` tool to gather questions in batches when possible. Required fields:
+Use the `AskUserQuestion` tool to gather questions in batches when possible (in an agent without it, use that agent's own question tool, or ask in plain messages and wait for each reply). Required fields:
 
 1. **Name** — personalizes greetings.
 2. **Target language** — the language being learned (e.g. Spanish, French, German, Japanese, Korean, Arabic, Dutch).

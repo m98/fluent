@@ -278,7 +278,7 @@ These skills don't change what the learner-facing commands do — they let Claud
 The AI follows these guides:
 
 - **`LEARNING_SYSTEM.md`** - Complete methodology (how to teach)
-- **`CLAUDE.md`** - AI tutor's role and personality
+- **`AGENTS.md`** - AI tutor's role, personality and rules — the single instruction file for every agent (`CLAUDE.md` just imports it)
 - **`PRACTICE.md`** - Pattern analysis and tracking
 - **`.claude/references/`** - Shared templates (SM-2 worked examples, feedback template, DB payload schema, session-file format) that every skill references
 
@@ -521,9 +521,8 @@ A: Absolutely. Everything stays on your machine. No cloud storage, no external s
 A: Yes! All data is in human-readable JSON. You can export, analyze, or migrate it anytime.
 
 **Q: Can I use Open AI's Codex CLI  or Gemini CLI instead of Claude Code?**
-A: We have AGENTS.md for instructing other AI CLIs as well, but this kit is specifically optimized for 
-Claude Code and its unique capabilities. Using other AI platforms may not yield the same results. 
-But feel free to experiment and share your findings!
+A: Yes, from a git clone. `AGENTS.md` is the single instruction file for every agent, and it explains how an agent without Claude Code's skill system runs the same commands (it reads the skill file from `.claude/skills/` when you type e.g. `/fluent-learn`). The scripts and data are plain Python and JSON, so they work the same everywhere.
+What you lose outside Claude Code: the automatic hooks (session greeting, backups on exit, JSON validation, the answer-leak guard) and the plugin install. Fluent is developed and tested on Claude Code, so other agents are community-supported — feel free to experiment and share your findings!
 
 
 ---
