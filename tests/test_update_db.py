@@ -8,6 +8,7 @@ session report, and asserts schema invariants on the output files.
 Usage:
     python3 tests/test_update_db.py
 """
+import copy
 import json
 import os
 import shutil
@@ -426,6 +427,73 @@ class UpdateDbSmokeTest(unittest.TestCase):
         # First backup still holds the original pre-update state.
         preserved = json.loads((first / "learner-profile.json").read_text())
         self.assertEqual(preserved, marker)
+
+    def _snapshot(self):
+        return {f.name: f.read_bytes()
+                for f in sorted((self.tmp / "data").glob("*.json"))}
+
+    def test_same_session_id_replaces_instead_of_double_counting(self):
+        """Re-sending an identical payload must leave all six databases exactly
+        as they were after the first call (issue #19)."""
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        after_first = self._snapshot()
+
+        for _ in range(2):
+            proc = self._run(SESSION_PAYLOAD)
+            self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+            self.assertIn(b"Replaced", proc.stdout)
+        self.assertEqual(self._snapshot(), after_first)
+
+    def test_same_session_id_applies_corrected_payload(self):
+        """A corrected resubmission replaces the first record's content."""
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        with open(self.tmp / "data" / "learner-profile.json", encoding="utf-8") as f:
+            sessions_after_first = json.load(f)["total_sessions"]
+
+        corrected = copy.deepcopy(SESSION_PAYLOAD)
+        corrected["duration_minutes"] = SESSION_PAYLOAD.get("duration_minutes", 0) + 7
+        corrected["session_notes"] = "corrected"
+        proc = self._run(corrected)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+
+        with open(self.tmp / "data" / "learner-profile.json", encoding="utf-8") as f:
+            self.assertEqual(json.load(f)["total_sessions"], sessions_after_first)
+        with open(self.tmp / "data" / "session-log.json", encoding="utf-8") as f:
+            log = json.load(f)
+        matching = [x for x in log["sessions"]
+                    if x["session_id"] == SESSION_PAYLOAD["session_id"]]
+        self.assertEqual(len(matching), 1)
+        self.assertEqual(matching[0]["duration_minutes"], corrected["duration_minutes"])
+        self.assertEqual(matching[0]["notes"], "corrected")
+
+    def test_replacing_an_older_session_exits_1_no_mutation(self):
+        """Only the most recent session can be replaced; rolling back an older
+        one would silently drop the sessions recorded after it."""
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        later = copy.deepcopy(SESSION_PAYLOAD)
+        later["session_id"] = "session-003"
+        proc = self._run(later)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        before = self._snapshot()
+
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn(b"not the most recent", proc.stderr)
+        self.assertEqual(self._snapshot(), before)
+
+    def test_replace_without_backup_exits_1_no_mutation(self):
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        shutil.rmtree(self.tmp / "data" / ".backups")
+        before = self._snapshot()
+
+        proc = self._run(SESSION_PAYLOAD)
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn(b"backup", proc.stderr)
+        self.assertEqual(self._snapshot(), before)
 
     def test_save_failure_leaves_all_databases_unchanged(self):
         # Force a staging failure by making one destination's .tmp path a

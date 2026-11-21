@@ -168,6 +168,42 @@ def backup_all(tag: str) -> Path:
     return backup_path
 
 
+def load_pre_session_state(sid: str, logged_ids: list, files: dict) -> dict:
+    """Return the six databases as they were before session `sid` was first
+    applied, so re-sending the same session_id REPLACES the earlier record
+    instead of counting the session twice.
+
+    The state comes from the `pre-update-<sid>` backup, which backup_all()
+    writes before the first application and never overwrites. Replacing is only
+    safe for the most recent session: rolling back an older one would also
+    discard every session recorded after it. Raises ValueError (nothing is
+    written) when a safe replace is not possible.
+    """
+    if logged_ids[-1] != sid:
+        raise ValueError(
+            f"session {sid} is already recorded and is not the most recent session "
+            f"({logged_ids[-1]}), so it cannot be replaced. Use a new session_id.")
+    backup = BACKUP_DIR / f"pre-update-{sid}"
+    missing = [p.name for p in files.values() if not (backup / p.name).exists()]
+    if missing:
+        raise ValueError(
+            f"session {sid} is already recorded and its pre-update backup is "
+            f"missing or incomplete ({backup}), so it cannot be replaced. "
+            f"Use a new session_id.")
+    try:
+        state = {k: load_json(backup / p.name) for k, p in files.items()}
+    except (OSError, ValueError) as e:
+        raise ValueError(
+            f"session {sid} is already recorded and its pre-update backup could "
+            f"not be read ({e}), so it cannot be replaced. Use a new session_id.")
+    if any(x.get("session_id") == sid for x in state["log"].get("sessions", [])):
+        # A backup written by an older version that overwrote it on retry.
+        raise ValueError(
+            f"session {sid} is already recorded and its pre-update backup already "
+            f"contains it, so it cannot be replaced. Use a new session_id.")
+    return state
+
+
 # --- SM-2 Algorithm ---
 
 def calculate_sm2(item: dict, quality: int) -> dict:
@@ -590,6 +626,18 @@ def main():
         print(f"[Fluent] Error loading databases: {e}", file=sys.stderr)
         sys.exit(2)
 
+    # Same session_id again = replace the earlier record, not a second session.
+    # Start from the state saved before that session was first applied.
+    sid = session["session_id"]
+    logged_ids = [x.get("session_id") for x in originals["log"].get("sessions", [])]
+    replacing = sid in logged_ids
+    if replacing:
+        try:
+            originals = load_pre_session_state(sid, logged_ids, files)
+        except ValueError as e:
+            print(f"[Fluent] Error: {e}", file=sys.stderr)
+            sys.exit(1)
+
     # Work on deep copies so a mid-run exception leaves disk untouched.
     data = {k: copy.deepcopy(v) for k, v in originals.items()}
 
@@ -624,6 +672,8 @@ def main():
     total_cor = sum(s.get("correct", 0) for s in skill_scores.values())
 
     print(f"[Fluent] ✅ Updated 6 databases for session {session['session_id']}")
+    if replacing:
+        print(f"[Fluent] ♻️ Replaced the earlier record of session {session['session_id']} (not counted twice)")
     print(f"[Fluent] 🔥 Streak: {streak} days | Sessions: {stats['total_sessions']} | Minutes: {stats['total_study_minutes']}")
     if total_ex > 0:
         print(f"[Fluent] 📊 This session: {total_cor}/{total_ex} correct ({round(total_cor/total_ex*100)}%)")

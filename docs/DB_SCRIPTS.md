@@ -119,12 +119,19 @@ Everything else is optional; omitted fields do not update.
   `.tmp` (with `fsync`) first, then all are swapped in via `rename`. A
   serialization or encoding error therefore aborts before any real database
   is touched — the six files never end up mutually inconsistent.
+- Re-sending a `session_id` that is already recorded **replaces** that record
+  rather than adding a second session: the update is applied on top of the
+  `pre-update-<session_id>` backup (the state before the session was first
+  applied), so totals, streaks and SM-2 state are not counted twice. Only the
+  most recent session can be replaced. If it is not the most recent one, or
+  its backup is missing, the script exits `1` and changes nothing.
 - Rebuilds `spaced-repetition.review_queue` from scratch each run — any manual
   edits there will be overwritten.
 
 ### Exit codes
 - `0` success
-- `1` validation error (bad/missing JSON, missing required field)
+- `1` validation error (bad/missing JSON, missing required field, or a
+  repeated `session_id` that cannot be replaced safely); no files were modified
 - `2` I/O or logic error (full traceback on stderr; no files were modified)
 
 ## Data model notes

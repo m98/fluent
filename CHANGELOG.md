@@ -18,6 +18,12 @@ All notable changes to Fluent will be documented in this file.
 
 ### Fixed
 
+- Re-sending a session with the same `session_id` now replaces the earlier
+  record, as the docs always said, instead of counting the session again
+  (`total_sessions`, exercises and minutes were inflated on every retry, and
+  corrected content was ignored). Only the most recent session can be
+  replaced; otherwise `update-db.py` exits `1` and changes nothing (#19,
+  thanks @dawood8080).
 - `update-db.py` now also accepts the session payload as its first argument,
   so it no longer blocks forever waiting on stdin when run as a background
   task. Stdin remains the default (#11, thanks @tyrannomark).
