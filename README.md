@@ -465,6 +465,9 @@ It helps others discover this project and motivates us to keep improving it!
 **`python3: command not found` when hooks run.**
 Install Python 3.8+ and make sure `python3` is on your PATH. On macOS: `brew install python3`. On Debian/Ubuntu: `sudo apt install python3`. On Windows: install via [python.org](https://www.python.org/downloads/) or use WSL.
 
+**On Windows, `python3` opens the Microsoft Store or does nothing.**
+Windows ships a `python3` "app execution alias" that is only a stub, even when real Python is installed as `python` / `py`. Fluent's hooks and scripts call `python3`, so either turn the alias off (Settings → Apps → Advanced app settings → App execution aliases → switch off `python3.exe`) and make sure a real `python3` is on your PATH, or use WSL. Check with `python3 --version`: it should print a version number.
+
 **Hooks silently do nothing on Windows.**
 The PreCompact hook is a Bash script. Run Claude Code from WSL or Git Bash. The Python hooks (SessionStart, SessionEnd, PostToolUse) work on native Windows Python — only PreCompact is Bash-only.
 

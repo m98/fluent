@@ -135,7 +135,7 @@ EOF
 
 - **Call once per session, at the end.** The script rebuilds the review queue each run — partial updates risk inconsistency.
 - **Never hand-edit `spaced-repetition.review_queue`.** It's regenerated from scratch on every run.
-- **Same `session_id` replaces.** Sending the same ID twice overwrites the first call. Useful for corrections, dangerous if unintentional.
+- **Same `session_id` replaces.** Sending the same ID again replaces the earlier record instead of counting the session twice, so retrying after a failure or resending a corrected payload is safe. This only works for the most recent session; for an older one the script exits `1` without changing anything. A new session always needs a new ID.
 - **Backups are automatic.** Written to `.backups/pre-update-<session_id>/` before any change. Check there to roll back.
 - **Exit code 1 means validation failed, no files touched.** Fix the payload and retry.
 - **Exit code 2 means I/O failure, no files touched.** Check disk space, permissions, then retry.
