@@ -18,6 +18,9 @@ All notable changes to Fluent will be documented in this file.
 
 ### Fixed
 
+- `update-db.py` now also accepts the session payload as its first argument,
+  so it no longer blocks forever waiting on stdin when run as a background
+  task. Stdin remains the default (#11, thanks @tyrannomark).
 - `/fluent-setup` no longer fails with `Skill fluent:fluent-learn can not be used
   with Skill tool due to disable-model-invocation` when the learner accepts the
   first lesson. Setup now ends by asking the learner to type `/fluent-learn`

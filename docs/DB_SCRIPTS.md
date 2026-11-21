@@ -47,6 +47,10 @@ Exit codes: `0` OK, `1` one or more files missing (partial result with
 
 ## Writing
 
+The session report is read from stdin (preferred, shown below). If stdin is
+not available, for example when the script runs as a background task, pass the
+same JSON as the first argument instead: `update-db.py "$JSON_PAYLOAD"`.
+
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT:-${CLAUDE_PROJECT_DIR:-.}}/.claude/hooks/update-db.py" <<'EOF'
 {
