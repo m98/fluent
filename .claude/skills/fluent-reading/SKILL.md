@@ -112,6 +112,8 @@ In the text it says "{word/phrase}". What does this mean?
 a) {meaning 1}
 b) {meaning 2}
 c) {meaning 3}
+
+**Type a, b, or c:**
 ```
 
 **Inference:**

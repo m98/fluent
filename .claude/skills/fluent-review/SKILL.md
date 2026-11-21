@@ -91,6 +91,8 @@ Present one at a time:
 **Type your answer:**
 ```
 
+`{item_type}` is the bare category only: `error_pattern`, `vocabulary`, or `grammar_rule`. Never append the item being tested; `**Type:** vocabulary - "perks"` hands the learner the answer.
+
 ### 4. Evaluate + update SM-2
 
 Use the `fluent-feedback-formatter` skill for per-answer feedback.
