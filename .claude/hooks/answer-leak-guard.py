@@ -6,7 +6,7 @@ Stop hook: blocks when the assistant's last message poses an exercise but leaks
 the answer key, including a bare answer line after "**Type your answer:**".
 
 UserPromptSubmit hook: injects a one-line reminder before the assistant drafts
-its next message. CLAUDE.md sits far away in a long session; this sits adjacent.
+its next message. AGENTS.md sits far away in a long session; this sits adjacent.
 
 A Stop hook fires AFTER the message is displayed, so it cannot unsend a leak. It
 voids the item instead — which keeps a compromised answer out of the SM-2

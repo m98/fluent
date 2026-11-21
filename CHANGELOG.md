@@ -4,6 +4,16 @@ All notable changes to Fluent will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- `AGENTS.md` is now the single instruction file for every AI agent. It holds
+  the tutor role and rules that used to live in `CLAUDE.md`, in agent-neutral
+  wording, plus a short "Running Fluent in Your Agent" section for agents
+  without Claude Code's skill and hook system. `CLAUDE.md` is now a one-line
+  `@AGENTS.md` import, so Claude Code behaves as before. The old `AGENTS.md`
+  (a second guide that duplicated `LEARNING_SYSTEM.md` and pointed back at
+  `CLAUDE.md`) is replaced. Edit `AGENTS.md`, not `CLAUDE.md`.
+
 ### Added
 
 - Answer-leak guard (`answer-leak-guard.py`, `Stop` + `UserPromptSubmit` hooks).
